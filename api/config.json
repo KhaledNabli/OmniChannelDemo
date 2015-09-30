@@ -1,12 +1,111 @@
 {
 	"token":"",
-	"customers": 
-	[
-	{
-
+	"global": {
+		"raceServerName": "gersasci61.ger.sas.com",
+		"customerName": "Commerzbank",
+		"sendSms": false
 	},
-	{
-
-	}
+	"web": {
+		"startPageUrl": "index.html",
+		"loginPageUrl": "login.html",
+		"landingPageUrl": "landingpage.html",
+		"loginLinkSelector": "",
+		"loginLinkHtml": "",
+		"loginUserInputSelector": "",
+		"loginFormSelector": "",
+		"loginBtnInputSelector": "",
+		"nbaPlaceHolderSelectors": ["css path of placeholder for offer 1","css path of placeholder for offer 2","css path of placeholder for offer 3"],
+		"nbaHtmlTemplate": ""
+	},
+	"mobileApp": {
+		"geo_latitude": "50.3585195",
+ 		"geo_longtitude": "7.5959737",
+		"add_to_lat": "0.002",
+		"add_to_long": "0.002",
+		"geo_zoom": "16",
+		"geo_fence_name_2": "In der Bank",
+		"geo_fence_name_1": "Im nahen Umkreis",
+		"geo_fence_name_3": "Another branch",
+		"login_button_text": "Login",
+		"title_offer_panel": "Top Angebote",
+		"title_geo_offer_panel": "Geolocation Angebote",
+		"homescreen_image": "./resources/images/homescreen.jpg"
+	},
+	"labels": {
+		"acceptBtnMobile": "Accept",
+		"rejectBtnMobile": "Reject",
+		"detailsBtnWeb": "More Details...",
+		"acceptBtnWeb": "Accept",
+		"rejectBtnWeb": "Reject",
+		"titleAdvisor": "Advisor Frontend",
+		"submitBtnAdvisor": "Get Customer Profile",
+		"maybeBtnAdvisor": "More Details...",
+		"acceptBtnAdvisor": "Accept",
+		"rejectBtnAdvisor": "Reject"
+	},
+	"customers": [
+		{
+			"customerId": "1234", 
+			"lastName": "Mathias",
+			"firstName": "Bouten",
+			"mobileNumber": "+491735755021",
+			"lifeStageSegment": "Small-Family",
+			"age": "35",
+			"email": "mathias.bouten@sas.com",
+			"analytics": [
+		        {
+		            "label": "Lifetime Value",
+		            "value": 0.44,
+		            "text": "45 %"
+		        },
+		        {
+		            "label": "Satisfaction",
+		            "value": 0.44,
+		            "text": "45 %"
+		        },
+		        {
+		            "label": "Risk",
+		            "value": 0.44,
+		            "text": "45 %"
+		        },
+		        {
+		            "label": "Fraud",
+		            "value": 0.44,
+		            "text": "45 %"
+		        }
+		    ],
+		    "nextBestActions": [
+		        {
+		            "offerName": "Current Account",
+		            "offerDesc": "This is more detail for the Current Account offer",
+		            "offerImg": "images/offerCode_01.jpg",
+		            "offerScore": 78,
+		            "offerCode": "offerCode_01",
+		            "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email"
+		        },
+		        {
+		            "offerName": "Personal Loan",
+		            "offerDesc": "This is more detail for the Personal Loan offer",
+		            "offerImg": "images/offerCode_02.jpg",
+		            "offerScore": 66,
+		            "offerCode": "offerCode_02",
+		            "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email"
+		        }
+	    	],
+	    	"history": [
+		        {
+		            "historyDate": "2015-09-25",
+		            "historyAction": "Current Account",
+		            "historyChannel": "Web",
+		            "historyResponse": "Banner Click"
+		        },
+		        {
+		            "historyDate": "2015-09-25",
+		            "historyAction": "Personal Loan",
+		            "historyChannel": "Web",
+		            "historyResponse": "accepted"
+		        }
+		    ]
+		}
 	]
 }
