@@ -62,7 +62,9 @@ CREATE TABLE IF NOT EXISTS `demo_config` (
   `token` varchar(64) NOT NULL,
   `config_json` text NOT NULL,
   `create_dttm` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `modify_dttm` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `modify_dttm` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `modify_by` varchar(64) NOT NULL,
+  `email_to` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
