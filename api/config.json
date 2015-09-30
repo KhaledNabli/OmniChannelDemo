@@ -6,6 +6,9 @@
 		"customerName": "Commerzbank",
 		"sendSms": false
 	},
+	"advisorApp": {
+		"sendSms": false
+	},
 	"web": {
 		"startPageUrl": "index.html",
 		"loginPageUrl": "login.html",
