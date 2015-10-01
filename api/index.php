@@ -43,7 +43,7 @@ if($_SERVER['REQUEST_METHOD'] == "GET") {
 }
 
 
-process($token, $action, $param);
+process($token, $action, $config);
 return;
 
 
@@ -67,7 +67,7 @@ return;
 
 
 
-function process($token, $action, $param) {
+function process($token, $action, $config) {
 	@header('Content-type: application/json');
 
 
@@ -176,7 +176,7 @@ function getConfigFromDatabase($token) {
 */
 function saveConfig($config) {
 	$token = $config["token"];
-	$userEmail = $config["global"]["userEmail"];
+	$userEmail = $config["general"]["userEmail"];
 	$userIP = gethostbyaddr($_SERVER['REMOTE_ADDR']);;
 
 	if(empty($token)) {
