@@ -1,6 +1,6 @@
 {
-	"token":"",	
-	"global": {
+	"token":"exYidz",	
+	"general": {
 		"raceServerName": "gersasci61.ger.sas.com",
 		"customerName": "Commerzbank",
 		"userEmail": "mathias.bouten@sas.com",
@@ -45,39 +45,52 @@
 		{"submitBtnAdvisor": "Get Customer Profile"},
 		{"maybeBtnAdvisor": "More Details..."},
 		{"acceptBtnAdvisor": "Accept"},
-		{"rejectBtnAdvisor": "Reject"}
+		{"rejectBtnAdvisor": "Reject"},
+		{"analyticsBar1Label": "Lifetime Value"},
+		{"analyticsBar2Label": "Satisfaction"},
+		{"analyticsBar3Label": "Risk"},
+		{"analyticsBar4Label": "Fraud"}
 	],
 	"customers": [
 		{
-			"customerId": "1234",
+			"customerLogin": "1234",
 			"firstName": "Mathias", 
 			"lastName": "Bouten",
 			"mobileNumber": "+491735755021",
 			"lifeStageSegment": "Small-Family",
 			"age": "35",
 			"email": "mathias.bouten@sas.com",
-			"analytics": [
+			"analyticsBar1Value": "0.44",
+			"analyticsBar2Value": "0.44",
+			"analyticsBar3Value": "0.44",
+			"analyticsBar4Value": "0.44",
+	    	"history": [
 		        {
-		            "label": "Lifetime Value",
-		            "value": 0.44,
-		            "text": "45 %"
+		            "historyDate": "2015-09-25",
+		            "historyAction": "Current Account",
+		            "historyChannel": "Web",
+		            "historyResponse": "Banner Click"
 		        },
 		        {
-		            "label": "Satisfaction",
-		            "value": 0.44,
-		            "text": "45 %"
-		        },
-		        {
-		            "label": "Risk",
-		            "value": 0.44,
-		            "text": "45 %"
-		        },
-		        {
-		            "label": "Fraud",
-		            "value": 0.44,
-		            "text": "45 %"
+		            "historyDate": "2015-09-25",
+		            "historyAction": "Personal Loan",
+		            "historyChannel": "Web",
+		            "historyResponse": "accepted"
 		        }
-		    ],
+		    ]
+		},
+		{
+			"customerLogin": "5678",
+			"firstName": "Khaled", 
+			"lastName": "Nabli",
+			"mobileNumber": "+491735755021",
+			"lifeStageSegment": "Small-Family",
+			"age": "29",
+			"email": "khaled.nabli@sas.com",
+			"analyticsBar1Value": "0.77",
+			"analyticsBar2Value": "0.23",
+			"analyticsBar3Value": "0.45",
+			"analyticsBar4Value": "0.99",
 	    	"history": [
 		        {
 		            "historyDate": "2015-09-25",
@@ -94,18 +107,18 @@
 		    ]
 		}
 	],
-	"offers": [
+	"nba": [
 		{
-            "offerCode": "offerCode_01",
+            "offerCode": "oc01",
             "offerName": "Current Account",
             "offerDesc": "This is more detail for the Current Account offer",
             "offerImg": "images/offerCode_01.jpg",
             "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	            
             "customer1Score": 78,
-            "customer2Score": 33,
+            "customer2Score": 33
 	    },
         {
-            "offerCode": "offerCode_02",
+            "offerCode": "oc02",
             "offerName": "Personal Loan",
             "offerDesc": "This is more detail for the Personal Loan offer",
             "offerImg": "images/offerCode_02.jpg",		      

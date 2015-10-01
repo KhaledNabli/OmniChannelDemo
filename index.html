@@ -55,37 +55,45 @@
 
               <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#global" aria-controls="global" role="tab" data-toggle="tab">Global Settings</a></li>
+                <li role="presentation" class="active"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">General Settings</a></li>
                 <li role="presentation"><a href="#customers" aria-controls="customers" role="tab" data-toggle="tab">Customers</a></li>
                 <li role="presentation"><a href="#offers" aria-controls="offers" role="tab" data-toggle="tab">Offers</a></li>
+                <li role="presentation"><a href="#labels" aria-controls="lables" role="tab" data-toggle="tab">Labels</a></li>
             </ul>
 
               <!-- Tab panes -->
             <div class="tab-content">
 
                 <!-- Start Tab: Global -->
-                <div role="tabpanel" class="tab-pane active" id="global">
+                <div role="tabpanel" class="tab-pane active" id="general">
                     <form class="form-horizontal" role="form">
                         <div class="form-group"></div>
                         
                         <div class="form-group">
+                            <label for="token" class="col-sm-2 control-label">token</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="token" disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="raceServerName" class="col-sm-2 control-label">raceServerName</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="raceServerName" placeholder="racesx11058.demo.sas.com">
+                                <input type="text" class="form-control" id="raceServerName" placeholder="">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="customerName" class="col-sm-2 control-label">customerName</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="customerName" placeholder="Commerzbank">
+                                <input type="text" class="form-control" id="customerName" placeholder="">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="userEmail" class="col-sm-2 control-label">userEmail</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="userEmail" placeholder="firstname.lastname@sas.com">
+                                <input type="text" class="form-control" id="userEmail" placeholder="">
                             </div>
                         </div>
 
@@ -97,8 +105,10 @@
                 <!-- Start Tab: Customer Profile -->
                 <div id="customers" role="tabpanel" class="tab-pane" >
                     <div class="row"> 
-                        <div class="col-sm-6"> <h2> Customer 1 </h2> </div>
-                        <div class="col-sm-6"> <h2> Customer 2 </h2> </div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-4"> <h2> Customer 1 </h2> </div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-4"> <h2> Customer 2 </h2> </div>
                     </div>
 
 
@@ -181,17 +191,116 @@
                             </div>
                         </div>
 
-                       
+                        <div class="form-group">
+                            <label for="c1analyticsBar1Value" class="col-sm-2 control-label">Analytics Bar 1</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c1analyticsBar1Value" placeholder="">
+                            </div>
+                            <label for="c2analyticsBar1Value" class="col-sm-2 control-label">Analytics Bar 1</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c2analyticsBar1Value" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="c1analyticsBar2Value" class="col-sm-2 control-label">Analytics Bar 2</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c1analyticsBar2Value" placeholder="">
+                            </div>
+                            <label for="c2analyticsBar2Value" class="col-sm-2 control-label">Analytics Bar 2</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c2analyticsBar2Value" placeholder="">
+                            </div>
+                        </div>
+
+                       <div class="form-group">
+                            <label for="c1analyticsBar3Value" class="col-sm-2 control-label">Analytics Bar 3</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c1analyticsBar3Value" placeholder="">
+                            </div>
+                            <label for="c2analyticsBar3Value" class="col-sm-2 control-label">Analytics Bar 3</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c2analyticsBar3Value" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="c1analyticsBar4Value" class="col-sm-2 control-label">Analytics Bar 4</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c1analyticsBar4Value" placeholder="">
+                            </div>
+                            <label for="c2analyticsBar4Value" class="col-sm-2 control-label">Analytics Bar 4</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c2analyticsBar4Value" placeholder="">
+                            </div>
+                        </div>
                         
                         <div class="form-group"></div>
                     </form>
                 </div><!-- End Tab: Customer Profile -->
 
-                <div role="tabpanel" class="tab-pane" id="customers">..C</div>
-                <div role="tabpanel" class="tab-pane" id="offers">..X</div>
-              </div>
+                <!-- Tab: Offers -->
+                <div role="tabpanel" class="tab-pane" id="offers">
+                    <form class="form-horizontal" role="form">
 
+                        <div class="form-group"></div>
+
+                        <!-- NBA Grid -->
+                        <div class="col-sm-12">
+                            <table id="configuratorNbaTable" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr >
+                                        <th class="text-center" width="8%">Code</th>
+                                        <th class="text-center" width="20%">Offer Name</th>
+                                        <th class="text-center" width="20%">Description</th>
+                                        <th class="text-center" width="15%">Image</th>
+                                        <th class="text-center" width="15%">SMS</th>
+                                        <th class="text-center" width="8%">Score Cust1</th>                                        
+                                        <th class="text-center" width="8%">Score Cust2</th>
+                                        <th><a id="add_row" onclick="addNbaRecord('','','');" class="btn pull-right btn-primary btn-block">Add Row</a></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="configuratorNbaTbody">
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Ende NBA Grid -->
+
+                        <div class="form-group"></div>
+                    </form>
+                </div><!-- End Tab: Offers -->
+
+
+                <!-- Tab: Labels -->
+                <div role="tabpanel" class="tab-pane" id="labels">
+                    
+                    <div class="row"> 
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-4"> <h3> Accept Buttons </h3> </div>
+                    </div>
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group"></div>
+
+                        <div class="form-group">
+                            <label for="acceptBtnMobile" class="col-sm-2 control-label">Accept Button Mobile</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="acceptBtnMobile" placeholder="">
+                            </div>
+                            <label for="c2customerLogin" class="col-sm-2 control-label">Accept Button Web</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c2customerLogin" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group"></div>
+                    </form>
+
+                </div><!-- End Tab: Labels -->
+
+              
             </div>
+
         </div>
 
 
