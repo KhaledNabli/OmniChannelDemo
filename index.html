@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -19,7 +20,7 @@
   </head>
   <body>
 
-    <!-- Static navbar -->
+    <!-- Static navbar 
     <nav class="navbar navbar-default navbar-static-top">
       <div class="container">
         <div class="navbar-header">
@@ -40,30 +41,201 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#about">Help</a></li>
           </ul>
-        </div><!--/.nav-collapse -->
+        </div>
       </div>
-    </nav>
+    </nav> -->
 
 
     <div class="container">
 
-        <div id="about">
-            <p> about text </p>
+        <div class="row">
+            <div class="col-lg-12"> 
+                <h1> Omni Channel Demo Configurator <h1>
+            </div>
+
+              <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#global" aria-controls="global" role="tab" data-toggle="tab">Global Settings</a></li>
+                <li role="presentation"><a href="#customers" aria-controls="customers" role="tab" data-toggle="tab">Customers</a></li>
+                <li role="presentation"><a href="#offers" aria-controls="offers" role="tab" data-toggle="tab">Offers</a></li>
+            </ul>
+
+              <!-- Tab panes -->
+            <div class="tab-content">
+
+                <!-- Start Tab: Global -->
+                <div role="tabpanel" class="tab-pane active" id="global">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group"></div>
+                        
+                        <div class="form-group">
+                            <label for="raceServerName" class="col-sm-2 control-label">raceServerName</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="raceServerName" placeholder="racesx11058.demo.sas.com">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customerName" class="col-sm-2 control-label">customerName</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="customerName" placeholder="Commerzbank">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userEmail" class="col-sm-2 control-label">userEmail</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="userEmail" placeholder="firstname.lastname@sas.com">
+                            </div>
+                        </div>
+
+                        <div class="form-group"></div>
+
+                    </form>                   
+                </div><!-- End Tab: Global -->
+
+                <!-- Start Tab: Customer Profile -->
+                <div id="customers" role="tabpanel" class="tab-pane" >
+                    <div class="row"> 
+                        <div class="col-sm-6"> <h2> Customer 1 </h2> </div>
+                        <div class="col-sm-6"> <h2> Customer 2 </h2> </div>
+                    </div>
+
+
+                    <div class ="form-group"></div>
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            
+                            <label for="c1customerLogin" class="col-sm-2 control-label">Customer Login</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c1customerLogin" placeholder="">
+                            </div>
+                            <label for="c2customerLogin" class="col-sm-2 control-label">Customer Login</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c2customerLogin" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="c1firstName" class="col-sm-2 control-label">Firstname</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c1firstName" placeholder="">
+                            </div>
+                            <label for="c2firstName" class="col-sm-2 control-label">Firstname</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c2firstName" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="c1lastName" class="col-sm-2 control-label">Lastname</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c1lastName" placeholder="">
+                            </div>
+                            <label for="c2lastName" class="col-sm-2 control-label">Lastname</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c2lastName" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="c1mobileNumber" class="col-sm-2 control-label">Mobile Number</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c1mobileNumber" placeholder="">
+                            </div>
+                            <label for="c2mobileNumber" class="col-sm-2 control-label">Mobile Number</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c2mobileNumber" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="c1lifeStageSegment" class="col-sm-2 control-label">Life Stage Segment</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c1lifeStageSegment" placeholder="">
+                            </div>
+                            <label for="c2lifeStageSegment" class="col-sm-2 control-label">Life Stage Segment</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c2lifeStageSegment" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="c1age" class="col-sm-2 control-label">Age</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c1age" placeholder="">
+                            </div>
+                            <label for="c2age" class="col-sm-2 control-label">Age</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c2age" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="c1email" class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c1email" placeholder="">
+                            </div>
+                            <label for="c2email" class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="c2email" placeholder="">
+                            </div>
+                        </div>
+
+                       
+                        
+                        <div class="form-group"></div>
+                    </form>
+                </div><!-- End Tab: Customer Profile -->
+
+                <div role="tabpanel" class="tab-pane" id="customers">..C</div>
+                <div role="tabpanel" class="tab-pane" id="offers">..X</div>
+              </div>
+
+            </div>
         </div>
 
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron">
-        <h1>First Page</h1>
-        <p>test</p>
-        
-      </div>
+
+        <div class="modal-footer">
+            <div style="float:left;color:#737373;font-style:italic">Version 0.1 - last update 01.10.2015</div>
+            <a id="importExportButton" href="#" class="btn btn-default" onclick="importExportClicked();"> 
+                <span id="importExportButtonLabel">Import / Export</span> </a>
+            
+            <a id="aboutButton" href="#" class="btn btn-default" onclick="aboutUsClicked();"> 
+                <span id="aboutButtonLabel">Help</span> </a>
+                
+            <a id="configuratorButton" href="#" class="btn btn-default" onclick="configuratorClicked();" style="display: none"> 
+                Configurator </a>
+            
+            <a id="resetButton" href="#" class="btn btn-default" onclick="resetClicked();"> 
+                <span id="resetButtonLabel">Reset</span> </a>
+            
+            <a id="saveButton" href="#" class="btn btn-primary" onclick="saveConfiguration();"> Save changes </a>
+            
+            <a id="importConfig" href="#" class="btn btn-primary" onclick="importConfiguration();" style="display: none"> Import Config </a>
+        </div>
+
+
 
     </div> <!-- /container -->
 
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-  </body>
+
+    <script src="js/jquery-1.11.1.js" type="text/javascript"></script>
+    <script src="js/jquery-ui.js" type="text/javascript"></script>
+    <script src="js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="js/configurator.js" type="text/javascript"></script>
+    <script>
+        
+    </script>
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            startConfigurator();
+
+            $('#myTabs a').click(function (e) {
+            e.preventDefault()
+              $(this).tab('show')
+            });
+        });
+    </script>
+</body>
 </html>

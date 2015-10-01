@@ -1,9 +1,9 @@
 {
-	"token":"",
-	"userEmail": "mathias.bouten@sas.com",
+	"token":"",	
 	"global": {
 		"raceServerName": "gersasci61.ger.sas.com",
 		"customerName": "Commerzbank",
+		"userEmail": "mathias.bouten@sas.com",
 		"sendSms": false
 	},
 	"advisorApp": {
@@ -35,23 +35,23 @@
 		"title_geo_offer_panel": "Geolocation Angebote",
 		"homescreen_image": "./resources/images/homescreen.jpg"
 	},
-	"labels": {
-		"acceptBtnMobile": "Accept",
-		"rejectBtnMobile": "Reject",
-		"detailsBtnWeb": "More Details...",
-		"acceptBtnWeb": "Accept",
-		"rejectBtnWeb": "Reject",
-		"titleAdvisor": "Advisor Frontend",
-		"submitBtnAdvisor": "Get Customer Profile",
-		"maybeBtnAdvisor": "More Details...",
-		"acceptBtnAdvisor": "Accept",
-		"rejectBtnAdvisor": "Reject"
-	},
+	"labels": [
+		{"acceptBtnMobile": "Accept"},
+		{"rejectBtnMobile": "Reject"},
+		{"detailsBtnWeb": "More Details..."},
+		{"acceptBtnWeb": "Accept"},
+		{"rejectBtnWeb": "Reject"},
+		{"titleAdvisor": "Advisor Frontend"},
+		{"submitBtnAdvisor": "Get Customer Profile"},
+		{"maybeBtnAdvisor": "More Details..."},
+		{"acceptBtnAdvisor": "Accept"},
+		{"rejectBtnAdvisor": "Reject"}
+	],
 	"customers": [
 		{
-			"customerId": "1234", 
-			"lastName": "Mathias",
-			"firstName": "Bouten",
+			"customerId": "1234",
+			"firstName": "Mathias", 
+			"lastName": "Bouten",
 			"mobileNumber": "+491735755021",
 			"lifeStageSegment": "Small-Family",
 			"age": "35",
