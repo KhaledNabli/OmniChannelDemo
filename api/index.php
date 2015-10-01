@@ -14,12 +14,20 @@ session_start();
 	"pass" => "CXfmZqwVzDpfzTKJ");
 
 
-// mysql connection 
 
-$db_link = mysqli_connect($logging_db['host'], $logging_db['user'], $logging_db['pass']);
-if (!$db_link) {
-   	die('no connection to configuration database: ' . mysqli_error($db_link));
+$mysql_link = new mysqli($logging_db['host'], $logging_db['user'], $logging_db['pass'], $logging_db['user']);
+
+if ($mysql_link->connect_errno) {
+    // Let's try this:
+    echo "Sorry, this website is experiencing problems.";
+
+    echo "Error: Failed to make a MySQL connection, here is why: \n";
+    echo "Errno: " . $mysql_link->connect_errno . "\n";
+    echo "Error: " . $mysql_link->connect_error . "\n";
+    
+    exit;
 }
+
 
 
 
@@ -27,11 +35,11 @@ if (!$db_link) {
 if($_SERVER['REQUEST_METHOD'] == "GET") {
 	@$action = $_GET['action'];
 	@$token = $_GET['token'];
-	@$param = $_GET['param'];
+	@$config = $_GET['config'];
 } else {
 	@$action = $_POST['action'];
 	@$token = $_POST['token'];
-	@$param = $_POST['param'];
+	@$config = $_POST['config'];
 }
 
 
@@ -68,7 +76,7 @@ function process($token, $action, $param) {
 	}
 
 	else if($action == 'saveConfig') {
-		$token = saveConfig($token, $config);
+		echo json_encode(saveConfig($config));
 	}
 	else if($action == 'getOffers') {
 		echo json_encode(getOffers($token, $customer, $list_size));
@@ -81,7 +89,7 @@ function process($token, $action, $param) {
 	}
 
 	else if($action == 'getConfig') { // $action == 'getConfig'
-		echo json_encode(getConfig($token));	
+		echo json_encode(getConfig($token));
 	} 
 	else {
 		// display error.
@@ -89,7 +97,7 @@ function process($token, $action, $param) {
 		$serviceEndpoints = array( 	
 			array("Name" => "Reset Demo", "Description" => "....", "Endpoint" => "/api?action=resetDemo&token=...", "Variables" => $endpointVariables),
 			array("Name" => "Get Configuration", "Description" => "....", "Endpoint" => "/api?action=getConfig[&token=...]"),
-			array("Name" => "Save Configuration", "Description" => "....", "Endpoint" => "/api?action=saveConfig[&token=...]"),
+			array("Name" => "Save Configuration", "Description" => "....", "Endpoint" => "/api?action=saveConfig&config=..."),
 			array("Name" => "Get Offers", "Description" => "....", "Endpoint" => "/api?action=getOffers&customer=...&maxOffer=...&token=..."),
 			array("Name" => "Respond to Offer", "Description" => "....", "Endpoint" => "/api?action=respondToOffer&offer=...&customer=...&token=..."),
 			array("Name" => "Get History", "Description" => "....", "Endpoint" => "/api?action=getHistory&customer=...&token=...")
@@ -118,18 +126,23 @@ function process($token, $action, $param) {
 */
 function getConfig($token) {
 	global $demoConfigFile;
+	$config = null;
 
+	if(!empty($token)) {
+		$config = json_decode(getConfigFromDatabase($token));
 
-	if($token) {
-		$config = getConfigFromDatabase($token);
 	}
 
-	if(empty($config)){
+	if(empty($config) || $config == null){
 		// load from default config.json
 		$config = json_decode(file_get_contents($demoConfigFile), true);
+		if(!empty($token)) {
+			$config["error"] = "invalid token id. therefore providing default settings.";
+			$config["token"] = generateRandomToken();
+		}
 	}
-
-	return $config; //$config["userEmail"]
+ 
+	return $config;
 }
 
 
@@ -137,22 +150,58 @@ function getConfig($token) {
 *
 */
 function getConfigFromDatabase($token) {
-	global $db_link;
+	global $mysql_link;
+	$config = null;
+
+	$configQuerySql = "SELECT * FROM `demo_config` WHERE `token` = '".$token."'";
+	$configQueryResult = $mysql_link->query($configQuerySql);
 
 
-	return null;
+
+	if(!$configQueryResult || $configQueryResult->num_rows != 1) {
+		return null;
+	}
+	else {
+		$configItem = $configQueryResult->fetch_assoc();;
+		$config = $configItem["config_json"];
+	}
+
+
+	return $config;
 }
 
 
 /**
 *
 */
-function saveConfig($token, $config) {
-	
-	return $token;	
+function saveConfig($config) {
+	$token = $config["token"];
+	$userEmail = $config["global"]["userEmail"];
+	$userIP = gethostbyaddr($_SERVER['REMOTE_ADDR']);;
+
+	if(empty($token)) {
+		// save new configuration
+		$token = generateRandomToken();
+		$config["token"] = $token;
+
+
+		$createConfigSql = "INSERT INTO `omnichanneldemo`.`demo_config` (`id`, `token`, `config_json`, `create_dttm`, `modify_dttm`, `modify_by`, `email_to`) VALUES (NULL, '".$token."', '".json_encode($config)."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."', '".$userEmail."');";
+
+
+	} else {
+		// update existing configuration
+		$updateConfigSql = "UPDATE `omnichanneldemo`.`demo_config` SET `config_json` = '".json_encode($config)."', `email_to` = '".$userEmail."', `modify_by` = '".$userIP."',WHERE `demo_config`.`id` = 2;";
+	}
+
+	return $config;
 }
 
-
+/**
+*
+*/
+function generateRandomToken($bytes = 6){
+	return base64_encode(openssl_random_pseudo_bytes($bytes));
+}
 
 /**
 *
