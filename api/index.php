@@ -11,16 +11,16 @@ session_start();
 @$logging_db = array(
 	"host" => "localhost:3306", 
 	"user" => "omnichanneldemo",
-	"pass" => "BChZtzqt8ANh6L7Z");
+	"pass" => "CXfmZqwVzDpfzTKJ");
 
 
 // mysql connection 
-/*
-$link = mysqli_connect($logging_db['host'], $logging_db['user'], $logging_db['pass']);
-if ($link) {
-   	die('no connection to configuration database');
+
+$db_link = mysqli_connect($logging_db['host'], $logging_db['user'], $logging_db['pass']);
+if (!$db_link) {
+   	die('no connection to configuration database: ' . mysqli_error($db_link));
 }
-*/
+
 
 
 // parse parameters
@@ -60,52 +60,50 @@ return;
 
 
 function process($token, $action, $param) {
-	if($action == 'reset') {
-		resetDemo();
-		
-		return true;
+	@header('Content-type: application/json');
+
+
+	if($action == 'resetDemo') {
+		resetDemo();;
 	}
 
-	else if($action == 'save') {
-		@header('Content-type: application/json');
-
-
-
-		@logUsage("DEMO_SAVE", $param, "", "");
-		return true;
+	else if($action == 'saveConfig') {
+		$token = saveConfig($token, $config);
 	}
 	else if($action == 'getOffers') {
-		@header('Content-type: application/json');
-
-
-		@logUsage("DEMO_SAVE", $param, "", "");
-		return true;
+		echo json_encode(getOffers($token, $customer, $list_size));
 	}
 	else if($action == 'respondToOffer') {
-		@header('Content-type: application/json');
 
-
-
-		@logUsage("DEMO_SAVE", $param, "", "");
-		return true;
 	}
 	else if($action == 'getHistory') {
-		@header('Content-type: application/json');
-
 		echo json_encode(getOffers($token, $customer, $list_size));
-
-		return true;
 	}
 
-
-
+	else if($action == 'getConfig') { // $action == 'getConfig'
+		echo json_encode(getConfig($token));	
+	} 
 	else {
-		@header('Content-type: application/json');
+		// display error.
+		$endpointVariables = array("Name" => "token", "Type" => "String", "Mandatory" => false);
+		$serviceEndpoints = array( 	
+			array("Name" => "Reset Demo", "Description" => "....", "Endpoint" => "/api?action=resetDemo&token=...", "Variables" => $endpointVariables),
+			array("Name" => "Get Configuration", "Description" => "....", "Endpoint" => "/api?action=getConfig[&token=...]"),
+			array("Name" => "Save Configuration", "Description" => "....", "Endpoint" => "/api?action=saveConfig[&token=...]"),
+			array("Name" => "Get Offers", "Description" => "....", "Endpoint" => "/api?action=getOffers&customer=...&maxOffer=...&token=..."),
+			array("Name" => "Respond to Offer", "Description" => "....", "Endpoint" => "/api?action=respondToOffer&offer=...&customer=...&token=..."),
+			array("Name" => "Get History", "Description" => "....", "Endpoint" => "/api?action=getHistory&customer=...&token=...")
+		);
+		$serviceEndpointDesc = array("Serice Endpoints" => $serviceEndpoints);
 
-		echo json_encode(getConfig($token));
-
-		return true;	
+		echo json_encode($serviceEndpointDesc);	
 	}
+
+	// log usage
+
+
+
+	return;
 }
 
 
@@ -134,6 +132,16 @@ function getConfig($token) {
 	return $config; //$config["userEmail"]
 }
 
+
+/**
+*
+*/
+function getConfigFromDatabase($token) {
+	global $db_link;
+
+
+	return null;
+}
 
 
 /**
