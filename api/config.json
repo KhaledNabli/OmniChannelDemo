@@ -78,24 +78,6 @@
 		            "text": "45 %"
 		        }
 		    ],
-		    "nextBestActions": [
-		        {
-		            "offerName": "Current Account",
-		            "offerDesc": "This is more detail for the Current Account offer",
-		            "offerImg": "images/offerCode_01.jpg",
-		            "offerScore": 78,
-		            "offerCode": "offerCode_01",
-		            "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email"
-		        },
-		        {
-		            "offerName": "Personal Loan",
-		            "offerDesc": "This is more detail for the Personal Loan offer",
-		            "offerImg": "images/offerCode_02.jpg",
-		            "offerScore": 66,
-		            "offerCode": "offerCode_02",
-		            "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email"
-		        }
-	    	],
 	    	"history": [
 		        {
 		            "historyDate": "2015-09-25",
@@ -111,5 +93,25 @@
 		        }
 		    ]
 		}
+	],
+	"offers": [
+		{
+            "offerCode": "offerCode_01",
+            "offerName": "Current Account",
+            "offerDesc": "This is more detail for the Current Account offer",
+            "offerImg": "images/offerCode_01.jpg",
+            "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	            
+            "customer1Score": 78,
+            "customer2Score": 33,
+	    },
+        {
+            "offerCode": "offerCode_02",
+            "offerName": "Personal Loan",
+            "offerDesc": "This is more detail for the Personal Loan offer",
+            "offerImg": "images/offerCode_02.jpg",		      
+            "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",
+            "customer1Score": 66,
+            "customer2Score": 78
+        }
 	]
 }
