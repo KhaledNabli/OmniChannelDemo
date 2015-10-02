@@ -54,6 +54,7 @@
 	"customers": [
 		{
 			"customerLogin": "1234",
+			"pictureUrl": "https://dl.dropboxusercontent.com/u/16250684/Mathias.jpg",
 			"firstName": "Mathias", 
 			"lastName": "Bouten",
 			"mobileNumber": "+491735755021",
