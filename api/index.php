@@ -76,7 +76,7 @@ function process($token, $action, $config) {
 	}
 
 	else if($action == 'saveConfig') {
-		echo json_encode(saveConfig($config));
+		echo json_encode(saveConfig(json_decode($config)));
 	}
 	else if($action == 'getOffers') {
 		echo json_encode(getOffers($token, $customer, $list_size));
@@ -138,7 +138,7 @@ function getConfig($token) {
 		$config = json_decode(file_get_contents($demoConfigFile), true);
 		if(!empty($token)) {
 			$config["error"] = "invalid token id. therefore providing default settings.";
-			$config["token"] = generateRandomToken();
+			//$config["token"] = generateRandomToken();
 		}
 	}
  
@@ -175,14 +175,16 @@ function getConfigFromDatabase($token) {
 *
 */
 function saveConfig($config) {
-	if($config == null || empty($config))
+
+	if($config == null || empty($config)) return array("error" => "no configuration to save");
 	global $mysql_link;
 
 
-	$token = $config["token"];
+	$token = $config->token;
 	$tokenValid = false;
-	$userEmail = $config["general"]["userEmail"];
+	$userEmail = $config->general->userEmail;
 	$userIP = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+	$config->message = "";
 
 
 	if(!empty($token)) {
@@ -191,18 +193,20 @@ function saveConfig($config) {
 
 		if($tokenValid) {
 			// update existing configuration
-			$updateConfigSql = "UPDATE `omnichanneldemo`.`demo_config` SET `config_json` = '".json_encode($config)."', `email_to` = '".$userEmail."', `modify_by` = '".$userIP."',WHERE `demo_config`.`token` = " . $token . ";";
+			$updateConfigSql = "UPDATE `omnichanneldemo`.`demo_config` SET `config_json` = '".json_encode($config)."', `email_to` = '".$userEmail."', `modify_by` = '".$userIP."' WHERE `demo_config`.`token` = '" . $token . "';";
 			$mysql_link->query($updateConfigSql);
+			$config->message = "Update existing config";
 		}
 	}
 
 	if(empty($token) || !$tokenValid) {
 		// save new configuration
 		$token = generateRandomToken();
-		$config["token"] = $token;
+		$config->token = $token;
 
 		$createConfigSql = "INSERT INTO `omnichanneldemo`.`demo_config` (`id`, `token`, `config_json`, `create_dttm`, `modify_dttm`, `modify_by`, `email_to`) VALUES (NULL, '".$token."', '".json_encode($config)."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."', '".$userEmail."');";
-		$createConfigResult = $mysql_link->query($createConfigResult);
+		$createConfigResult = $mysql_link->query($createConfigSql);
+		$config->message = "Insert new config";
 	}
 
 	return $config;
