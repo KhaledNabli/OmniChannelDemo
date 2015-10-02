@@ -19,10 +19,12 @@ SET time_zone = "+00:00";
 --
 -- Datenbank: `omnichanneldemo`
 --
-CREATE USER 'omnichanneldemo'@'%' IDENTIFIED BY '***';
-GRANT USAGE ON *.* TO 'omnichanneldemo'@'%' IDENTIFIED BY '***' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;
+CREATE USER 'omnichanneldemo'@'localhost' IDENTIFIED BY 'CXfmZqwVzDpfzTKJ';
+GRANT USAGE ON *.* TO 'omnichanneldemo'@'localhost' IDENTIFIED BY 'CXfmZqwVzDpfzTKJ' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;
 CREATE DATABASE IF NOT EXISTS `omnichanneldemo`;
-GRANT ALL PRIVILEGES ON `omnichanneldemo`.* TO 'omnichanneldemo'@'%';
+GRANT ALL PRIVILEGES ON `omnichanneldemo`.* TO 'omnichanneldemo'@'localhost';
+
+USE `omnichanneldemo`;
 -- --------------------------------------------------------
 
 --
