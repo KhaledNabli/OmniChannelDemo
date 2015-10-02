@@ -7,7 +7,9 @@
 		"sendSms": false
 	},
 	"advisorApp": {
-		"sendSms": false
+		"titleAdvisor": "Advisor Frontend",
+		"submitBtnAdvisor": "Get Customer Profile",
+		"sendSms": "false"
 	},
 	"web": {
 		"startPageUrl": "index.html",
@@ -18,7 +20,9 @@
 		"loginUserInputSelector": "",
 		"loginFormSelector": "",
 		"loginBtnInputSelector": "",
-		"nbaPlaceHolderSelectors": ["css path of placeholder for offer 1","css path of placeholder for offer 2","css path of placeholder for offer 3"],
+		"nbaPlaceHolderSelector1": "css path of placeholder for offer 1",
+		"nbaPlaceHolderSelector2": "css path of placeholder for offer 2",
+		"nbaPlaceHolderSelector3": "css path of placeholder for offer 3",
 		"nbaHtmlTemplate": ""
 	},
 	"mobileApp": {
@@ -35,22 +39,20 @@
 		"title_geo_offer_panel": "Geolocation Angebote",
 		"homescreen_image": "./resources/images/homescreen.jpg"
 	},
-	"labels": [
-		{"acceptBtnMobile": "Accept"},
-		{"rejectBtnMobile": "Reject"},
-		{"detailsBtnWeb": "More Details..."},
-		{"acceptBtnWeb": "Accept"},
-		{"rejectBtnWeb": "Reject"},
-		{"titleAdvisor": "Advisor Frontend"},
-		{"submitBtnAdvisor": "Get Customer Profile"},
-		{"maybeBtnAdvisor": "More Details..."},
-		{"acceptBtnAdvisor": "Accept"},
-		{"rejectBtnAdvisor": "Reject"},
-		{"analyticsBar1Label": "Lifetime Value"},
-		{"analyticsBar2Label": "Satisfaction"},
-		{"analyticsBar3Label": "Risk"},
-		{"analyticsBar4Label": "Fraud"}
-	],
+	"labels": {
+		"acceptBtnMobile": "Accept",
+		"rejectBtnMobile": "Reject",
+		"detailsBtnWeb": "More Details...",
+		"acceptBtnWeb": "Accept",
+		"rejectBtnWeb": "Reject",
+		"maybeBtnAdvisor": "More Details...",
+		"acceptBtnAdvisor": "Accept",
+		"rejectBtnAdvisor": "Reject",
+		"analyticsBar1Label": "Lifetime Value",
+		"analyticsBar2Label": "Satisfaction",
+		"analyticsBar3Label": "Risk",
+		"analyticsBar4Label": "Fraud"
+	},
 	"customers": [
 		{
 			"customerLogin": "1234",
@@ -65,7 +67,7 @@
 			"analyticsBar2Value": "0.44",
 			"analyticsBar3Value": "0.44",
 			"analyticsBar4Value": "0.44",
-	    	"history": [
+	    	"actionHistory": [
 		        {
 		            "historyDate": "2015-09-25",
 		            "historyAction": "Current Account",
@@ -93,7 +95,7 @@
 			"analyticsBar2Value": "0.23",
 			"analyticsBar3Value": "0.45",
 			"analyticsBar4Value": "0.99",
-	    	"history": [
+	    	"actionHistory": [
 		        {
 		            "historyDate": "2015-09-25",
 		            "historyAction": "Current Account",
