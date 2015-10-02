@@ -175,22 +175,34 @@ function getConfigFromDatabase($token) {
 *
 */
 function saveConfig($config) {
-	$token = $config["token"];
-	$userEmail = $config["general"]["userEmail"];
-	$userIP = gethostbyaddr($_SERVER['REMOTE_ADDR']);;
+	if($config == null || empty($config))
+	global $mysql_link;
 
-	if(empty($token)) {
+
+	$token = $config["token"];
+	$tokenValid = false;
+	$userEmail = $config["general"]["userEmail"];
+	$userIP = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+
+
+	if(!empty($token)) {
+		// check if token is valid.
+		if(getConfigFromDatabase($token) != null) $tokenValid = true;
+
+		if($tokenValid) {
+			// update existing configuration
+			$updateConfigSql = "UPDATE `omnichanneldemo`.`demo_config` SET `config_json` = '".json_encode($config)."', `email_to` = '".$userEmail."', `modify_by` = '".$userIP."',WHERE `demo_config`.`token` = " . $token . ";";
+			$mysql_link->query($updateConfigSql);
+		}
+	}
+
+	if(empty($token) || !$tokenValid) {
 		// save new configuration
 		$token = generateRandomToken();
 		$config["token"] = $token;
 
-
 		$createConfigSql = "INSERT INTO `omnichanneldemo`.`demo_config` (`id`, `token`, `config_json`, `create_dttm`, `modify_dttm`, `modify_by`, `email_to`) VALUES (NULL, '".$token."', '".json_encode($config)."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."', '".$userEmail."');";
-
-
-	} else {
-		// update existing configuration
-		$updateConfigSql = "UPDATE `omnichanneldemo`.`demo_config` SET `config_json` = '".json_encode($config)."', `email_to` = '".$userEmail."', `modify_by` = '".$userIP."',WHERE `demo_config`.`id` = 2;";
+		$createConfigResult = $mysql_link->query($createConfigResult);
 	}
 
 	return $config;
