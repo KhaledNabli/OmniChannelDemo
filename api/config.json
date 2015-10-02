@@ -117,7 +117,8 @@
             "offerName": "Current Account",
             "offerDesc": "This is more detail for the Current Account offer",
             "offerImg": "images/offerCode_01.jpg",
-            "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	            
+            "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	 
+            "maxContacts": 2,           
             "customer1Score": 78,
             "customer2Score": 33
 	    },
@@ -126,7 +127,8 @@
             "offerName": "Personal Loan",
             "offerDesc": "This is more detail for the Personal Loan offer",
             "offerImg": "images/offerCode_02.jpg",		      
-            "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",
+            "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	 
+            "maxContacts": 3,    
             "customer1Score": 66,
             "customer2Score": 78
         }

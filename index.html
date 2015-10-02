@@ -62,7 +62,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Load</button>
+                <button type="button" class="btn btn-primary" onclick="onBtnLoad(this);">Load</button>
               </div>
             </div>
           </div>
@@ -103,7 +103,7 @@
                                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#popupLoadToken">
                                     Load Token
                                 </button>
-                                <a id="loadTokenButton" href="#" class="btn btn-default" onclick="reset();"> Reset </a>
+                                <a id="loadTokenButton" href="#" class="btn btn-default" onclick="resetConfiguration();"> Reset </a>
                             </div>
                         </div>
 
@@ -347,6 +347,7 @@
                                         <th class="text-center" width="20%">Description</th>
                                         <th class="text-center" width="15%">Image</th>
                                         <th class="text-center" width="20%">SMS</th>
+                                        <th class="text-center" width="20%">Max Contacts</th>
                                         <th class="text-center" width="6%">Score Cust1</th>                                        
                                         <th class="text-center" width="6%">Score Cust2</th>
                                         <th><a id="add_row" onclick="addNbaRecord('','','');" class="btn pull-right btn-primary btn-block">Add</a></th>

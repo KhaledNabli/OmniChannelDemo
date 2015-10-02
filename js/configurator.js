@@ -11,15 +11,25 @@ function startConfigurator() {
 		token = "";
 	}
 
+	loadConfiguration(token);
+
+	console.log("end startConfigurator");
+}
+
+function loadConfiguration(token) {
 	callApi({action: 'getConfig', token: token}).done(function (jsonData) {
     	console.log("Loading Data done." + JSON.stringify(jsonData));
     	configScenario = jsonData;
     	initConfigurator();
     });
-
-	console.log("end startConfigurator");
 }
 
+
+function onBtnLoad(element) {
+	var token = $('#tokenLoad').val();
+	loadConfiguration(token);
+	$('#popupLoadToken').modal('hide')
+}
 /**
 *	Init configuration ui
 *
@@ -111,6 +121,7 @@ function initConfigurator() {
         	configScenario.nba[i]["offerDesc"],
         	configScenario.nba[i]["offerImg"],
         	configScenario.nba[i]["offerSms"],
+        	configScenario.nba[i]["maxContacts"],
         	configScenario.nba[i]["customer1Score"], 
         	configScenario.nba[i]["customer2Score"] );
     	}
@@ -126,17 +137,73 @@ function callApi(parameters) {
     } );
 }
 
+function resetConfiguration() {
+	window.localStorage.omnichanneltoken = "";
+	loadConfiguration("");
+}
+
 
 function saveConfiguration() {
 	console.log("Saving Config");
 
 	/*** for-loop to get all fromFields from configurator.html ***/
-	/*for (var property in configScenario.formFields) {
-        if (configScenario.formFields.hasOwnProperty(property)) {
-            if (property && $('#' + property + "Input").val())
-               configScenario.formFields[property] = $('#' + property + "Input").val();
+	for (var property in configScenario.general) {
+        if (configScenario.general.hasOwnProperty(property)) {
+            if (property && $('#' + property).val())
+               configScenario.general[property] = $('#' + property).val();
         }
-    }*/
+    }
+
+    for (var property in configScenario.customers[0]) {
+		if (configScenario.customers[0].hasOwnProperty(property)) {
+            if (property && $('#' + property).val())
+                configScenario.customers[0][property] = $('#c1' + property).val();
+        }       
+    }
+
+    for (var property in configScenario.customers[1]) {
+		if (configScenario.customers[1].hasOwnProperty(property)) {
+            if (property && $('#' + property).val())
+                configScenario.customers[1][property] = $('#c2' + property).val();
+        }       
+    }
+
+    for (var property in configScenario.labels) {
+		if (configScenario.labels.hasOwnProperty(property)) {
+            if (property && $('#' + property).val())
+                configScenario.labels[property] = $('#' + property).val();
+        }       
+    }
+
+    for (var property in configScenario.mobileApp) {
+		if (configScenario.mobileApp.hasOwnProperty(property)) {
+            if (property && $('#' + property).val())
+                configScenario.mobileApp[property] = $('#' + property).val();
+        }       
+    }
+
+    for (var property in configScenario.advisorApp) {
+		if (configScenario.advisorApp.hasOwnProperty(property)) {
+            if (property && $('#' + property).val())
+                configScenario.advisorApp[property] = $('#' + property).val();
+        }       
+    }
+
+    for (var property in configScenario.web) {
+		if (configScenario.web.hasOwnProperty(property)) {
+            if (property && $('#' + property).val())
+                configScenario.web[property] = $('#' + property).val();
+        }       
+    }
+
+    /* save grids */
+    configScenario.nba 				 			= getNbaRecords();
+	configScenario.customers[0].actionHistory   = getHistoryRecords('c1');
+	configScenario.customers[1].actionHistory 	= getHistoryRecords('c2');
+
+
+    //console.log (" save config: " + JSON.stringify(configScenario));
+
 
     callApi({action: 'saveConfig', config: JSON.stringify(configScenario)}).done(function (jsonData) {
     	console.log("Savin Data done." + JSON.stringify(jsonData));
@@ -156,13 +223,14 @@ function clearNbaRecords() {
 	$('#configuratorNbaTbody').html("");
 }
 
-function addNbaRecord(code,name,desc,img,sms,c1score,c2score) {
-	console.log("offerSms: " + sms);
+function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score) {
+	console.log("maxContacts: " + maxContacts);
 	if (!code) code = "";
 	if (!name) name = "";
 	if (!desc) desc = "";
 	if (!img) img = "";
 	if (!sms) sms = "";
+	if (!maxContacts) maxContacts = "";
 	if (!c1score) c1score = "";
 	if (!c2score) c2score = "";
 
@@ -172,8 +240,9 @@ function addNbaRecord(code,name,desc,img,sms,c1score,c2score) {
       	+"<td><textarea name='offerDesc' rows=\"3\" type='text' placeholder='Description' class='form-control input-md'>"+desc+"</textarea></td>"
       	+"<td><textarea name='offerImg' rows=\"3\" type='text' placeholder='Image' class='form-control input-md'>"+img+"</textarea></td>"
       	+"<td><textarea name='offerSms' rows=\"3\" type='text' placeholder='SMS' class='form-control input-md'>"+sms+"</textarea></td>"
-      	+"<td><div style='padding: 7px 0px'><input name='c1score' type='text' placeholder='ID' size=\"4\" value='"+c1score+"' class='form-control input-md'/></div></td>"
-      	+"<td><div style='padding: 7px 0px'><input name='c2score' type='text' placeholder='ID' size=\"4\" value='"+c2score+"' class='form-control input-md'/></div></td>"
+      	+"<td><div style='padding: 7px 0px'><input name='maxContacts' type='text' placeholder='' size=\"4\" value='"+maxContacts+"' class='form-control input-md'/></div></td>"
+      	+"<td><div style='padding: 7px 0px'><input name='c1score' type='text' placeholder='' size=\"4\" value='"+c1score+"' class='form-control input-md'/></div></td>"
+      	+"<td><div style='padding: 7px 0px'><input name='c2score' type='text' placeholder='' size=\"4\" value='"+c2score+"' class='form-control input-md'/></div></td>"
       	+"<td><a onclick='dropRecord(this);' class='pull-right btn btn-danger btn-block'>Delete</a></td></tr>"		
 	); 
     return false; 
@@ -183,11 +252,15 @@ function getNbaRecords() {
 	var aNbaRecords = [];
 
 	$('#configuratorNbaTbody tr').each(function() {
-		var id 		 	= $(this).find("input[name='nbaID']").val();
-		var desc 		= $(this).find("textarea[name='nbaName']").val();
-		var detailImg 	= $(this).find("textarea[name='nbaImage']").val();
-		var propensity 	= $(this).find("input[name='nbaPropensity']").val();		
-		aNbaRecords.push({id: id, desc: desc, detailImg: detailImg, propensity: propensity});
+		var code 		= $(this).find("input[name='offerCode']").val();
+		var name 		= $(this).find("textarea[name='offerName']").val();		
+		var desc 		= $(this).find("textarea[name='offerDesc']").val();
+		var img 		= $(this).find("textarea[name='offerImg']").val();
+		var sms 		= $(this).find("textarea[name='offerSms']").val();
+		var maxContacts = $(this).find("textarea[name='maxContacts']").val();
+		var c1score 	= $(this).find("input[name='c1score']").val();
+		var c2score 	= $(this).find("input[name='c2score']").val();			
+		aNbaRecords.push({offerCode: code, offerName: name, offerImg: img, offerSms: sms, maxContacts: maxContacts,c1score: c1score, c2score: c2score});
 	});
 	return aNbaRecords;
 }
@@ -225,11 +298,11 @@ function getHistoryRecords(prefix) {
 	var aHistoryRecords = [];
 
 	$('#'+prefix+'configuratorActionHistoryTbody tr').each(function() {
-		var id 		 	 = $(this).find("input[name='historyID']").val();
-		var desc 		 = $(this).find("textarea[name='historyDescription']").val();
-		var responsedate = $(this).find("input[name='historyDate']").val();
-		var response 	 = $(this).find("textarea[name='historyResponse']").val();
-		aHistoryRecords.push({id: id, desc: desc, responseDate: responsedate, response: response});
+		var action 		= $(this).find("textarea[name='historyAction']").val();
+		var date 		= $(this).find("input[name='historyDate']").val();
+		var response 	= $(this).find("textarea[name='historyResponse']").val();
+		var channel 	= $(this).find("textarea[name='historyChannel']").val();
+		aHistoryRecords.push({historyAction: action, historyDate: date, historyResponse: response, historyChannel: channel});
 	});
 	return aHistoryRecords;
 }
