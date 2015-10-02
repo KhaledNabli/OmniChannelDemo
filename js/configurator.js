@@ -1,22 +1,21 @@
 
 var configScenario = "";
-var dataProviderUrl = "api/";
 
 function startConfigurator() {
 	console.log("startConfigurator");
-	
-	$.ajax({
-		url: dataProviderUrl,
-		data: { action: 'getConfig' }, 
-		dataType: 'json',
-  		success: function (jsonData) {
-  			//var myObj = {data};
-  			configScenario = jsonData;
-  			//console.log(myObj);
-  			//console.log("returned jsonData: \n" + JSON.stringify(jsonData));
-  			initConfigurator();
-  		}
-	});
+	var token = "";
+
+	if(window.localStorage.omnichanneltoken) {
+		token = window.localStorage.omnichanneltoken;
+	} else {
+		token = "";
+	}
+
+	callApi({action: 'getConfig', token: token}).done(function (jsonData) {
+    	console.log("Loading Data done." + JSON.stringify(jsonData));
+    	configScenario = jsonData;
+    	initConfigurator();
+    });
 
 	console.log("end startConfigurator");
 }
@@ -121,7 +120,7 @@ function initConfigurator() {
 
 
 function callApi(parameters) {
-	return $.ajax(dataProviderUrl, {
+	return $.ajax("api/", {
         type: 'POST',
         data: parameters
     } );
@@ -130,6 +129,7 @@ function callApi(parameters) {
 
 function saveConfiguration() {
 	console.log("Saving Config");
+
 	/*** for-loop to get all fromFields from configurator.html ***/
 	/*for (var property in configScenario.formFields) {
         if (configScenario.formFields.hasOwnProperty(property)) {
@@ -138,10 +138,12 @@ function saveConfiguration() {
         }
     }*/
 
-    callApi({action: 'saveConfig', config: JSON.stringify(configScenario)}).done(function (data) {
-    	console.log("Savin Data done." + JSON.stringify(data));
-    	configScenario = data;
+    callApi({action: 'saveConfig', config: JSON.stringify(configScenario)}).done(function (jsonData) {
+    	console.log("Savin Data done." + JSON.stringify(jsonData));
+    	configScenario = jsonData;
     	$('#token').val(configScenario.token);
+    	/* save generated token from server into local storage of browser */
+    	window.localStorage.omnichanneltoken = configScenario.token;
     });
 	
     return false;
