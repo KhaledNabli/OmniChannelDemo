@@ -1,12 +1,12 @@
 
 var configScenario = "";
+var dataProviderUrl = "api/";
 
 function startConfigurator() {
 	console.log("startConfigurator");
-	var dataProviderUrl = "api/config.json";
-
+	
 	$.ajax({
-		url: "api",
+		url: dataProviderUrl,
 		data: { action: 'getConfig' }, 
 		dataType: 'json',
   		success: function (jsonData) {
@@ -20,8 +20,6 @@ function startConfigurator() {
 
 	console.log("end startConfigurator");
 }
-
-
 
 /**
 *	Init configuration ui
@@ -118,6 +116,35 @@ function initConfigurator() {
         	configScenario.nba[i]["customer2Score"] );
     	}
     }
+}
+
+
+
+function callApi(parameters) {
+	return $.ajax(dataProviderUrl, {
+        type: 'POST',
+        data: parameters
+    } );
+}
+
+
+function saveConfiguration() {
+	console.log("Saving Config");
+	/*** for-loop to get all fromFields from configurator.html ***/
+	/*for (var property in configScenario.formFields) {
+        if (configScenario.formFields.hasOwnProperty(property)) {
+            if (property && $('#' + property + "Input").val())
+               configScenario.formFields[property] = $('#' + property + "Input").val();
+        }
+    }*/
+
+    callApi({action: 'saveConfig', config: JSON.stringify(configScenario)}).done(function (data) {
+    	console.log("Savin Data done." + JSON.stringify(data));
+    	configScenario = data;
+    	$('#token').val(configScenario.token);
+    });
+	
+    return false;
 }
 
 
