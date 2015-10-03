@@ -1,10 +1,11 @@
 {
 	"token":"",	
 	"general": {
-		"raceServerName": "gersasci61.ger.sas.com",
+		"raceServerName": "racesx00000.demo.sas.com",
 		"customerName": "Commerzbank",
 		"userEmail": "mathias.bouten@sas.com",
-		"sendSms": false
+		"rtdmBackend": false,
+		"sendSms": true
 	},
 	"advisorApp": {
 		"titleAdvisor": "Advisor Frontend",
@@ -12,17 +13,17 @@
 		"sendSms": "false"
 	},
 	"web": {
-		"startPageUrl": "index.html",
-		"loginPageUrl": "login.html",
-		"landingPageUrl": "landingpage.html",
+		"startPageUrl": "aW5kZXguaHRtbA==",
+		"loginPageUrl": "bG9naW4uaHRtbA==",
+		"landingPageUrl": "bGFuZGluZ3BhZ2UuaHRtbA==",
 		"loginLinkSelector": "",
 		"loginLinkHtml": "",
 		"loginUserInputSelector": "",
 		"loginFormSelector": "",
 		"loginBtnInputSelector": "",
-		"nbaPlaceHolderSelector1": "css path of placeholder for offer 1",
-		"nbaPlaceHolderSelector2": "css path of placeholder for offer 2",
-		"nbaPlaceHolderSelector3": "css path of placeholder for offer 3",
+		"nbaPlaceHolderSelector1": "",
+		"nbaPlaceHolderSelector2": "",
+		"nbaPlaceHolderSelector3": "",
 		"nbaHtmlTemplate": ""
 	},
 	"mobileApp": {

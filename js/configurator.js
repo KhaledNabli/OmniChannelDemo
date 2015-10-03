@@ -18,7 +18,7 @@ function startConfigurator() {
 
 function loadConfiguration(token) {
 	callApi({action: 'getConfig', token: token}).done(function (jsonData) {
-    	console.log("Loading Data done." + JSON.stringify(jsonData));
+    	//console.log("Loading Data done." + JSON.stringify(jsonData));
     	configScenario = jsonData;
     	initConfigurator();
     });
@@ -38,7 +38,24 @@ function initConfigurator() {
 
 	console.log("configScenario: " + configScenario);
 
-	$('#token').val(configScenario.token);
+	$("#sendSms").prop("checked", checkIfTrue(configScenario.general.sendSms));
+	$("#rtdmBackend").prop("checked", checkIfTrue(configScenario.general.rtdmBackend));
+
+	//$('#token').val(configScenario.token);
+	if (!configScenario.token) {
+		$("#tokenDiv").hide();
+	} else {
+		$('#token').html(configScenario.token);
+		$("#tokenDiv").show();		
+	}
+
+	if (checkIfTrue(configScenario.general.rtdmBackend)) {
+		console.log("true: " + configScenario.general.rtdmBackend);
+	    $("#raceServer_form_group").show();
+	} else {
+		console.log("false: " + configScenario.general.rtdmBackend);
+		$("#raceServer_form_group").hide();
+	}
 
 	for (var property in configScenario.general) {
 		if (configScenario.general.hasOwnProperty(property)) {
@@ -85,9 +102,10 @@ function initConfigurator() {
     for (var property in configScenario.web) {
 		if (configScenario.web.hasOwnProperty(property)) {
             if (property)
-                $('#' + property).val(configScenario.web[property]);
+                $('#' + property).val(utf8_decode(configScenario.web[property]));
         }       
     }
+    //$('#nbaHtmlTemplate').val(utf8_decode(configScenario.web.nbaHtmlTemplate));
 
 
 	clearHistoryRecords('c1');
@@ -126,7 +144,7 @@ function initConfigurator() {
         	configScenario.nba[i]["customer2Score"] );
     	}
     }
-}
+} /* end initConfigurator() */
 
 
 
@@ -140,6 +158,7 @@ function callApi(parameters) {
 function resetConfiguration() {
 	window.localStorage.omnichanneltoken = "";
 	loadConfiguration("");
+	$("#tokenDiv").hide();
 }
 
 
@@ -192,29 +211,41 @@ function saveConfiguration() {
     for (var property in configScenario.web) {
 		if (configScenario.web.hasOwnProperty(property)) {
             if (property && $('#' + property).val())
-                configScenario.web[property] = $('#' + property).val();
+                configScenario.web[property] = utf8_encode($('#' + property).val());
         }       
     }
+
+    //configScenario.web.nbaHtmlTemplate = utf8_encode($('#nbaHtmlTemplate').val());
 
     /* save grids */
     configScenario.nba 				 			= getNbaRecords();
 	configScenario.customers[0].actionHistory   = getHistoryRecords('c1');
 	configScenario.customers[1].actionHistory 	= getHistoryRecords('c2');
-
+	configScenario.general.sendSms 			    = getCheckbox('sendSms');
+	configScenario.general.rtdmBackend			= getCheckbox('rtdmBackend');
 
     //console.log (" save config: " + JSON.stringify(configScenario));
 
 
     callApi({action: 'saveConfig', config: JSON.stringify(configScenario)}).done(function (jsonData) {
-    	console.log("Savin Data done." + JSON.stringify(jsonData));
     	configScenario = jsonData;
-    	$('#token').val(configScenario.token);
+    	//$('#token').val(configScenario.token);
+    	//$('#token').html(configScenario.token);
     	/* save generated token from server into local storage of browser */
     	window.localStorage.omnichanneltoken = configScenario.token;
+    	$("#tokenDiv").show();
+
+
+    	if (!configScenario.token) {
+			//$("#tokenDiv").hide();
+		} else {
+			$('#token').html(configScenario.token);
+			//$("#tokenDiv").show();
+		}
     });
 	
     return false;
-}
+} /* end saveConfiguration */
 
 
 /** Next Best Action Functions **/
@@ -241,8 +272,8 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score) {
       	+"<td><textarea name='offerImg' rows=\"3\" type='text' placeholder='Image' class='form-control input-md'>"+img+"</textarea></td>"
       	+"<td><textarea name='offerSms' rows=\"3\" type='text' placeholder='SMS' class='form-control input-md'>"+sms+"</textarea></td>"
       	+"<td><div style='padding: 7px 0px'><input name='maxContacts' type='text' placeholder='' size=\"4\" value='"+maxContacts+"' class='form-control input-md'/></div></td>"
-      	+"<td><div style='padding: 7px 0px'><input name='c1score' type='text' placeholder='' size=\"4\" value='"+c1score+"' class='form-control input-md'/></div></td>"
-      	+"<td><div style='padding: 7px 0px'><input name='c2score' type='text' placeholder='' size=\"4\" value='"+c2score+"' class='form-control input-md'/></div></td>"
+      	+"<td><div style='padding: 7px 0px'><input name='customer1Score' type='text' placeholder='' size=\"4\" value='"+c1score+"' class='form-control input-md'/></div></td>"
+      	+"<td><div style='padding: 7px 0px'><input name='customer2Score' type='text' placeholder='' size=\"4\" value='"+c2score+"' class='form-control input-md'/></div></td>"
       	+"<td><a onclick='dropRecord(this);' class='pull-right btn btn-danger btn-block'>Delete</a></td></tr>"		
 	); 
     return false; 
@@ -257,10 +288,10 @@ function getNbaRecords() {
 		var desc 		= $(this).find("textarea[name='offerDesc']").val();
 		var img 		= $(this).find("textarea[name='offerImg']").val();
 		var sms 		= $(this).find("textarea[name='offerSms']").val();
-		var maxContacts = $(this).find("textarea[name='maxContacts']").val();
-		var c1score 	= $(this).find("input[name='c1score']").val();
-		var c2score 	= $(this).find("input[name='c2score']").val();			
-		aNbaRecords.push({offerCode: code, offerName: name, offerImg: img, offerSms: sms, maxContacts: maxContacts,c1score: c1score, c2score: c2score});
+		var contacts 	= $(this).find("input[name='maxContacts']").val();
+		var c1score 	= $(this).find("input[name='customer1Score']").val();
+		var c2score 	= $(this).find("input[name='customer2Score']").val();			
+		aNbaRecords.push({offerCode: code, offerName: name, offerDesc: desc, offerImg: img, offerSms: sms, maxContacts: contacts, customer1Score: c1score, customer2Score: c2score});
 	});
 	return aNbaRecords;
 }
@@ -284,11 +315,11 @@ function addHistoryRecord(prefix,date,action,channel,response) {
 	if (!channel) channel = "";
 	if (!response) response = "";
 	
-	$('#'+prefix+'configuratorActionHistoryTbody').append(
-		"<tr><td><textarea name='historyAction' placeholder='Description' class='form-control input-md'>"+action+"</textarea></td>" 
-      	+"<td><div style='padding: 7px 0px'><input name='historyDate' type='date' size=\"4\" placeholder='Date' value='"+date+"' class='form-control input-md'></div></td>"
-      	+"<td><textarea name='historyResponse' type='text' placeholder='Action' class='form-control input-md'>"+response+"</textarea></td>"
+	$('#'+prefix+'configuratorActionHistoryTbody').append("<tr>"
+		+"<td><div style='padding: 7px 0px'><input name='historyDate' type='date' size=\"4\" placeholder='Date' value='"+date+"' class='form-control input-md'></div></td>"
+      	+"<td><textarea name='historyAction' placeholder='Description' class='form-control input-md'>"+action+"</textarea></td>" 
       	+"<td><textarea name='historyChannel' type='text' placeholder='Action' class='form-control input-md'>"+channel+"</textarea></td>"
+      	+"<td><textarea name='historyResponse' type='text' placeholder='Action' class='form-control input-md'>"+response+"</textarea></td>"
       	+"<td><a onclick='dropRecord(this);' class='pull-right btn btn-danger btn-block'>Delete</a></td></tr>"		
 	); 
     return false; 
@@ -305,4 +336,41 @@ function getHistoryRecords(prefix) {
 		aHistoryRecords.push({historyAction: action, historyDate: date, historyResponse: response, historyChannel: channel});
 	});
 	return aHistoryRecords;
+}
+
+function rtdmCheckboxOnChange(element){
+	if (element.checked) {
+		$("#raceServer_form_group").show();
+	} else {
+		$("#raceServer_form_group").hide();
+	}
+}
+
+function smsCheckboxOnChange(element){
+	if (element.checked) {	
+	} else {
+	}
+}
+
+function getCheckbox(elementId) {
+	if ($("#"+elementId).prop("checked")) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function checkIfTrue(value) {
+	if ( value == true || value == "true" ) {
+		return true;
+	} 
+	return false;
+}
+
+function utf8_encode(str) {
+    return window.btoa(unescape(encodeURIComponent(str)));
+}
+
+function utf8_decode(str) {
+    return decodeURIComponent(escape(window.atob(str)));
 }
