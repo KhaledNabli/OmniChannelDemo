@@ -36,15 +36,15 @@ if($_SERVER['REQUEST_METHOD'] == "GET") {
 	@$action = $_GET['action'];
 	@$token = $_GET['token'];
 	@$config = $_GET['config'];
+	return;
 } else {
 	@$action = $_POST['action'];
 	@$token = $_POST['token'];
 	@$config = $_POST['config'];
+	process($token, $action, $config);
+	return;
 }
 
-
-process($token, $action, $config);
-return;
 
 
 
@@ -129,16 +129,17 @@ function getConfig($token) {
 	$config = null;
 
 	if(!empty($token)) {
-		$config = json_decode(getConfigFromDatabase($token));
+		$config = getConfigFromDatabase($token);
 
 	}
 
 	if(empty($config) || $config == null){
 		// load from default config.json
-		$config = json_decode(file_get_contents($demoConfigFile), true);
+		$config = json_decode(file_get_contents($demoConfigFile));
+
 		if(!empty($token)) {
-			$config["error"] = "invalid token id. therefore providing default settings.";
-			//$config["token"] = generateRandomToken();
+			$config->token = "";
+			$config->error = "Token invalid: providing default config settings.";
 		}
 	}
  
@@ -163,7 +164,7 @@ function getConfigFromDatabase($token) {
 	}
 	else {
 		$configItem = $configQueryResult->fetch_assoc();;
-		$config = $configItem["config_json"];
+		$config = json_decode($configItem["config_json"]);
 	}
 
 
@@ -209,8 +210,13 @@ function saveConfig($config) {
 		$config->message = "Insert new config";
 	}
 
+	resetDemo($token);
 	return $config;
 }
+
+
+
+
 
 /**
 *
@@ -235,13 +241,43 @@ function getOffers($token, $customer, $list_size){
 *
 */
 function respondToOffer($token, $customer, $offerCd, $responseCd, $channelCd, $details) {
-	// check if offer is valid
+	global $mysql_link;
 
-	// mark response in data base
+
+	// check if offer is valid
+	$config = getConfig($token);
+	if($config == null) return;
+
+	$offerIndex = $getOfferIndexByCode($config->nba, $offerCd);
+	if($offerIndex == -1) return;
+
+	$offer = $config->nba[$offerIndex];
+
 
 	// increase / decrease scores
+	if($responseCd == "show interest") {
+		$responded = 0;
+		$changeScore = $offer->changeScoreByInterest;
+	} else {
+		$responded = 1;
+		$changeScore = 0;
+	}
 
-	// 
+	// update offer table
+	$updateOfferSql = "UPDATE `customer_offers` SET `responded` = '".$responded."', `score` = (`score` + ".$changeScore.") WHERE `token` = '".$token."' and `customer` = '".$customerId."' and `offer` = '".$offerCd."';";
+	$mysql_link->query($updateOfferSql);
+
+	insertHistoryEntry($token, $customer, $offerCd, "Response", $responseCd, $details, datetime());
+}
+
+
+/**
+*
+*/
+function insertHistoryEntry($token, $customer, $offer, $channel, $entrytype, $responsetype, $responsedetails, $datetime) {
+	global $mysql_link;
+	$insertHistorySql = "INSERT INTO `omnichanneldemo`.`contact_response_history` (`token`, `customer`, `offer`, `channel`, `entrytype`, `responsetype`, `responsedetails`, `datetime`) VALUES ('".$token."', '".$customer."', '".$offer."', '".$channel."', '".$entrytype."', '".$responsetype."', '".$responsedetails."', '".$datetime."')";
+	return $mysql_link->query($insertHistorySql);	
 }
 
 
@@ -258,34 +294,102 @@ function getCustomerHistory($token, $customer) {
 /**
 *
 */
-function resetDemo() {
-	return $token;
+function resetDemo($token) {
+	global $mysql_link;
+	//check if token is valid
+	$config = getConfigFromDatabase($token);
+	if($config == null) return;
+
+	// delete old entries form contact and response history
+	$mysql_link->query("DELETE FROM `contact_response_history` WHERE `token` = '". $token ."'");
+
+	// delete old offers
+	$mysql_link->query("DELETE FROM `customer_offers` WHERE `token` = '". $token ."'");
+
+	// reset offers from config-
+	$customer1Id = $config->customers[0]->customerLogin;
+	$customer2Id = $config->customers[1]->customerLogin;
+	$offerListSize = sizeof($config->nba);
+	for($offerIndex = 0; $offerIndex < $offerListSize; $offerIndex++) {
+		$offerCode = $config->nba[$offerIndex]->offerCode;
+		$customer1Score = $config->nba[$offerIndex]->customer1Score;
+		$customer2Score = $config->nba[$offerIndex]->customer2Score;
+		$displayCount = $config->nba[$offerIndex]->maxContacts;
+
+		// insert offer twice - for each customer
+		$insertOfferSql = "INSERT INTO `omnichanneldemo`.`customer_offers` (`token`, `customer`, `offer`, `score`, `display_limit`, `responded`) VALUES ('".$token."', '".$customer1Id."', '".$offerCode."', '".$customer1Score."', '".$displayCount."', '0'), ('".$token."', '".$customer2Id."', '".$offerCode."', '".$customer2Score."', '".$displayCount."', '0');";
+		$mysql_link->query($insertOfferSql);
+	}
+
+
+
+	// reset contact history from config
+	$customerListSize = sizeof($config->customers);
+	for($customerIndex = 0; $customerIndex < $customerListSize; $customerIndex++) {
+		$customer = $config->customers[$customerIndex];
+		$historyListSize = sizeof($customer->actionHistory);
+		for($historyIndex = 0; $historyIndex < $historyListSize; $historyIndex++) {
+			$historyEntry = $customer->actionHistory[$historyIndex];
+			insertHistoryEntry($token, $customer->customerLogin, $historyEntry->historyAction, $historyEntry->historyChannel, "History", $historyEntry->historyResponse, "", $historyEntry->historyDate);
+		}
+	}
+
+	return;
+}
+
+/**
+*
+*/
+function getCustomerIndexByLogin($customerList, $customerLogin) {
+	$index = -1;
+
+	$customerListSize = sizeof($customerList);
+	for($customerIndex = 0; $customerIndex < $customerListSize; $customerIndex++) {
+		if($customerList[$customerIndex]->customerLogin == $customerLogin) {
+			$index = $customerIndex;
+			break;
+		}
+	}
+
+	return $index;
+}
+
+/**
+*
+*/
+function getOfferIndexByCode($offerList, $offerCode) {
+	$index = -1;
+
+	$offerListSize = sizeof($offerList);
+	for($offerIndex = 0; $offerIndex < $offerListSize; $offerIndex++) {
+		if($offerList[$offerIndex]->offerCode == $offerCode) {
+			$index = $offerIndex;
+			break;
+		}
+	}
+
+	return $index;
 }
 
 
-function logUsage($eventType, $demoScenario, $detail1, $detail2) {
+
+
+
+
+function logUsage($eventType, $userPayload, $detail1, $detail2) {
 	global $enable_logging;
-	global $logging_db;
+	global $mysql_link;
 
 	if($enable_logging == false) {
 		return false; 
 	}
 
-
 	$userIp = (isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? "Proxy: " . ($_SERVER['HTTP_X_FORWARDED_FOR']) : $_SERVER['REMOTE_ADDR']);
 	$userHost =  gethostbyaddr($_SERVER['REMOTE_ADDR']);
 	$userSystem =  "Computer: " .  ($userHost != null ?  $userHost : "Unknown" ) . ". Browser: " . htmlspecialchars($_SERVER["HTTP_USER_AGENT"]) ;
 
-
-	$link = mysqli_connect($logging_db['host'], $logging_db['user'], $logging_db['pass']);
-	if (!$link) {
-	   	return false;
-	}
-
-	$sqlInsertQuery = "INSERT INTO beacondemo.demo_events (id, session,event_dttm, event_type, user_ip, user_system, user_scenario, detail1, detail2) VALUES (NULL, \"". session_id() ."\" ,CURRENT_TIMESTAMP, \"" . $eventType . "\", \"".$userIp."\",\"".$userSystem."\", \"". addslashes(json_encode($demoScenario)) ."\", \"".$detail1."\",  \"".$detail2."\");";
-	//echo $sqlInsertQuery;
-	mysqli_query($link,$sqlInsertQuery);
-	mysqli_close($link);
+	$sqlInsertQuery = "INSERT INTO omnichanneldemo.demo_events (id, session,event_dttm, event_type, user_ip, user_system, user_scenario, detail1, detail2) VALUES (NULL, \"". session_id() ."\" ,CURRENT_TIMESTAMP, \"" . $eventType . "\", \"".$userIp."\",\"".$userSystem."\", \"". addslashes(json_encode($userPayload)) ."\", \"".$detail1."\",  \"".$detail2."\");";
+	$mysql_query->query($link,$sqlInsertQuery);
 	return true;
 }
 

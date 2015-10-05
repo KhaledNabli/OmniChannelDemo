@@ -121,7 +121,8 @@
             "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	 
             "maxContacts": 2,           
             "customer1Score": 78,
-            "customer2Score": 33
+            "customer2Score": 33,
+            "changeScoreByInterest": 2
 	    },
         {
             "offerCode": "oc02",
@@ -131,7 +132,8 @@
             "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	 
             "maxContacts": 3,    
             "customer1Score": 66,
-            "customer2Score": 78
+            "customer2Score": 78,
+            "changeScoreByInterest": -2
         }
 	]
 }
