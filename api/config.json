@@ -119,7 +119,7 @@
             "offerCode": "oc01",
             "offerName": "Current Account",
             "offerDesc": "This is more detail for the Current Account offer",
-            "offerImg": "images/offerCode_01.jpg",
+            "offerImg": "https://dl.dropboxusercontent.com/u/16250684/offer_images/offerCode_01.jpg",
             "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	 
             "maxContacts": 2,           
             "customer1Score": 78,
@@ -130,10 +130,32 @@
             "offerCode": "oc02",
             "offerName": "Personal Loan",
             "offerDesc": "This is more detail for the Personal Loan offer",
-            "offerImg": "images/offerCode_02.jpg",		      
+            "offerImg": "https://dl.dropboxusercontent.com/u/16250684/offer_images/offerCode_02.jpg",		      
             "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	 
             "maxContacts": 3,    
             "customer1Score": 66,
+            "customer2Score": 45,
+            "changeScoreByInterest": -2
+        },
+        {
+            "offerCode": "oc03",
+            "offerName": "Car Loan",
+            "offerDesc": "This is more detail for the Car Loan offer",
+            "offerImg": "https://dl.dropboxusercontent.com/u/16250684/offer_images/offerCode_03.jpg",		      
+            "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	 
+            "maxContacts": 3,    
+            "customer1Score": 45,
+            "customer2Score": 67,
+            "changeScoreByInterest": -2
+        },
+        {
+            "offerCode": "oc04",
+            "offerName": "Baby Savings",
+            "offerDesc": "This is more detail for the Baby Savings offer",
+            "offerImg": "https://dl.dropboxusercontent.com/u/16250684/offer_images/offerCode_04.jpg",		      
+            "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	 
+            "maxContacts": 3,    
+            "customer1Score": 44,
             "customer2Score": 78,
             "changeScoreByInterest": -2
         }

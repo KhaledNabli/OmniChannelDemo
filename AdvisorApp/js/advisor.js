@@ -34,7 +34,7 @@ function onBtnSubmit(element) {
 	$('#txt_analyticsBar4').text(configScenario.customers[custArrayIndex].analyticsBar4Value);
 	$('#analyticsBar4Label').text(configScenario.labels.analyticsBar4Label);
 
-
+	showOffers(configScenario.nba);	
 }
 
 function onBtnLoad(element) {
@@ -57,11 +57,42 @@ function loadConfiguration(token) {
     			+ '</a></li>');
 
     		$('#btn_SubmitLabel').html(configScenario.advisorApp.submitBtnAdvisor);
-    		console.log("adding: " + configScenario.customers[i].customerLogin );    	
+    		$('#titleAdvisor').html(configScenario.advisorApp.titleAdvisor);
+    		console.log("adding: " + configScenario.customers[i].customerLogin );    
+    		
 		}
     	
     });
 }
+
+function showOffers(offerArray) {
+	var stars = 5;
+	for(var i = 0; i < offerArray.length; i++) { 
+			var starsNumberValue = stars-i;
+        	var offerName = offerArray[i]["offerName"]; 
+        	var offerDescription = offerArray[i]["offerDesc"];
+        	var offerImage = offerArray[i]["offerImg"];
+			offerRow = '<tr>'
+				+'<td width="20%">'
+				+'<a href="#" onclick="showOfferDetails('+ i +');" data-toggle="modal" data-target=".bs-example-modal-sm">'
+			    +'<img src="' + offerImage + '" width="200" class="img-thumbnail"></a>'
+			    +'</td>'
+			    +'<td width="80%">'
+			    +'<h4><b>' + offerName + '</b> <img src="./images/'+ starsNumberValue +'starsborder.png"></h4>'
+			    +'<p>' + offerDescription + '</p>'
+			    +'</td>'
+			    +'</tr>';
+			$('#nbaTbody').append(offerRow);
+    	} 
+}
+
+function showOfferDetails(offerIndex) {
+	console.log("offer object: " + offerIndex);
+	$('#offerDetailsLabel').html(configScenario.nba[offerIndex].offerName);
+	$('#offerDetailsDescription').html(configScenario.nba[offerIndex].offerDesc);
+	$('#offerDetailsImage').attr('src', configScenario.nba[offerIndex].offerImg);
+}
+
 
 function selectCustomer(custID, index) {
 	$('#input_custID').val(custID);
