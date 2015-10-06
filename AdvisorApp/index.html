@@ -18,6 +18,8 @@
     <!-- Custom styles for this template -->
     <link href="./css/dashboard.css" rel="stylesheet">
 
+    
+
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <!--script src="../../assets/js/ie-emulation-modes-warning.js"></script-->
@@ -104,16 +106,19 @@
                     <div class="col-sm-8 col-sm-offset-2">
 
                       <div class="form-group"></div>
-                      <div class="input-group">
-                        <input id="input_custID" placeholder="Enter Customer" type="text" class="form-control" aria-label="...">
-                        <div class="input-group-btn">
+                        <input id="input_custID" list="dataList_customers" placeholder="Enter Customer" type="text" class="form-control" aria-label="...">
+
+                        
+                        <datalist id="dataList_customers">
+                        </datalist>
+
+                        <!--<div class="input-group-btn">
                           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select <span class="caret"></span></button>
                           <ul id="ul_custDropDown" class="dropdown-menu dropdown-menu-right">
                      
                           </ul>
-                          
                         </div><!-- /btn-group -->
-                      </div><!-- /input-group -->
+
                     </div><!-- column end -->
                   </div>
 
@@ -233,6 +238,7 @@
                         <tr>
                           <th></th>
                           <th></th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody id="nbaTbody">
@@ -297,8 +303,8 @@
                           <th>Response</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr>
+                      <tbody id="historyTbody">
+                        <!--<tr>
                           <td>22.09.2015</td>
                           <td>Offer Personal Loan</td>
                           <td>Website</td>
@@ -317,7 +323,7 @@
                           <td>Offer Savings</td>
                           <td>Website</td>
                           <td>Rejected</td>
-                        </tr>
+                        </tr>-->
 
                       </tbody>
                     </table>
