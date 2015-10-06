@@ -1,0 +1,355 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Advisor App</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="./css/dashboard.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!--script src="../../assets/js/ie-emulation-modes-warning.js"></script-->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="modal fade" id="popupLoadToken" tabindex="-1" role="dialog" aria-labelledby="popupLoadToken">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Load Existing Token</h4>
+              </div>
+              <div class="modal-body">
+                 <input type="text" class="form-control" id="tokenLoad" value="aJXGZ9o0" >
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="onBtnLoad(this);">Load</button>
+              </div>
+            </div>
+          </div>
+    </div>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Advisor Frontend</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#" data-toggle="modal" data-target="#popupLoadToken">Settings</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+          <!--form class="navbar-form navbar-right">
+            <input id="input_custID" type="text" class="form-control" placeholder="Enter CustomerID">
+            <button id="btn_Submit" type="button" class="btn btn-default" onclick="onBtnSubmit(this);" >Submit</button>
+          </form-->
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li id="nav_overview" class="active"><a href="#tab_overview" data-toggle="tab">Select Customer </a></li>
+            <li id="nav_custDetails"><a href="#tab_custDetails" data-toggle="tab">Customer Details</a></li>
+            <li id="nav_nba"><a href="#tab_nba" data-toggle="tab">Next Best Offers</a></li>
+            <li id="nav_history"><a href="#tab_history" data-toggle="tab">Response History</a></li>
+          </ul>
+          
+        </div>
+        <div class="col-sm-9 col-sm-offset-2 main">
+          
+            <div class="tab-content">
+                <div id="tab_overview" class="tab-pane active">
+                  <h3 class="sub-header">Select Customer</h3>
+                  
+                  <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2">
+
+                      <div class="form-group"></div>
+                      <div class="input-group">
+                        <input id="input_custID" placeholder="Enter Customer" type="text" class="form-control" aria-label="...">
+                        <div class="input-group-btn">
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select <span class="caret"></span></button>
+                          <ul id="ul_custDropDown" class="dropdown-menu dropdown-menu-right">
+                     
+                          </ul>
+                          
+                        </div><!-- /btn-group -->
+                      </div><!-- /input-group -->
+                    </div><!-- column end -->
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-8 col-sm-offset-5">
+                      <div class="form-group"></div>
+                      <button id="btn_Submit" type="button" class="btn btn-default" onclick="onBtnSubmit(this);" >
+                          <span id="btn_SubmitLabel">Submit</span>
+                      </button>
+                    </div><!-- column end -->
+                  </div><!-- row end -->
+
+                </div>
+
+
+                <div id="tab_custDetails" class="tab-pane ">
+                  <form class="form-horizontal" role="form">
+                    <div class="row">
+                  <!--h1 class="page-header">Page Header</h1-->
+                      <h3 class="sub-header">Customer's Details</h3>
+                      
+                      
+                      <div class="col-sm-8">
+                        <div class="form-group"></div>  
+                      
+                        <div class="form-group">
+                              <label for="customerName" class="col-sm-4 control-label">Customer Name</label>
+                              <div class="col-sm-8">
+                                  <input type="text" class="form-control" id="customerName" placeholder="">
+                              </div>
+                        </div>
+                        <div class="form-group">
+                              <label for="mobileNumber" class="col-sm-4 control-label">Mobile Number</label>
+                              <div class="col-sm-8">
+                                  <input type="text" class="form-control" id="mobileNumber" placeholder="">
+                              </div>
+                        </div>
+                        <div class="form-group">
+                              <label for="lifeStageSegment" class="col-sm-4 control-label">Life  Segment</label>
+                              <div class="col-sm-8">
+                                  <input type="text" class="form-control" id="lifeStageSegment" placeholder="">
+                              </div>
+                        </div>
+                        <div class="form-group">
+                              <label for="age" class="col-sm-4 control-label">Age</label>
+                              <div class="col-sm-8">
+                                  <input type="text" class="form-control" id="age" placeholder="">
+                              </div>
+                        </div>
+                        <div class="form-group">
+                              <label for="email" class="col-sm-4 control-label">Email</label>
+                              <div class="col-sm-8">
+                                  <input type="text" class="form-control" id="email" placeholder="">
+                              </div>
+                        </div>
+                      </div> <!-- end of column -->
+
+                      <!-- Customer Photo Column -->
+                      <div class="col-sm-4">
+                        <div class="form-group"></div> 
+                        <img id="pictureUrl" src="./images/profile.jpg" width="210" alt="Mathias Bouten" class="img-thumbnail">
+                      </div>
+
+                    </div><!-- end of row -->
+
+                    <div class="row">
+                      <h3 class="sub-header">Analytical Details</h3>
+
+                      <div class="col-sm-3"><span id="analyticsBar1Label">Lifetime Value:</span> </div>
+                      <div class="col-sm-9">
+                        <div class="progress"> 
+                          <div id="bar_analyticsBar1" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                            <span id="txt_analyticsBar1">100% </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-3"><span id="analyticsBar2Label">Satisfaction:</span> </div>
+                      <div class="col-sm-9">
+                      <div class="progress">
+                        <div id="bar_analyticsBar2" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                          <span id="txt_analyticsBar2">100%</span>
+                        </div>
+                      </div>
+                      </div>
+
+                      <div class="col-sm-3"><span id="analyticsBar3Label">Risk:</span> </div>
+                      <div class="col-sm-9">
+                      <div class="progress">
+                        <div id="bar_analyticsBar3" class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                          <span id="txt_analyticsBar3">100%</span>
+                        </div>
+                      </div>
+                      </div>
+
+                      <div class="col-sm-3"><span id="analyticsBar4Label">Fraud:</span> </div>
+                      <div class="col-sm-9">
+                      <div class="progress">
+                        <div id="bar_analyticsBar4" class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                          <span id="txt_analyticsBar4">100%</span>
+                        </div>
+                      </div>
+                      </div>
+
+                    </div><!-- end of row -->
+                      
+                  </form> 
+                </div><!-- end of tab_custDetails -->
+
+
+                <div id="tab_nba" class="tab-pane">
+                  <h3 class="sub-header">Customer's Next Best Offers</h3>
+                  
+                  <div class="table-responsive">
+                    <table class="table ">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        
+                        <tr>
+                          <td width="20%">
+                            <a href="#" data-toggle="modal" data-target=".bs-example-modal-sm">
+                            <img src="https://dl.dropboxusercontent.com/u/16250684/offer_images/offerCode_01.jpg" width="200" class="img-thumbnail">
+                            </a>
+                          </td>
+                          <td width="80%">
+                            <h4><b>Current Account</b> <img src="./images/3starsborder.png"></h4>
+                            <p>This is the very cool new Current Account offer, if you want to know more then click me!</p>
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td width="20%">
+                            <img src="https://dl.dropboxusercontent.com/u/16250684/offer_images/offerCode_02.jpg" width="200" class="img-thumbnail">
+                          </td>
+                          <td width="80%">
+                            <h4><b>Personal Loan</b> <img src="./images/3starsborder.png"></h4>
+                            <p>This is the very cool new Current Account offer, if you want to know more then click me!</p>
+                          </td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+                  </div><!-- TABLE responsive -->
+
+                  <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title text-center" id="offerDetailsLabel">Current Account</h4>
+                        </div>
+                        <div class="modal-body">
+                          <div class="row">
+                            <div class="col-sm-6 col-sm-offset-1">
+                              <img src="https://dl.dropboxusercontent.com/u/16250684/offer_images/offerCode_01.jpg" width="500" class="img-thumbnail">
+                            </div>
+                            <div class="col-sm-4">
+                              <p>This is the very cool new Current Account offer, if you want to know more then click me!</p>
+                              <p>Here you can even have some more text if you like. Describing the offer more in detail may helps to sell it!</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal-footer text-center">
+                          <button type="button" class="btn-lg btn-default" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn-lg btn-success">Accept</button>                          
+                          <button type="button" class="btn-lg btn-danger">Reject</button>
+                          <button type="button" class="btn-lg btn-warning">Maybe</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+          
+
+                </div>
+
+
+                <div id="tab_history" class="tab-pane">
+                    <h3 class="sub-header">Customer's History</h3>
+
+                    <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Action</th>
+                          <th>Channel</th>
+                          <th>Response</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>22.09.2015</td>
+                          <td>Offer Personal Loan</td>
+                          <td>Website</td>
+                          <td>Offer Click</td>
+                        </tr>
+
+                        <tr>
+                          <td>10.10.2015</td>
+                          <td>Offer Current Account</td>
+                          <td>Mobile App</td>
+                          <td>Accept</td>
+                        </tr>
+
+                        <tr>
+                          <td>12.08.2015</td>
+                          <td>Offer Savings</td>
+                          <td>Website</td>
+                          <td>Rejected</td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+                  </div><!-- TABLE responsive -->
+
+                </div>
+            </div><!--/.tab-content-->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="./js/advisor.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <!--script src="../js/vendor/holder.min.js"></script-->
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!--script src="../js/ie10-viewport-bug-workaround.js"></script-->
+
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $('#myTabs a').click(function (e) {
+            e.preventDefault()
+              $(this).tab('show')
+            });
+        });
+    </script>
+
+  </body>
+</html>

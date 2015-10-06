@@ -2,7 +2,8 @@
 	"token":"",	
 	"general": {
 		"raceServerName": "racesx00000.demo.sas.com",
-		"customerName": "Commerzbank",
+		"demoName": "Commerzbank",
+		"demoDescription": "This is the fantastic Commerzbank demo",
 		"userEmail": "mathias.bouten@sas.com",
 		"rtdmBackend": false,
 		"sendSms": true
@@ -38,7 +39,8 @@
 		"login_button_text": "Login",
 		"title_offer_panel": "Top Angebote",
 		"title_geo_offer_panel": "Geolocation Angebote",
-		"homescreen_image": "./resources/images/homescreen.jpg"
+		"homescreen_image": "./resources/images/homescreen.jpg",		
+		"map_pin_image": "./resources/images/pin.jpg"
 	},
 	"labels": {
 		"acceptBtnMobile": "Accept",
@@ -64,10 +66,10 @@
 			"lifeStageSegment": "Small-Family",
 			"age": "35",
 			"email": "mathias.bouten@sas.com",
-			"analyticsBar1Value": "0.44",
-			"analyticsBar2Value": "0.44",
-			"analyticsBar3Value": "0.44",
-			"analyticsBar4Value": "0.44",
+			"analyticsBar1Value": "33%",
+			"analyticsBar2Value": "55%",
+			"analyticsBar3Value": "10%",
+			"analyticsBar4Value": "15%",
 	    	"actionHistory": [
 		        {
 		            "historyDate": "2015-09-25",
@@ -85,17 +87,17 @@
 		},
 		{
 			"customerLogin": "5678",
-			"pictureUrl": "https://dl.dropboxusercontent.com/u/16250684/adrian.JPG",
+			"pictureUrl": "https://dl.dropboxusercontent.com/u/16250684/khaled.jpg",
 			"firstName": "Khaled", 
 			"lastName": "Nabli",
 			"mobileNumber": "+491735755021",
 			"lifeStageSegment": "Small-Family",
 			"age": "29",
 			"email": "khaled.nabli@sas.com",
-			"analyticsBar1Value": "0.77",
-			"analyticsBar2Value": "0.23",
-			"analyticsBar3Value": "0.45",
-			"analyticsBar4Value": "0.99",
+			"analyticsBar1Value": "77%",
+			"analyticsBar2Value": "23%",
+			"analyticsBar3Value": "45%",
+			"analyticsBar4Value": "99%",
 	    	"actionHistory": [
 		        {
 		            "historyDate": "2015-09-25",

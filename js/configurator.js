@@ -41,6 +41,9 @@ function initConfigurator() {
 	$("#sendSms").prop("checked", checkIfTrue(configScenario.general.sendSms));
 	$("#rtdmBackend").prop("checked", checkIfTrue(configScenario.general.rtdmBackend));
 
+	$("#scoreLabel1").html(configScenario.customers[0].firstName);
+	$("#scoreLabel2").html(configScenario.customers[1].firstName);
+
 	//$('#token').val(configScenario.token);
 	if (!configScenario.token) {
 		$("#tokenDiv").hide();
@@ -158,7 +161,8 @@ function callApi(parameters) {
 function resetConfiguration() {
 	window.localStorage.omnichanneltoken = "";
 	loadConfiguration("");
-	$("#tokenDiv").hide();
+	$("#token").html('not yet saved');
+	//$("#tokenDiv").hide();
 }
 
 

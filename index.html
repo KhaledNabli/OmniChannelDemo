@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <title>Demo Configurator</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -20,6 +20,54 @@
   </head>
   <body>
 
+<nav class="navbar navbar-default navbar-static-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <h3> Omni Channel Demo Configurator</h3>
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#"></a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <!-- navbar left -->
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#tab_general" data-toggle="tab">General Settings</a></li>
+        <li><a href="#tab_customers" data-toggle="tab">Customers</a></li>
+        <li><a href="#tab_offers" data-toggle="tab">Offers</a></li>
+        <li><a href="#tab_advisor" data-toggle="tab">Advisor App</a></li>
+        <li><a href="#tab_web" data-toggle="tab">Website</a></li>
+        <li><a href="#tab_mobile" data-toggle="tab">Mobile App</a></li>
+        <li><a href="#tab_labels" data-toggle="tab">Labels</a></li>
+      </ul>
+      
+      <!-- navbar right -->
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"> Token: <strong><span id="token">not yet saved</span></strong></a> </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Options <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Load Existing Demo</a></li>
+            <li><a href="#">Reset Demo</a></li>
+            <li><a href="#">Save Demo</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+        </li>
+      </ul>
+
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+
     <div class="container-fluid">
 
         <div class="modal fade" id="popupLoadToken" tabindex="-1" role="dialog" aria-labelledby="popupLoadToken">
@@ -27,7 +75,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Load Existing Token</h4>
+                <h4 class="modal-title" id="myModalLabel">Load Existing Demo</h4>
               </div>
               <div class="modal-body">
                  <input type="text" class="form-control" id="tokenLoad" >
@@ -41,27 +89,14 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-10"> 
-                <h1> Omni Channel Demo Configurator <h1>
-            </div>
             <div class="col-lg-2" id="tokenDiv" style="display: none"> 
-                <h1> Token: <kbd><span id="token"></span></kbd> <h1>
+                <!--<h1> Token: <kbd><span id="token"></span></kbd> <h1>-->
             </div>
         </div>
 
         <div class="row">
 
-              <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active">
-                    <a href="#tab_general" aria-controls="general" role="tab" data-toggle="tab">General Settings</a></li>
-                <li role="presentation"><a href="#tab_customers" aria-controls="customers" role="tab" data-toggle="tab">Customers</a></li>
-                <li role="presentation"><a href="#tab_offers" aria-controls="offers" role="tab" data-toggle="tab">Offers</a></li>
-                <li role="presentation"><a href="#tab_labels" aria-controls="labels" role="tab" data-toggle="tab">Labels</a></li>
-                <li role="presentation"><a href="#tab_mobile" aria-controls="mobile" role="tab" data-toggle="tab">Mobile App</a></li>
-                <li role="presentation"><a href="#tab_advisor" aria-controls="advisor" role="tab" data-toggle="tab">Advisor App</a></li>
-                <li role="presentation"><a href="#tab_web" aria-controls="web" role="tab" data-toggle="tab">Website</a></li>
-            </ul>
+ 
 
               <!-- Tab panes -->
             <div class="tab-content">
@@ -74,9 +109,16 @@
                         <div class="form-group"></div>                        
                         
                         <div class="form-group">
-                            <label for="customerName" class="col-sm-3 control-label">Customer Name</label>
+                            <label for="demoName" class="col-sm-3 control-label">Demo Name</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="customerName" placeholder="">
+                                <input type="text" class="form-control" id="demoName" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="demoDescription" class="col-sm-3 control-label">Demo Description</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="demoDescription" placeholder="">
                             </div>
                         </div>
 
@@ -126,28 +168,6 @@
 
                     <div class ="form-group"></div>
                     <form class="form-horizontal" role="form">
-                        
-                        <div class="form-group">                            
-                            <label for="c1customerLogin" class="col-sm-2 control-label">Customer Login</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="c1customerLogin" placeholder="">
-                            </div>
-                            <label for="c2customerLogin" class="col-sm-2 control-label">Customer Login</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="c2customerLogin" placeholder="">
-                            </div>
-                        </div>
-
-                        <div class="form-group">                            
-                            <label for="c1pictureUrl" class="col-sm-2 control-label">Picuture Url</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="c1pictureUrl" placeholder="">
-                            </div>
-                            <label for="c2pictureUrl" class="col-sm-2 control-label">Picture Url</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="c2pictureUrl" placeholder="">
-                            </div>
-                        </div>
 
                         <div class="form-group">
                             <label for="c1firstName" class="col-sm-2 control-label">Firstname</label>
@@ -171,6 +191,17 @@
                             </div>
                         </div>
 
+                        <div class="form-group">                            
+                            <label for="c1pictureUrl" class="col-sm-2 control-label">Picuture Url</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="c1pictureUrl" placeholder="">
+                            </div>
+                            <label for="c2pictureUrl" class="col-sm-2 control-label">Picture Url</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="c2pictureUrl" placeholder="">
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label for="c1mobileNumber" class="col-sm-2 control-label">Mobile Number</label>
                             <div class="col-sm-3">
@@ -181,6 +212,8 @@
                                 <input type="text" class="form-control" id="c2mobileNumber" placeholder="">
                             </div>
                         </div>
+
+
 
                         <div class="form-group">
                             <label for="c1lifeStageSegment" class="col-sm-2 control-label">Life Stage Segment</label>
@@ -193,16 +226,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="c1age" class="col-sm-2 control-label">Age</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="c1age" placeholder="">
-                            </div>
-                            <label for="c2age" class="col-sm-2 control-label">Age</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="c2age" placeholder="">
-                            </div>
-                        </div>
+                        
 
                         <div class="form-group">
                             <label for="c1email" class="col-sm-2 control-label">Email</label>
@@ -215,48 +239,76 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="c1analyticsBar1Value" class="col-sm-2 control-label">Analytics Bar 1</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="c1analyticsBar1Value" placeholder="">
+                        <div class="form-group">                            
+                            <label for="c1customerLogin" class="col-sm-2 control-label">Customer Login</label>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="c1customerLogin" placeholder="">
                             </div>
-                            <label for="c2analyticsBar1Value" class="col-sm-2 control-label">Analytics Bar 1</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="c2analyticsBar1Value" placeholder="">
+
+                            <label for="c1age" class="col-sm-1 control-label">Age</label>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="c1age" placeholder="">
+                            </div>
+
+                            <label for="c2customerLogin" class="col-sm-2 control-label">Customer Login</label>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="c2customerLogin" placeholder="">
+                            </div>
+
+                            <label for="c2age" class="col-sm-1 control-label">Age</label>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="c2age" placeholder="">
                             </div>
                         </div>
 
+
                         <div class="form-group">
-                            <label for="c1analyticsBar2Value" class="col-sm-2 control-label">Analytics Bar 2</label>
-                            <div class="col-sm-3">
+                            <label for="c1analyticsBar1Value" class="col-sm-2 control-label">Analytics Bar 1</label>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="c1analyticsBar1Value" placeholder="">
+                            </div>
+
+                            <label for="c1analyticsBar2Value" class="col-sm-1 control-label">Analytics Bar 2</label>
+                            <div class="col-sm-1">
                                 <input type="text" class="form-control" id="c1analyticsBar2Value" placeholder="">
                             </div>
-                            <label for="c2analyticsBar2Value" class="col-sm-2 control-label">Analytics Bar 2</label>
-                            <div class="col-sm-3">
+
+                            <label for="c2analyticsBar1Value" class="col-sm-2 control-label">Analytics Bar 1</label>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="c2analyticsBar1Value" placeholder="">
+                            </div>
+
+                            <label for="c2analyticsBar2Value" class="col-sm-1 control-label">Analytics Bar 2</label>
+                            <div class="col-sm-1">
                                 <input type="text" class="form-control" id="c2analyticsBar2Value" placeholder="">
                             </div>
                         </div>
 
-                       <div class="form-group">
+                        <div class="form-group">
                             <label for="c1analyticsBar3Value" class="col-sm-2 control-label">Analytics Bar 3</label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-1">
                                 <input type="text" class="form-control" id="c1analyticsBar3Value" placeholder="">
                             </div>
+
+                            <label for="c1analyticsBar4Value" class="col-sm-1 control-label">Analytics Bar 4</label>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="c1analyticsBar4Value" placeholder="">
+                            </div>
+
                             <label for="c2analyticsBar3Value" class="col-sm-2 control-label">Analytics Bar 3</label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-1">
                                 <input type="text" class="form-control" id="c2analyticsBar3Value" placeholder="">
+                            </div>
+
+                            <label for="c2analyticsBar4Value" class="col-sm-1 control-label">Analytics Bar 4</label>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="c2analyticsBar4Value" placeholder="">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="c1analyticsBar4Value" class="col-sm-2 control-label">Analytics Bar 4</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="c1analyticsBar4Value" placeholder="">
-                            </div>
-                            <label for="c2analyticsBar4Value" class="col-sm-2 control-label">Analytics Bar 4</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="c2analyticsBar4Value" placeholder="">
-                            </div>
+                            
+                            
                         </div>
                         
                         <!-- ActionHistory  -->
@@ -330,13 +382,13 @@
                                 <thead>
                                     <tr >
                                         <th class="text-center" width="5%">Code</th>
-                                        <th class="text-center" width="20%">Offer Name</th>
+                                        <th class="text-center" width="10%">Offer Name</th>
                                         <th class="text-center" width="20%">Description</th>
                                         <th class="text-center" width="15%">Image</th>
                                         <th class="text-center" width="20%">SMS</th>
                                         <th class="text-center" width="5%">Max Contacts</th>
-                                        <th class="text-center" width="5%">Score Cust1</th>                                        
-                                        <th class="text-center" width="5%">Score Cust2</th>
+                                        <th class="text-center" width="5%">Score <span id="scoreLabel1">Cust1</span></th>
+                                        <th class="text-center" width="5%">Score <span id="scoreLabel2">Cust2</span></th>
                                         <th width="5%"><a id="add_row" onclick="addNbaRecord('','','');" class="btn pull-right btn-primary btn-block">Add</a></th>
                                     </tr>
                                 </thead>
@@ -492,46 +544,45 @@
                         
                         <div class="row"> 
                             <div class="col-sm-2"></div>
-                            <div class="col-sm-4"> <h3> Geo Location Drop Down Labels </h3> </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="geo_fence_name_1" class="col-sm-2 control-label">Geo Fence Name 1</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" id="geo_fence_name_1" >
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="geo_fence_name_2" class="col-sm-2 control-label">Geo Fence Name 2</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" id="geo_fence_name_2" >
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="geo_fence_name_3" class="col-sm-2 control-label">Geo Fence Name 3</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" id="geo_fence_name_3" >
-                            </div>
+                            <div class="col-sm-4"> <h3> Other Labels and Settings </h3> </div>
                         </div>
 
-                        <div class="row"> 
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-4"> <h3> Other Settings </h3> </div>
-                        </div>
+                        
                         <div class="form-group">
-                            <label for="login_button_text" class="col-sm-2 control-label">Login Button Text</label>
-                            <div class="col-sm-9">
+                            <label for="geo_fence_name_1" class="col-sm-2 control-label">Geo Fence Name 1</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="geo_fence_name_1" >
+                            </div>
+                            <label for="login_button_text" class="col-sm-3 control-label">Login Button Text</label>
+                            <div class="col-sm-3">
                                 <input type="text" class="form-control" id="login_button_text" >
                             </div>
                         </div>
                         
                         
                         <div class="form-group">
-                            <label for="homescreen_image" class="col-sm-2 control-label">Homescreen Image</label>
-                            <div class="col-sm-9">
+                            <label for="geo_fence_name_2" class="col-sm-2 control-label">Geo Fence Name 2</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="geo_fence_name_2" >
+                            </div>
+                            <label for="homescreen_image" class="col-sm-3 control-label">Homescreen Image</label>
+                            <div class="col-sm-3">
                                 <input type="text" class="form-control" id="homescreen_image" >
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label for="geo_fence_name_3" class="col-sm-2 control-label">Geo Fence Name 3</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="geo_fence_name_3" >
+                            </div>
+                            <label for="map_pin_image" class="col-sm-3 control-label">Map Pin Image</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="map_pin_image" >
+                            </div>
+                        </div>
+
+            
                         <div class="form-group"></div>
 
                     </form>                   
@@ -671,17 +722,15 @@
 
 
         <div class="modal-footer">
-            <div style="float:left;color:#737373;font-style:italic">Version 0.1 - last update 01.10.2015</div>
+            <div style="float:left;color:#737373;font-style:italic">Version 0.1 - last update 06.10.2015</div>
             
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#popupLoadToken">Load Token</button>
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#popupLoadToken">Load Existing Demo</button>
             <button type="button" class="btn btn-default" data-toggle="modal" onclick="resetConfiguration();">Reset</button>
             
             <a id="aboutButton" href="#" class="btn btn-default" onclick="aboutUsClicked();"> 
                 <span id="aboutButtonLabel">Help</span> </a>
             
-            <a id="saveButton" href="#" class="btn btn-primary" onclick="saveConfiguration();"> Save changes </a>
-            
-            <a id="importConfig" href="#" class="btn btn-primary" onclick="importConfiguration();" style="display: none"> Import Config </a>
+            <a id="saveButton" href="#" class="btn btn-primary" onclick="saveConfiguration();"> Save Demo </a>
         </div>
 
 
