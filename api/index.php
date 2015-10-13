@@ -31,68 +31,69 @@ if ($mysql_link->connect_errno) {
 
 
 
-// parse parameters
-if($_SERVER['REQUEST_METHOD'] == "GET") {
-	@$action = $_GET['action'];
-	@$token = $_GET['token'];
-	@$config = $_GET['config'];
-	return;
-} else {
-	@$action = $_POST['action'];
-	@$token = $_POST['token'];
-	@$config = $_POST['config'];
-	process($token, $action, $config);
-	return;
+
+return processRequest();
+exit;
+/**********************************************/
+
+
+
+
+
+
+
+function getRequestParameter($parameter) {
+	if($_SERVER['REQUEST_METHOD'] == "POST")
+		return @$_POST[$parameter];
+	else
+		return @$_GET[$parameter];
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function process($token, $action, $config) {
+function processRequest() {
 	@header('Content-type: application/json');
+
+	$action = getRequestParameter("action");
+	$token = getRequestParameter("token");
 
 
 	if($action == 'resetDemo') {
-		resetDemo();;
+		resetDemo($token);;
 	}
 
 	else if($action == 'saveConfig') {
+		$config = getRequestParameter("config");
+	
 		echo json_encode(saveConfig(json_decode($config)));
 	}
 	else if($action == 'getOffers') {
-		echo json_encode(getOffers($token, $customer, $list_size));
+		$customer = getRequestParameter("customer");
+		$channel = getRequestParameter("channel");
+		$list_size = getRequestParameter("maxOffers");
+	
+		echo json_encode(getOffers($token, $customer, $channel));
+	
 	}
 	else if($action == 'respondToOffer') {
+		$customer = getRequestParameter("customer");
+		$offerCd = getRequestParameter("offer");
+		$responseCd = getRequestParameter("response");
+		$channelCd = getRequestParameter("channel");
+		$details = getRequestParameter("details");
+
+		echo json_encode(respondToOffer($token, $customer, $offerCd, $responseCd, $channelCd, $details));
 
 	}
 	else if($action == 'getHistory') {
-		echo json_encode(getOffers($token, $customer, $list_size));
+		$customer = getRequestParameter("customer");
+		echo json_encode(getCustomerHistory($token, $customer));
 	}
 
-	else if($action == 'getConfig') { // $action == 'getConfig'
+	else if($action == 'getConfig') {
 		echo json_encode(getConfig($token));
 	} 
 	else {
-		// display error.
+		// display how to use service.
 		$endpointVariables = array("Name" => "token", "Type" => "String", "Mandatory" => false);
 		$serviceEndpoints = array( 	
 			array("Name" => "Reset Demo", "Description" => "....", "Endpoint" => "/api?action=resetDemo&token=...", "Variables" => $endpointVariables),
@@ -228,12 +229,24 @@ function generateRandomToken($bytes = 6){
 /**
 *
 */
-function getOffers($token, $customer, $list_size){
-	// calculate score
+function getOffers($token, $customer, $channel, $list_size = 10){
+	global $mysql_link;
+	$offerList = array();
 
+	$offerListSql = "SELECT a.*, b.entrytype, b.count FROM `customer_offers` a LEFT JOIN contact_response_counts b ON (a.token = b.token AND a.customer=b.customer AND a.offer=b.offerCd AND b.entrytype = 'Display') WHERE a.`responded` = '0' and a.`token` = '". $token ."' and a.`customer` = '".$customer."' and (count is null or display_limit >= count);";
+
+	$offerListResult = $mysql_link->query($offerListSql);
 	// limit number of offers
+	$offerListSize = $offerListResult->num_rows;
+	for($i = 0; $i < $offerListSize; $i++) {
+		if($i >= $list_size) break;
+		$offerList[$i] = $offerListResult->fetch_assoc();
+		// track display information
+		insertHistoryEntry($token, $customer, $offerList[$i]['offer'], '', $channel, 'Display', '', '', "");
+	}
 
-	// track display information
+
+	return $offerList;
 }
 
 
@@ -267,16 +280,16 @@ function respondToOffer($token, $customer, $offerCd, $responseCd, $channelCd, $d
 	$updateOfferSql = "UPDATE `customer_offers` SET `responded` = '".$responded."', `score` = (`score` + ".$changeScore.") WHERE `token` = '".$token."' and `customer` = '".$customerId."' and `offer` = '".$offerCd."';";
 	$mysql_link->query($updateOfferSql);
 
-	insertHistoryEntry($token, $customer, $offerCd, "Response", $responseCd, $details, datetime());
+	insertHistoryEntry($token, $customer, $offerCd, "", "Response", $responseCd, $details, datetime());
 }
 
 
 /**
 *
 */
-function insertHistoryEntry($token, $customer, $offer, $channel, $entrytype, $responsetype, $responsedetails, $datetime) {
+function insertHistoryEntry($token, $customer, $offerCd, $offer, $channel, $entrytype, $responsetype, $responsedetails, $datetime) {
 	global $mysql_link;
-	$insertHistorySql = "INSERT INTO `omnichanneldemo`.`contact_response_history` (`token`, `customer`, `offer`, `channel`, `entrytype`, `responsetype`, `responsedetails`, `datetime`) VALUES ('".$token."', '".$customer."', '".$offer."', '".$channel."', '".$entrytype."', '".$responsetype."', '".$responsedetails."', '".$datetime."')";
+	$insertHistorySql = "INSERT INTO `omnichanneldemo`.`contact_response_history` (`token`, `customer`, `offerCd`, `offer`, `channel`, `entrytype`, `responsetype`, `responsedetails`, `datetime`) VALUES ('".$token."', '".$customer."', '".$offerCd."', '".$offer."', '".$channel."', '".$entrytype."', '".$responsetype."', '".$responsedetails."', '".$datetime."')";
 	return $mysql_link->query($insertHistorySql);	
 }
 
@@ -285,6 +298,14 @@ function insertHistoryEntry($token, $customer, $offer, $channel, $entrytype, $re
 *
 */
 function getCustomerHistory($token, $customer) {
+	global $mysql_link;
+	$historyList = array();
+	$historyListSql = "SELECT * FROM `contact_response_history` WHERE `token` = '".$token."' and `customer` = '".$customer."'";
+	$historyListResult = $mysql_link->query($historyListSql);
+	$historyListSize = $historyListResult->num_rows;
+	for($i = 0; $i < $historyListSize; $i ++) {
+		$historyList[$i] = $historyListResult->fetch_assoc();
+	}
 
 	return $historyList;
 }
@@ -330,7 +351,7 @@ function resetDemo($token) {
 		$historyListSize = sizeof($customer->actionHistory);
 		for($historyIndex = 0; $historyIndex < $historyListSize; $historyIndex++) {
 			$historyEntry = $customer->actionHistory[$historyIndex];
-			insertHistoryEntry($token, $customer->customerLogin, $historyEntry->historyAction, $historyEntry->historyChannel, "History", $historyEntry->historyResponse, "", $historyEntry->historyDate);
+			insertHistoryEntry($token, $customer->customerLogin, "", $historyEntry->historyAction, $historyEntry->historyChannel, "History", $historyEntry->historyResponse, "", $historyEntry->historyDate);
 		}
 	}
 
