@@ -1,8 +1,22 @@
 
 var configScenario = "";
 var custArrayIndex = 99;
+var custScoreValue = "";
 
 function onBtnSubmit(element) {
+	var custID = $('#input_custID').val();
+	for (i = 0; i < configScenario.customers.length; i++) { 
+		if(configScenario.customers[i].customerLogin == custID) {
+			custArrayIndex = i;
+			if(i == 0) {
+				custScoreValue = "customer1Score";
+			} else if (i == 1) {
+				custScoreValue = "customer2Score";
+			}
+			console.log("match id: " + custID + ' ' + configScenario.customers[i].customerLogin);
+		}
+	}
+
 	$('#nav_custDetails').addClass("active");
 	$('#nav_overview').removeClass("active");
 	$('#tab_custDetails').addClass("active");
@@ -35,6 +49,7 @@ function onBtnSubmit(element) {
 	$('#analyticsBar4Label').text(configScenario.labels.analyticsBar4Label);
 
 	showOffers(configScenario.nba);	
+	showHistory();
 }
 
 function onBtnLoad(element) {
@@ -48,42 +63,62 @@ function loadConfiguration(token) {
     	//console.log("Loading Data done." + JSON.stringify(jsonData));
     	configScenario = jsonData;
 
-    	/* adding available customers to drop down list */
-    	$('#ul_custDropDown').html('');
-    	for (i = 0; i < configScenario.customers.length; i++) {    	
-    		$('#ul_custDropDown').append('<li><a href="#" onclick="selectCustomer(\'' 
-    			+ configScenario.customers[i].customerLogin +'\',\'' + i +'\');">' + configScenario.customers[i].customerLogin + ' - ' 
-    			+ configScenario.customers[i].firstName + ' ' + configScenario.customers[i].lastName
-    			+ '</a></li>');
+    	/* adding available customers to datalist */
+    	$('#dataList_customers').html('');
+    	for (i = 0; i < configScenario.customers.length; i++) { 
 
-    		$('#btn_SubmitLabel').html(configScenario.advisorApp.submitBtnAdvisor);
-    		$('#titleAdvisor').html(configScenario.advisorApp.titleAdvisor);
-    		console.log("adding: " + configScenario.customers[i].customerLogin );    
-    		
+    		$('#dataList_customers').append('<option value="'+ configScenario.customers[i].customerLogin + '">' 
+    			+ configScenario.customers[i].firstName + ' ' + configScenario.customers[i].lastName + '</option>') ;
+
+    		console.log("adding: " + configScenario.customers[i].customerLogin );     		
 		}
+
+		$('#btn_SubmitLabel').html(configScenario.advisorApp.submitBtnAdvisor);
+    	$('#titleAdvisor').html(configScenario.advisorApp.titleAdvisor);
     	
     });
 }
 
 function showOffers(offerArray) {
 	var stars = 5;
+	$('#nbaTbody').html('');
 	for(var i = 0; i < offerArray.length; i++) { 
-			var starsNumberValue = stars-i;
-        	var offerName = offerArray[i]["offerName"]; 
-        	var offerDescription = offerArray[i]["offerDesc"];
-        	var offerImage = offerArray[i]["offerImg"];
-			offerRow = '<tr>'
-				+'<td width="20%">'
-				+'<a href="#" onclick="showOfferDetails('+ i +');" data-toggle="modal" data-target=".bs-example-modal-sm">'
-			    +'<img src="' + offerImage + '" width="200" class="img-thumbnail"></a>'
-			    +'</td>'
-			    +'<td width="80%">'
-			    +'<h4><b>' + offerName + '</b> <img src="./images/'+ starsNumberValue +'starsborder.png"></h4>'
-			    +'<p>' + offerDescription + '</p>'
-			    +'</td>'
-			    +'</tr>';
-			$('#nbaTbody').append(offerRow);
-    	} 
+		var starsNumberValue = stars-i;
+    	var offerName = offerArray[i]["offerName"]; 
+    	var offerDescription = offerArray[i]["offerDesc"];
+    	var offerImage = offerArray[i]["offerImg"];
+    	var offerScore = offerArray[i][custScoreValue];
+
+		offerRow = '<tr>'
+			+'<td width="20%">'
+			+'<a href="#" onclick="showOfferDetails('+ i +');" data-toggle="modal" data-target=".bs-example-modal-sm">'
+		    +'<img src="' + offerImage + '" width="200" class="img-thumbnail"></a>'
+		    +'</td>'
+		    +'<td width="80%">'
+		    +'<h4><b>' + offerName + '</b> <img src="./images/'+ starsNumberValue +'starsborder.png"></h4>'
+		    +'<p>' + offerDescription + '</p>'
+		    +'</td><td>' + offerScore + '</td>'
+		    +'</tr>';
+		$('#nbaTbody').append(offerRow);
+    } 
+}
+
+function showHistory() {
+	$('#historyTbody').html('');
+	for(var i = 0; i < configScenario.customers[custArrayIndex].actionHistory.length; i++) { 
+    	var historyDate = configScenario.customers[custArrayIndex].actionHistory[i]["historyDate"]; 
+    	var historyAction = configScenario.customers[custArrayIndex].actionHistory[i]["historyAction"];
+    	var historyChannel = configScenario.customers[custArrayIndex].actionHistory[i]["historyChannel"];
+    	var historyResponse = configScenario.customers[custArrayIndex].actionHistory[i]["historyResponse"];
+
+		historyRow = '<tr>'
+                    +'<td>'+historyDate+'</td>'
+                    +'<td>'+historyAction+'</td>'
+                    +'<td>'+historyChannel+'</td>'
+                    +'<td>'+historyResponse+'</td>'
+                    +'</tr>';
+		$('#historyTbody').append(historyRow);
+    } 
 }
 
 function showOfferDetails(offerIndex) {
@@ -91,12 +126,6 @@ function showOfferDetails(offerIndex) {
 	$('#offerDetailsLabel').html(configScenario.nba[offerIndex].offerName);
 	$('#offerDetailsDescription').html(configScenario.nba[offerIndex].offerDesc);
 	$('#offerDetailsImage').attr('src', configScenario.nba[offerIndex].offerImg);
-}
-
-
-function selectCustomer(custID, index) {
-	$('#input_custID').val(custID);
-	custArrayIndex = index;
 }
 
 function callApi(parameters) {
