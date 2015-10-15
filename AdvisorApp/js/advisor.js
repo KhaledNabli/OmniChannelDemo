@@ -1,10 +1,19 @@
 
 var configScenario = "";
-var custArrayIndex = 99;
+var custID = "";
+var token = "";
+
+var custArrayIndex = -1;
 var custScoreValue = "";
 
+if(window.localStorage.omnichanneltoken) {
+	token = window.localStorage.omnichanneltoken;
+	$('#tokenLoad').val(token);
+} 
+
 function onBtnSubmit(element) {
-	var custID = $('#input_custID').val();
+	custID = $('#input_custID').val();
+	
 	for (i = 0; i < configScenario.customers.length; i++) { 
 		if(configScenario.customers[i].customerLogin == custID) {
 			custArrayIndex = i;
@@ -48,12 +57,12 @@ function onBtnSubmit(element) {
 	$('#txt_analyticsBar4').text(configScenario.customers[custArrayIndex].analyticsBar4Value);
 	$('#analyticsBar4Label').text(configScenario.labels.analyticsBar4Label);
 
-	showOffers(configScenario.nba);	
+	showOffers(configScenario.nba, custID, "Advisor");	
 	showHistory();
 }
 
 function onBtnLoad(element) {
-	var token = $('#tokenLoad').val();
+	token = $('#tokenLoad').val();
 	loadConfiguration(token);
 	$('#popupLoadToken').modal('hide');
 }
@@ -79,61 +88,118 @@ function loadConfiguration(token) {
     });
 }
 
-function showOffers(offerArray) {
+function getOffer(offerCode) {
+	for (var k=0; k < configScenario.nba.length; k++) {
+		if (offerCode == configScenario.nba[k].offerCode) {
+			console.log("getOffer: " + offerCode + " found. image: " + configScenario.nba[k].offerImg);
+			var offer = {
+				offerName: configScenario.nba[k].offerName, 
+				offerDescription: configScenario.nba[k].offerDesc, 
+				offerImage: configScenario.nba[k].offerImg, 
+				offerCode: configScenario.nba[k].offerCode,
+				offerSms: configScenario.nba[k].offerSms 
+			};
+		}
+	}
+	return offer;
+}
+
+function getOfferByCode(offerCode) {
+	var offer = {};
+
+	for (var k=0; k < configScenario.nba.length; k++) {
+		if (offerCode == configScenario.nba[k].offerCode) {
+			var offer = configScenario.nba[k];
+			console.log("getOffer: " + offer.offerCode + " found. image: " + offer.offerImg);
+			break;
+		}
+	}
+
+	return offer;
+}
+
+
+function showOffers(offerArray, customer, channel) {
+
 	var stars = 5;
 	$('#nbaTbody').html('');
-	for(var i = 0; i < offerArray.length; i++) { 
-		var starsNumberValue = stars-i;
-    	var offerName = offerArray[i]["offerName"]; 
-    	var offerDescription = offerArray[i]["offerDesc"];
-    	var offerImage = offerArray[i]["offerImg"];
-    	var offerScore = offerArray[i][custScoreValue];
+	
+	callApi({action: 'getOffers', token: token, customer: customer, channel: channel}).done(function (offerList) {
+    	//console.log("Loading Data done." + JSON.stringify(jsonData));
+    	console.log("offerList length: " + offerList.length);
 
-		offerRow = '<tr>'
-			+'<td width="20%">'
-			+'<a href="#" onclick="showOfferDetails('+ i +');" data-toggle="modal" data-target=".bs-example-modal-sm">'
-		    +'<img src="' + offerImage + '" width="200" class="img-thumbnail"></a>'
-		    +'</td>'
-		    +'<td width="80%">'
-		    +'<h4><b>' + offerName + '</b> <img src="./images/'+ starsNumberValue +'starsborder.png"></h4>'
-		    +'<p>' + offerDescription + '</p>'
-		    +'</td><td>' + offerScore + '</td>'
-		    +'</tr>';
-		$('#nbaTbody').append(offerRow);
-    } 
+    	for (var i=0; i < offerList.length; i++) {  // eligible offers for customer
+    		var offer 			 = getOfferByCode(offerList[i].offer);
+    		var starsNumberValue = stars-i;
+    		var offerScore 		 = offerList[i]["score"];
+			    	
+			//var offer = {offerName: offerName, offerDescription: offerDescription, offerImage: offerImage, offerCode: offerCode };
+			//currentOfferList.push(offer);
+    		//console.log(" " + i + ". offer details: " + offer.offerName + " - " + offer.offerDesc + " - " + offer.offerImg + " - " + offerScore);
+    				
+    		offerRow = '<tr>'
+						+'<td width="20%">'
+						+'<a href="#" onclick="showOfferDetails(\''+ offer.offerCode +'\');" data-toggle="modal" data-target=".bs-example-modal-sm">'
+					    +'<img src="' + offer.offerImg + '" width="200" class="img-thumbnail"></a>'
+					    +'</td>'
+					    +'<td width="80%">'
+					    +'<h4><b>' + offer.offerName + '</b> <img src="./images/'+ starsNumberValue +'starsborder.png"></h4>'
+					    +'<p>' + offer.offerDesc + '</p>'
+					    +'</td><td>' + offerScore + '</td>'
+					    +'</tr>';
+			$('#nbaTbody').append(offerRow);
+
+    	}
+    	
+    });
+
 }
 
 function showHistory() {
 	$('#historyTbody').html('');
-	for(var i = 0; i < configScenario.customers[custArrayIndex].actionHistory.length; i++) { 
-    	var historyDate = configScenario.customers[custArrayIndex].actionHistory[i]["historyDate"]; 
-    	var historyAction = configScenario.customers[custArrayIndex].actionHistory[i]["historyAction"];
-    	var historyChannel = configScenario.customers[custArrayIndex].actionHistory[i]["historyChannel"];
-    	var historyResponse = configScenario.customers[custArrayIndex].actionHistory[i]["historyResponse"];
 
-		historyRow = '<tr>'
-                    +'<td>'+historyDate+'</td>'
-                    +'<td>'+historyAction+'</td>'
-                    +'<td>'+historyChannel+'</td>'
-                    +'<td>'+historyResponse+'</td>'
-                    +'</tr>';
-		$('#historyTbody').append(historyRow);
-    } 
+	callApi({action: 'getHistory', token: token, customer: custID}).done(function (jsonData) {
+    	console.log("Loading Data done." + JSON.stringify(jsonData));
+    	historyList = jsonData;
+
+    	for(var i = 0; i < historyList.length; i++) {
+    	    console.log("showHistory: " + historyList[i]["offer"]);
+	    	if (historyList[i]["offer"] != "") {
+		    	var historyDate = historyList[i]["datetime"]; 
+		    	var historyAction = historyList[i]["offer"];
+		    	var historyChannel = historyList[i]["channel"];
+		    	var historyResponse = historyList[i]["responsetype"];
+
+				historyRow = '<tr>'
+		                    +'<td>'+historyDate+'</td>'
+		                    +'<td>'+historyAction+'</td>'
+		                    +'<td>'+historyChannel+'</td>'
+		                    +'<td>'+historyResponse+'</td>'
+		                    +'</tr>';
+				$('#historyTbody').append(historyRow);
+			}
+	    } 
+    });
+
 }
 
-function showOfferDetails(offerIndex) {
-	console.log("offer object: " + offerIndex);
-	$('#offerDetailsLabel').html(configScenario.nba[offerIndex].offerName);
-	$('#offerDetailsDescription').html(configScenario.nba[offerIndex].offerDesc);
-	$('#offerDetailsImage').attr('src', configScenario.nba[offerIndex].offerImg);
+function showOfferDetails(offerCode) {
+	var offer = getOfferByCode(offerCode);
+	
+	$('#offerDetailsLabel').html(offer.offerName);
+	$('#offerDetailsDescription').html(offer.offerDesc);
+	$('#offerDetailsImage').attr('src', offer.offerImg);
+
 }
 
-function callApi(parameters) {
-	return $.ajax("../api/", {
-        type: 'POST',
-        data: parameters
-    } );
-}
+function onResponseBtnClick(element, response) {
+	var offerCode = $('#offerDetailsOfferCode').val();
 
+	respondToOffer(token, custID, offerCode, response, "Advisor", "").done(function(){
+		$('#offerDetailsModal').modal('toggle');  // modal close
+		showOffers(configScenario.nba, custID, "Advisor");
+		showHistory();
+	});
+}
 
 

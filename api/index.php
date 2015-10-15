@@ -103,7 +103,7 @@ function processRequest() {
 			array("Name" => "Respond to Offer", "Description" => "....", "Endpoint" => "/api?action=respondToOffer&offer=...&customer=...&token=..."),
 			array("Name" => "Get History", "Description" => "....", "Endpoint" => "/api?action=getHistory&customer=...&token=...")
 		);
-		$serviceEndpointDesc = array("Serice Endpoints" => $serviceEndpoints);
+		$serviceEndpointDesc = array("Service Endpoints" => $serviceEndpoints);
 
 		echo json_encode($serviceEndpointDesc);	
 	}
@@ -233,7 +233,7 @@ function getOffers($token, $customer, $channel, $list_size = 10){
 	global $mysql_link;
 	$offerList = array();
 
-	$offerListSql = "SELECT a.*, b.entrytype, b.count FROM `customer_offers` a LEFT JOIN contact_response_counts b ON (a.token = b.token AND a.customer=b.customer AND a.offer=b.offerCd AND b.entrytype = 'Display') WHERE a.`responded` = '0' and a.`token` = '". $token ."' and a.`customer` = '".$customer."' and (count is null or display_limit >= count);";
+	$offerListSql = "SELECT a.*, b.entrytype, b.count FROM `customer_offers` a LEFT JOIN contact_response_counts b ON (a.token = b.token AND a.customer=b.customer AND a.offer=b.offerCd AND b.entrytype = 'Display') WHERE a.`responded` = '0' and a.`token` = '". $token ."' and a.`customer` = '".$customer."' and (count is null or display_limit >= count) and score > 0 order by score DESC;";
 
 	$offerListResult = $mysql_link->query($offerListSql);
 	// limit number of offers
@@ -259,10 +259,10 @@ function respondToOffer($token, $customer, $offerCd, $responseCd, $channelCd, $d
 
 	// check if offer is valid
 	$config = getConfig($token);
-	if($config == null) return;
+	if($config == null) return array('msg' => 'invalid token');
 
-	$offerIndex = $getOfferIndexByCode($config->nba, $offerCd);
-	if($offerIndex == -1) return;
+	$offerIndex = getOfferIndexByCode($config->nba, $offerCd);
+	if($offerIndex == -1) return array('msg' => 'invalid offerCode');
 
 	$offer = $config->nba[$offerIndex];
 
@@ -277,10 +277,12 @@ function respondToOffer($token, $customer, $offerCd, $responseCd, $channelCd, $d
 	}
 
 	// update offer table
-	$updateOfferSql = "UPDATE `customer_offers` SET `responded` = '".$responded."', `score` = (`score` + ".$changeScore.") WHERE `token` = '".$token."' and `customer` = '".$customerId."' and `offer` = '".$offerCd."';";
+	$updateOfferSql = "UPDATE `customer_offers` SET `responded` = '".$responded."', `score` = (`score` + ".$changeScore.") WHERE `token` = '".$token."' and `customer` = '".$customer."' and `offer` = '".$offerCd."';";
 	$mysql_link->query($updateOfferSql);
 
-	insertHistoryEntry($token, $customer, $offerCd, "", "Response", $responseCd, $details, datetime());
+	insertHistoryEntry($token, $customer, $offerCd, "", $channelCd, "Response", $responseCd, $details, ""); // TODO: need to be fixed
+
+	return array('msg' => 'response successful');
 }
 
 
