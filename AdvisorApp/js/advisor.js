@@ -157,13 +157,15 @@ function onResponseBtnClick(element, response) {
 	console.log("onResponseBtnClick exeucted");
 	respondToOffer(token, customer, offerCode, response, channel, details)
 	  .done(function(){
-		loadOffers()
-		  .done(function () {
+		
+		loadOffers().done(function () {
 			displayOffers();
-		  });
+		});
 
 		// TODO: loadHistory
-		// TODO: displayHistory
+		loadHistory().done(function () {
+			displayHistory();
+		});	
 	  });
 }
 
