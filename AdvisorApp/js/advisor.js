@@ -64,7 +64,11 @@ function onBtnSubmit(element) {
 		displayOffers();
 	});	
 
-	showHistory();
+	loadHistory().done(function () {
+		displayHistory();
+	});	
+
+	//showHistory();
 }
 
 
@@ -95,6 +99,7 @@ function displayCustomerList() {
 
 	$('#btn_SubmitLabel').html(configScenario.advisorApp.submitBtnAdvisor);
 	$('#titleAdvisor').html(configScenario.advisorApp.titleAdvisor);
+	$('#tokenLoad').val(configScenario.token);
 }
 
 
@@ -149,7 +154,7 @@ function onResponseBtnClick(element, response) {
 	var details = "";
 	$('#offerDetailsModal').modal('toggle');  // modal close
 
-
+	console.log("onResponseBtnClick exeucted");
 	respondToOffer(token, customer, offerCode, response, channel, details)
 	  .done(function(){
 		loadOffers()
@@ -201,5 +206,54 @@ function displayOffers() {
 	   		+'</tr>';
 
    		$('#nbaTbody').append(offerRow);
+   	}
+}
+
+function loadHistory() {
+	var token = readToken();
+	var customer = configScenario.selectedCustomer.customerLogin;
+	var channel = configScenario.currentChannel;
+	return getHistoryForCustomer(token, customer).done(function (historyList) {
+			console.log("History Loaded..."); 
+			console.log(historyList);
+			// store result in currentOffers - but transform response
+			//configScenario.currentHistory = historyList;
+			configScenario.currentHistory = historyList.map(function (historyItem) {
+				var offer = getOfferByCode(historyItem.offerCd, configScenario.nba);
+				offer.historyChannel = historyItem.channel;
+				offer.historyDate = historyItem.datetime;
+				offer.historyType = historyItem.entrytype;
+				offer.historyDetails = historyItem.responsedetails;
+				offer.historyResponse = historyItem.responsetype;
+				return offer;
+			});
+	});
+}
+
+
+function displayHistory() {
+	// assume offers are stored in configScenario.currentOffers
+	historyList = configScenario.currentHistory;
+
+	$('#historyTbody').html('');
+   	for (var i=0; i < historyList.length; i++) {  // eligible offers for customer
+   		var historyItem		= historyList[i];
+
+   		var historyDate     = historyItem.historyDate; 
+		var historyType     = historyItem.historyType;
+		var historyOffer    = historyItem.offerName;
+		var historyChannel  = historyItem.historyChannel;
+		var historyCounts   = "";
+		var historyResponse = historyItem.historyResponse;
+
+		historyRow = '<tr>'
+		    +'<td>'+historyDate+'</td>'
+		    +'<td>'+historyType+'</td>'
+		    +'<td>'+historyOffer+'</td>'
+		    +'<td>'+historyChannel+'</td>'
+		    +'<td>'+historyCounts+'</td>'
+		    +'<td>'+historyResponse+'</td>'
+		    +'</tr>';
+		$('#historyTbody').append(historyRow);
    	}
 }
