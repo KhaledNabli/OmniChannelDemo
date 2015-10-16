@@ -8,24 +8,23 @@ configScenario.currentOffers = [];
 configScenario.currentHistoy = [];
 
 
-
+/**
+* on document ready
+*/
 function onAdvisorReady() {
-	// register this methood as "onReady"
-	// and use it to do initial work - don´t do on the global space
 	var token = readToken();
 	getConfigurationByToken(token).done(function (config) {
 		configScenario = config;
 		configScenario.currentChannel = "Advisor";
 		configScenario.maxOffers = 4;
-		displayCustomerList();
+		updateAdvisorUI();
 	});
 }
 
 
-// function name is too ambiguous - onSelectCustomerBtn
-// try to seperate data aquistion from presentation
-function onBtnSubmit(element) {
-	var customerLogin = $('#input_custID').val();
+function onSelectCustomerBtn(element) {
+	var customerLogin = $('#inputCustomerLogin').val();
+	if(customerLogin == "") return;
 
 	configScenario.selectedCustomer = getCustomerByLogin(customerLogin, configScenario.customers);
 
@@ -58,8 +57,6 @@ function onBtnSubmit(element) {
 	$('#txt_analyticsBar4').text(configScenario.selectedCustomer.analyticsBar4Value);
 	$('#analyticsBar4Label').text(configScenario.labels.analyticsBar4Label);
 
-
-	//showOffers(configScenario.nba, custID, "Advisor");
 	loadOffers().done(function () {
 		displayOffers();
 	});	
@@ -67,30 +64,27 @@ function onBtnSubmit(element) {
 	loadHistory().done(function () {
 		displayHistory();
 	});	
-
-	//showHistory();
 }
 
 
-// function name is too ambiguous / onLoadConfigurationBtn
-function onBtnLoad(element) {
-	token = $('#tokenLoad').val();
-	loadConfiguration(token);
+function onLoadConfigurationBtn(element) {
+	var token = $('#tokenLoad').val();
 	$('#popupLoadToken').modal('hide');
+	if(token == "") return;
+
+	loadConfiguration(token);
+	
 }
 
 function loadConfiguration(token) {
 	getConfigurationByToken(token).done(function (config) {
     	configScenario = config;
-    	displayCustomerList();
+    	updateAdvisorUI();
     });
 }
 
-
-// TODO: find a describing function name
-function displayCustomerList() {
-	// assuming customer list is stored in configScenarion.customers;
-	/* adding available customers to datalist */
+function updateAdvisorUI() {
+	// adding available customers to datalist
 	$('#dataList_customers').html('');
 	for (i = 0; i < configScenario.customers.length; i++) { 
 		$('#dataList_customers').append('<option value="'+ configScenario.customers[i].customerLogin + '">' 
@@ -104,34 +98,6 @@ function displayCustomerList() {
 
 
 
-function showHistory() {
-/*
-	$('#historyTbody').html('');
-
-	callApi({action: 'getHistory', token: token, customer: custID}).done(function (jsonData) {
-    	console.log("Loading Data done." + JSON.stringify(jsonData));
-    	historyList = jsonData;
-
-    	for(var i = 0; i < historyList.length; i++) {
-    	    console.log("showHistory: " + historyList[i]["offer"]);
-	    	if (historyList[i]["offer"] != "") {
-		    	var historyDate = historyList[i]["datetime"]; 
-		    	var historyAction = historyList[i]["offer"];
-		    	var historyChannel = historyList[i]["channel"];
-		    	var historyResponse = historyList[i]["responsetype"];
-
-				historyRow = '<tr>'
-		                    +'<td>'+historyDate+'</td>'
-		                    +'<td>'+historyAction+'</td>'
-		                    +'<td>'+historyChannel+'</td>'
-		                    +'<td>'+historyResponse+'</td>'
-		                    +'</tr>';
-				$('#historyTbody').append(historyRow);
-			}
-	    } 
-    });
-*/
-}
 
 function showOfferDetails(offerCode) {
 	var offer = getOfferByCode(offerCode, configScenario.nba);
@@ -162,7 +128,6 @@ function onResponseBtnClick(element, response) {
 			displayOffers();
 		});
 
-		// TODO: loadHistory
 		loadHistory().done(function () {
 			displayHistory();
 		});	

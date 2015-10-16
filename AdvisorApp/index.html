@@ -38,14 +38,14 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Load Existing Token</h4>
+                <h4 class="modal-title" id="myModalLabel">Load Existing Demo</h4>
               </div>
               <div class="modal-body">
-                 <input type="text" class="form-control" id="tokenLoad" value="" >
+                 <input type="text" class="form-control" id="tokenLoad" value="" placeholder="Token here">
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="onBtnLoad(this);">Load</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="onLoadConfigurationBtn(this);">Load</button>
               </div>
             </div>
           </div>
@@ -106,18 +106,12 @@
                     <div class="col-sm-8 col-sm-offset-2">
 
                       <div class="form-group"></div>
-                        <input id="input_custID" list="dataList_customers" placeholder="Enter Customer" type="text" class="form-control" aria-label="...">
+                        <input id="inputCustomerLogin" list="dataList_customers" placeholder="Enter Customer" type="text" class="form-control" aria-label="...">
 
                         
                         <datalist id="dataList_customers">
                         </datalist>
 
-                        <!--<div class="input-group-btn">
-                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select <span class="caret"></span></button>
-                          <ul id="ul_custDropDown" class="dropdown-menu dropdown-menu-right">
-                     
-                          </ul>
-                        </div><!-- /btn-group -->
 
                     </div><!-- column end -->
                   </div>
@@ -125,7 +119,7 @@
                   <div class="row">
                     <div class="col-sm-8 col-sm-offset-5">
                       <div class="form-group"></div>
-                      <button id="btn_Submit" type="button" class="btn btn-default" onclick="onBtnSubmit(this);" >
+                      <button id="btn_Submit" type="button" class="btn btn-default" onclick="onSelectCustomerBtn(this);" >
                           <span id="btn_SubmitLabel">Submit</span>
                       </button>
                     </div><!-- column end -->

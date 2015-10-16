@@ -2,13 +2,13 @@
 
 function respondToOffer(token, customer, offerCd, responseCd, channelCd, details) {
 	return callApi({action: 'respondToOffer', 
-			token: token, 
-			customer: customer, 
-			offer: offerCd, 
-			response: responseCd, 
-			channel: channelCd, 
-			details: details
-		});
+					token: token, 
+					customer: customer, 
+					offer: offerCd, 
+					response: responseCd, 
+					channel: channelCd, 
+					details: details
+				});
 }
 
 function getOffersForCustomer(token, customer, channel, maxOffers) {
@@ -21,11 +21,25 @@ function getOffersForCustomer(token, customer, channel, maxOffers) {
 }
 
 function getHistoryForCustomer(token, customer) {
-	return callApi({action: 'getHistory', token: token, customer: customer}).done(function (jsonData) {
-    	console.log(jsonData);
-    });
+	return callApi({action: 'getHistory', 
+					token: token, 
+					customer: customer
+				});
 }
 
+
+function getConfigurationByToken(token) {
+	return callApi({action: 'getConfig', 
+					token: token
+				});
+}
+
+function saveConfiguration($config) {
+	return callApi({action: 'saveConfig', 
+					config: JSON.stringify(configScenario)
+				});
+}
+	
 
 function callApi(parameters) {
 	return $.ajax("../api/", {
@@ -53,9 +67,6 @@ function saveToken(token) {
 	window.localStorage.omnichanneltoken = token;
 }
 
-function getConfigurationByToken(token) {
-	return callApi({action: 'getConfig', token: token});
-}
 
 
 function getOfferByCode(offerCode, offerList) {
