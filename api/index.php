@@ -70,8 +70,8 @@ function processRequest() {
 		$customer = getRequestParameter("customer");
 		$channel = getRequestParameter("channel");
 		$list_size = getRequestParameter("maxOffers");
-	
-		echo json_encode(getOffers($token, $customer, $channel));
+		$do_not_track = getRequestParameter("DoNotTrack");
+		echo json_encode(getOffers($token, $customer, $channel, $list_size));
 	
 	}
 	else if($action == 'respondToOffer') {
@@ -260,6 +260,9 @@ function respondToOffer($token, $customer, $offerCd, $responseCd, $channelCd, $d
 	// check if offer is valid
 	$config = getConfig($token);
 	if($config == null) return array('msg' => 'invalid token');
+
+	if(empty($offerCd)) return array('msg' => 'offerCode is required');
+
 
 	$offerIndex = getOfferIndexByCode($config->nba, $offerCd);
 	if($offerIndex == -1) return array('msg' => 'invalid offerCode');
