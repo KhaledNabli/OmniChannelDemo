@@ -113,6 +113,33 @@ CREATE TABLE IF NOT EXISTS `demo_events` (
 
 -- --------------------------------------------------------
 
+
+--
+-- Tabellenstruktur für Tabelle `demo_website`
+--
+
+CREATE TABLE IF NOT EXISTS `demo_website` (
+  `token` varchar(32) NOT NULL,
+  `site` varchar(32) NOT NULL,
+  `content` mediumtext CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `create_dttm` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modify_dttm` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `modify_by` varchar(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `demo_website`
+--
+ALTER TABLE `demo_website`
+ ADD PRIMARY KEY (`token`,`site`);
+
+
+
+
 --
 -- Struktur des Views `contact_response_counts`
 --

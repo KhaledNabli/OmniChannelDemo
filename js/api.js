@@ -42,7 +42,8 @@ function saveConfiguration($config) {
 	
 
 function callApi(parameters) {
-	return $.ajax("../api/", {
+	var baseUrl = window.location.protocol + "//" + window.location.host + "/OmniChannelDemo/api/";
+	return $.ajax(baseUrl, {
         type: 'POST',
         data: parameters
     } );
@@ -117,4 +118,34 @@ function getCustomerIndexByLogin(customerLogin, customerList) {
 	}
 
 	return customerIndex;
+}
+
+function base64_encodeProperties(propertyArray) {
+	for (var property in propertyArray) {
+		if (propertyArray.hasOwnProperty(property)) {
+            if (property) propertyArray[property] = base64_encode(propertyArray[property]);
+        }       
+    }
+
+    return propertyArray;
+}
+
+
+function base64_decodeProperties(propertyArray) {
+	for (var property in propertyArray) {
+		if (propertyArray.hasOwnProperty(property)) {
+            if (property) propertyArray[property] = base64_decode(propertyArray[property]);
+        }       
+    }
+
+    return propertyArray;
+}
+
+
+function base64_encode(str) {
+    return window.btoa(unescape(encodeURIComponent(str)));
+}
+
+function base64_decode(str) {
+    return decodeURIComponent(escape(window.atob(str)));
 }

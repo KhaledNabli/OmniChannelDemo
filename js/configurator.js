@@ -28,7 +28,7 @@ function loadConfiguration(token) {
 function onBtnLoad(element) {
 	var token = $('#tokenLoad').val();
 	loadConfiguration(token);
-	$('#popupLoadToken').modal('hide')
+	$('#popupLoadToken').modal('hide');
 }
 /**
 *	Init configuration ui
@@ -110,6 +110,9 @@ function initConfigurator() {
     }
     //$('#nbaHtmlTemplate').val(utf8_decode(configScenario.web.nbaHtmlTemplate));
 
+    // set template Code
+    var editor = ace.edit("nbaHtmlTemplateEditor");
+    editor.setValue(utf8_decode(configScenario.web.nbaHtmlTemplate));
 
 	clearHistoryRecords('c1');
     if(configScenario.customers[0].actionHistory) {
@@ -218,8 +221,8 @@ function saveConfiguration() {
                 configScenario.web[property] = utf8_encode($('#' + property).val());
         }       
     }
-
-    //configScenario.web.nbaHtmlTemplate = utf8_encode($('#nbaHtmlTemplate').val());
+    var editor = ace.edit("nbaHtmlTemplateEditor");
+    configScenario.web.nbaHtmlTemplate = utf8_encode(editor.getValue());
 
     /* save grids */
     configScenario.nba 				 			= getNbaRecords();
@@ -306,7 +309,6 @@ function dropRecord(object) {
 
 }
 
-
 /** Action History Functions **/
 /******************************/
 function clearHistoryRecords(prefix) {
@@ -370,6 +372,60 @@ function checkIfTrue(value) {
 	} 
 	return false;
 }
+
+
+
+function onUploadWebsiteCommitBtn(element) {
+    if(readToken() == "") {
+        alert("Please save your configuration first.");
+        return;
+    }
+    var page = $('#uploadWebsiteForPage').val();
+    var token = window.localStorage.omnichanneltoken;
+    var url = $('#uploadUrlInput').val();;
+    $('#popupUploadWebsite').modal('hide');
+
+
+    return $.ajax("./Website/", {
+        type: 'POST',
+        data: {action : "upload", token : token, url : url, page : page},
+    }).done(function (result) {
+        if(result == "") result = "upload successfull";
+        $('#websiteInfo-'+page).html(result);
+        console.log("setting #websiteInfo-"+ page + " : " + result);
+    });
+}
+
+function onUploadWebsiteBtn(page) {
+    if(readToken() == "") {
+        alert("Please save your configuration first.");
+        return;
+    }
+    $('#uploadWebsiteForPage').val(page);
+    $('#popupUploadWebsite').modal('show');
+
+}
+
+function onEditWebsiteBtn(page) {
+    if(readToken() == "") {
+        alert("Please save your configuration first.");
+        return;
+    }
+    var redirectUrl = "./Website/?token=" + readToken() + "&action=edit&page=" + page;
+    window.open(redirectUrl);
+}
+
+function onViewWebsiteBtn(page) {
+    if(readToken() == "") {
+        alert("Please save your configuration first.");
+        return;
+    }
+    var redirectUrl = "./Website/?token=" + readToken() + "&action=read&page=" + page;
+    window.open(redirectUrl);
+}
+
+
+
 
 function utf8_encode(str) {
     return window.btoa(unescape(encodeURIComponent(str)));

@@ -1,54 +1,54 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../../favicon.ico">
 
-    <title>Advisor App</title>
+  <title>Advisor App</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="./css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link href="./css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="./css/dashboard.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="./css/dashboard.css" rel="stylesheet">
 
-    
 
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <!--script src="../../assets/js/ie-emulation-modes-warning.js"></script-->
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+  <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+  <!--script src="../../assets/js/ie-emulation-modes-warning.js"></script-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
+      <![endif]-->
+    </head>
 
-  <body>
+    <body>
 
-    <div class="modal fade" id="popupLoadToken" tabindex="-1" role="dialog" aria-labelledby="popupLoadToken">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Load Existing Demo</h4>
-              </div>
-              <div class="modal-body">
-                 <input type="text" class="form-control" id="tokenLoad" value="" placeholder="Token here">
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="onLoadConfigurationBtn(this);">Load</button>
-              </div>
+      <div class="modal fade" id="popupLoadToken" tabindex="-1" role="dialog" aria-labelledby="popupLoadToken">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Load Existing Demo</h4>
             </div>
+            <div class="modal-body">
+             <input type="text" class="form-control" id="tokenLoad" value="" placeholder="Token here">
+           </div>
+           <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" onclick="onLoadConfigurationBtn(this);">Load</button>
           </div>
+        </div>
+      </div>
     </div>
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -97,146 +97,146 @@
           
         </div>
         <div class="col-sm-9 col-sm-offset-2 main">
-          
-            <div class="tab-content">
-                <div id="tab_overview" class="tab-pane active">
-                  <h3 class="sub-header">Select Customer</h3>
-                  
-                  <div class="row">
-                    <div class="col-sm-8 col-sm-offset-2">
 
-                      <div class="form-group"></div>
-                        <input id="inputCustomerLogin" list="dataList_customers" placeholder="Enter Customer" type="text" class="form-control" aria-label="...">
+          <div class="tab-content">
+            <div id="tab_overview" class="tab-pane active">
+              <h3 class="sub-header">Select Customer</h3>
 
-                        
-                        <datalist id="dataList_customers">
-                        </datalist>
+              <div class="row">
+                <div class="col-sm-8 col-sm-offset-2">
+
+                  <div class="form-group"></div>
+                  <input id="inputCustomerLogin" list="dataList_customers" placeholder="Enter Customer" type="text" class="form-control" aria-label="...">
 
 
-                    </div><!-- column end -->
+                  <datalist id="dataList_customers">
+                  </datalist>
+
+
+                </div><!-- column end -->
+              </div>
+
+              <div class="row">
+                <div class="col-sm-8 col-sm-offset-5">
+                  <div class="form-group"></div>
+                  <button id="btn_Submit" type="button" class="btn btn-default" onclick="onSelectCustomerBtn(this);" >
+                    <span id="btn_SubmitLabel">Submit</span>
+                  </button>
+                </div><!-- column end -->
+              </div><!-- row end -->
+
+            </div>
+
+
+            <div id="tab_custDetails" class="tab-pane ">
+              <form class="form-horizontal" role="form">
+                <div class="row">
+                  <!--h1 class="page-header">Page Header</h1-->
+                  <h3 class="sub-header">Customer's Details</h3>
+
+
+                  <div class="col-sm-8">
+                    <div class="form-group"></div>  
+
+                    <div class="form-group">
+                      <label for="customerName" class="col-sm-4 control-label">Customer Name</label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" id="customerName" placeholder="">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="mobileNumber" class="col-sm-4 control-label">Mobile Number</label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" id="mobileNumber" placeholder="">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="lifeStageSegment" class="col-sm-4 control-label">Life  Segment</label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" id="lifeStageSegment" placeholder="">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="age" class="col-sm-4 control-label">Age</label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" id="age" placeholder="">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="email" class="col-sm-4 control-label">Email</label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" id="email" placeholder="">
+                      </div>
+                    </div>
+                  </div> <!-- end of column -->
+
+                  <!-- Customer Photo Column -->
+                  <div class="col-sm-4">
+                    <div class="form-group"></div> 
+                    <img id="pictureUrl" src="./images/profile.jpg" width="210" alt="Mathias Bouten" class="img-thumbnail">
                   </div>
 
-                  <div class="row">
-                    <div class="col-sm-8 col-sm-offset-5">
-                      <div class="form-group"></div>
-                      <button id="btn_Submit" type="button" class="btn btn-default" onclick="onSelectCustomerBtn(this);" >
-                          <span id="btn_SubmitLabel">Submit</span>
-                      </button>
-                    </div><!-- column end -->
-                  </div><!-- row end -->
+                </div><!-- end of row -->
 
-                </div>
+                <div class="row">
+                  <h3 class="sub-header">Analytical Details</h3>
 
-
-                <div id="tab_custDetails" class="tab-pane ">
-                  <form class="form-horizontal" role="form">
-                    <div class="row">
-                  <!--h1 class="page-header">Page Header</h1-->
-                      <h3 class="sub-header">Customer's Details</h3>
-                      
-                      
-                      <div class="col-sm-8">
-                        <div class="form-group"></div>  
-                      
-                        <div class="form-group">
-                              <label for="customerName" class="col-sm-4 control-label">Customer Name</label>
-                              <div class="col-sm-8">
-                                  <input type="text" class="form-control" id="customerName" placeholder="">
-                              </div>
-                        </div>
-                        <div class="form-group">
-                              <label for="mobileNumber" class="col-sm-4 control-label">Mobile Number</label>
-                              <div class="col-sm-8">
-                                  <input type="text" class="form-control" id="mobileNumber" placeholder="">
-                              </div>
-                        </div>
-                        <div class="form-group">
-                              <label for="lifeStageSegment" class="col-sm-4 control-label">Life  Segment</label>
-                              <div class="col-sm-8">
-                                  <input type="text" class="form-control" id="lifeStageSegment" placeholder="">
-                              </div>
-                        </div>
-                        <div class="form-group">
-                              <label for="age" class="col-sm-4 control-label">Age</label>
-                              <div class="col-sm-8">
-                                  <input type="text" class="form-control" id="age" placeholder="">
-                              </div>
-                        </div>
-                        <div class="form-group">
-                              <label for="email" class="col-sm-4 control-label">Email</label>
-                              <div class="col-sm-8">
-                                  <input type="text" class="form-control" id="email" placeholder="">
-                              </div>
-                        </div>
-                      </div> <!-- end of column -->
-
-                      <!-- Customer Photo Column -->
-                      <div class="col-sm-4">
-                        <div class="form-group"></div> 
-                        <img id="pictureUrl" src="./images/profile.jpg" width="210" alt="Mathias Bouten" class="img-thumbnail">
+                  <div class="col-sm-3"><span id="analyticsBar1Label">Lifetime Value:</span> </div>
+                  <div class="col-sm-9">
+                    <div class="progress"> 
+                      <div id="bar_analyticsBar1" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                        <span id="txt_analyticsBar1">100% </span>
                       </div>
+                    </div>
+                  </div>
 
-                    </div><!-- end of row -->
-
-                    <div class="row">
-                      <h3 class="sub-header">Analytical Details</h3>
-
-                      <div class="col-sm-3"><span id="analyticsBar1Label">Lifetime Value:</span> </div>
-                      <div class="col-sm-9">
-                        <div class="progress"> 
-                          <div id="bar_analyticsBar1" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                            <span id="txt_analyticsBar1">100% </span>
-                          </div>
-                        </div>
+                  <div class="col-sm-3"><span id="analyticsBar2Label">Satisfaction:</span> </div>
+                  <div class="col-sm-9">
+                    <div class="progress">
+                      <div id="bar_analyticsBar2" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                        <span id="txt_analyticsBar2">100%</span>
                       </div>
+                    </div>
+                  </div>
 
-                      <div class="col-sm-3"><span id="analyticsBar2Label">Satisfaction:</span> </div>
-                      <div class="col-sm-9">
-                      <div class="progress">
-                        <div id="bar_analyticsBar2" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                          <span id="txt_analyticsBar2">100%</span>
-                        </div>
+                  <div class="col-sm-3"><span id="analyticsBar3Label">Risk:</span> </div>
+                  <div class="col-sm-9">
+                    <div class="progress">
+                      <div id="bar_analyticsBar3" class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                        <span id="txt_analyticsBar3">100%</span>
                       </div>
-                      </div>
+                    </div>
+                  </div>
 
-                      <div class="col-sm-3"><span id="analyticsBar3Label">Risk:</span> </div>
-                      <div class="col-sm-9">
-                      <div class="progress">
-                        <div id="bar_analyticsBar3" class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                          <span id="txt_analyticsBar3">100%</span>
-                        </div>
+                  <div class="col-sm-3"><span id="analyticsBar4Label">Fraud:</span> </div>
+                  <div class="col-sm-9">
+                    <div class="progress">
+                      <div id="bar_analyticsBar4" class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                        <span id="txt_analyticsBar4">100%</span>
                       </div>
-                      </div>
+                    </div>
+                  </div>
 
-                      <div class="col-sm-3"><span id="analyticsBar4Label">Fraud:</span> </div>
-                      <div class="col-sm-9">
-                      <div class="progress">
-                        <div id="bar_analyticsBar4" class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                          <span id="txt_analyticsBar4">100%</span>
-                        </div>
-                      </div>
-                      </div>
+                </div><!-- end of row -->
 
-                    </div><!-- end of row -->
-                      
-                  </form> 
-                </div><!-- end of tab_custDetails -->
+              </form> 
+            </div><!-- end of tab_custDetails -->
 
 
-                <div id="tab_nba" class="tab-pane">
-                  <h3 class="sub-header">Customer's Next Best Offers</h3>
-                  
-                  <div class="table-responsive">
-                    <table class="table ">
-                      <thead>
-                        <tr>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody id="nbaTbody">
-                        
+            <div id="tab_nba" class="tab-pane">
+              <h3 class="sub-header">Customer's Next Best Offers</h3>
+
+              <div class="table-responsive">
+                <table class="table ">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="nbaTbody">
+
                         <!--<tr>
                           <td width="20%">
                             <a href="#" data-toggle="modal" data-target=".bs-example-modal-sm">
@@ -272,25 +272,25 @@
                         </div>
                         <div class="modal-footer text-center">
                           <form>
-                          <button type="button" class="btn-lg btn-default" data-dismiss="modal">Close</button>
-                          <button id="offerDetailsAcceptBtn" type="button" class="btn-lg btn-success" onclick="onResponseBtnClick(this,'accept');">Accept</button>
-                          <button id="offerDetailsRejectBtn" type="button" class="btn-lg btn-danger" onclick="onResponseBtnClick(this,'reject');">Reject</button>
-                          <button id="offerDetailsMaybeBtn" type="button" class="btn-lg btn-warning" onclick="onResponseBtnClick(this,'interest');">Maybe</button>
-                          <input type="hidden" id="offerDetailsOfferCode">
-                        </form>
+                            <button type="button" class="btn-lg btn-default" data-dismiss="modal">Close</button>
+                            <button id="offerDetailsAcceptBtn" type="button" class="btn-lg btn-success" onclick="onResponseBtnClick(this,'accept');">Accept</button>
+                            <button id="offerDetailsRejectBtn" type="button" class="btn-lg btn-danger" onclick="onResponseBtnClick(this,'reject');">Reject</button>
+                            <button id="offerDetailsMaybeBtn" type="button" class="btn-lg btn-warning" onclick="onResponseBtnClick(this,'interest');">Maybe</button>
+                            <input type="hidden" id="offerDetailsOfferCode">
+                          </form>
                         </div>
                       </div>
                     </div>
                   </div>
-          
+
 
                 </div>
 
 
                 <div id="tab_history" class="tab-pane">
-                    <h3 class="sub-header">Customer's History</h3>
+                  <h3 class="sub-header">Customer's History</h3>
 
-                    <div class="table-responsive">
+                  <div class="table-responsive">
                     <table class="table table-striped">
                       <thead>
                         <tr>
@@ -329,34 +329,28 @@
                   </div><!-- TABLE responsive -->
 
                 </div>
-            </div><!--/.tab-content-->
+              </div><!--/.tab-content-->
 
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script-->
-    <script src="../js/jquery-1.11.3.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="./js/api.js"></script>
-    <script src="./js/advisor.js"></script>
-    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-    <!--script src="../js/vendor/holder.min.js"></script-->
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <!--script src="../js/ie10-viewport-bug-workaround.js"></script-->
+        <script src="../js/ext/jquery-1.11.3.min.js"></script>
+        <script src="../js/ext/bootstrap.min.js"></script>
+        <script src="../js/api.js"></script>
+        <script src="./js/advisor.js"></script>
 
-    <script type="text/javascript">
+        <script type="text/javascript">
         $( document ).ready(function() {
-            onAdvisorReady();
-            $('#myTabs a').click(function (e) {
-            e.preventDefault()
-              $(this).tab('show')
-            });
-        });
-    </script>
+          onAdvisorReady();
 
-  </body>
-</html>
+          $('#myTabs a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+          });
+
+        });
+        </script>
+
+      </body>
+      </html>

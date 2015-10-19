@@ -11,7 +11,8 @@
 	"advisorApp": {
 		"titleAdvisor": "Advisor Frontend",
 		"submitBtnAdvisor": "Get Customer Profile",
-		"sendSms": "false"
+		"sendSms": "false",
+		"maxOffers": 3
 	},
 	"web": {
 		"startPageUrl": "aW5kZXguaHRtbA==",
@@ -40,7 +41,8 @@
 		"title_offer_panel": "Top Angebote",
 		"title_geo_offer_panel": "Geolocation Angebote",
 		"homescreen_image": "./resources/images/homescreen.jpg",		
-		"map_pin_image": "./resources/images/pin.jpg"
+		"map_pin_image": "./resources/images/pin.jpg",
+		"maxOffers": 3
 	},
 	"labels": {
 		"acceptBtnMobile": "Accept",
