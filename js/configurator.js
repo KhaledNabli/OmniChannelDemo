@@ -27,7 +27,11 @@ function loadConfiguration(token) {
 
 function onBtnLoad(element) {
 	var token = $('#tokenLoad').val();
-	loadConfiguration(token);
+    if(token != "") {
+        saveToken(token);
+        loadConfiguration(token);
+    }
+
 	$('#popupLoadToken').modal('hide');
 }
 /**
@@ -108,18 +112,12 @@ function initConfigurator() {
                 $('#' + property).val(utf8_decode(configScenario.web[property]));
         }       
     }
-    //$('#nbaHtmlTemplate').val(utf8_decode(configScenario.web.nbaHtmlTemplate));
 
-    // set template Code
-    var editor = ace.edit("nbaHtmlTemplateEditor");
-    editor.setValue(utf8_decode(configScenario.web.nbaHtmlTemplate));
 
 	clearHistoryRecords('c1');
     if(configScenario.customers[0].actionHistory) {
     	for(var i = 0; i < configScenario.customers[0].actionHistory.length; i++) {
-        	addHistoryRecord('c1',
-        		configScenario.customers[0].actionHistory[i]["historyDate"], 
-        		configScenario.customers[0].actionHistory[i]["historyAction"], 
+        	addHistoryRecord('c1',        		configScenario.customers[0].actionHistory[i]["historyAction"], 
         		configScenario.customers[0].actionHistory[i]["historyChannel"],
         		configScenario.customers[0].actionHistory[i]["historyResponse"] );
     	}
@@ -150,16 +148,13 @@ function initConfigurator() {
         	configScenario.nba[i]["customer2Score"] );
     	}
     }
+
+
+    // set template Code
+    var editor = ace.edit("nbaHtmlTemplateEditor");
+    editor.setValue(utf8_decode(configScenario.web.nbaHtmlTemplate));
 } /* end initConfigurator() */
 
-
-
-function callApi(parameters) {
-	return $.ajax("api/", {
-        type: 'POST',
-        data: parameters
-    } );
-}
 
 function resetConfiguration() {
 	window.localStorage.omnichanneltoken = "";

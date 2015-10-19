@@ -12,12 +12,13 @@
 		"titleAdvisor": "Advisor Frontend",
 		"submitBtnAdvisor": "Get Customer Profile",
 		"sendSms": "false",
-		"maxOffers": 3
+		"maxOffersAdvisor": 3
 	},
 	"web": {
 		"startPageUrl": "aW5kZXguaHRtbA==",
 		"loginPageUrl": "bG9naW4uaHRtbA==",
 		"landingPageUrl": "bGFuZGluZ3BhZ2UuaHRtbA==",
+		"startLinkSelector": "",
 		"loginLinkSelector": "",
 		"loginLinkHtml": "",
 		"loginUserInputSelector": "",
@@ -26,6 +27,7 @@
 		"nbaPlaceHolderSelector1": "",
 		"nbaPlaceHolderSelector2": "",
 		"nbaPlaceHolderSelector3": "",
+		"nbaPlaceHolderSelector4": "",
 		"nbaHtmlTemplate": ""
 	},
 	"mobileApp": {
@@ -42,7 +44,7 @@
 		"title_geo_offer_panel": "Geolocation Angebote",
 		"homescreen_image": "./resources/images/homescreen.jpg",		
 		"map_pin_image": "./resources/images/pin.jpg",
-		"maxOffers": 3
+		"maxOffersMobile": 3
 	},
 	"labels": {
 		"acceptBtnMobile": "Accept",

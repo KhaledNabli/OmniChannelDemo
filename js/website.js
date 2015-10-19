@@ -247,33 +247,3 @@ function renderRejectButton(offerObj, reloadPage) {
 function renderInterestButton(offerObj, reloadPage) {
 	return " onclick=\"rdmSendResponse('" + offerObj.userid + "','" + offerObj.index + "','" + offerObj.trackingCd +  "','Click','" + offerObj.name + "','Banner Click'," + reloadPage + ");\"";
 }
-
-
-function rdmSendResponse(custid, teaser_code, ttc, offer_code, offer_name, response, reloadPage) {
-	console.log("rdmSendResponse - TTC: " + ttc + " teaser_code: " + teaser_code + " response: " + response + " custid: " + custid + " offerCode: " + offer_code + " offerName: " + offer_name);
-
-	var rtdmRequestUrl = "http://" + rtdmHost + "/RTDM/rest/runtime/decisions/" + rtdmResponseEventName + "/";
-	var contentType = 'application/vnd.sas.decision.request+json';
-	var rtdmRequest = {"version" : 1, "clientTimeZone" : "EST", "inputs":{}};
-
-	rtdmRequest.inputs.CUSTOMERID = parseInt(custid);
-	rtdmRequest.inputs.CHANNEL_CD = "Web";
-	rtdmRequest.inputs.OFFER_CD = offer_code;
-	rtdmRequest.inputs.TEASER_CD = teaser_code;
-	rtdmRequest.inputs.OFFER_TRACKING_CD = ttc;
-	rtdmRequest.inputs.RESPONSE_CD = response;
-	rtdmRequest.inputs.OFFER_MEDIUM = offer_name;
-
-
-	$.ajax({
-		method: "POST",
-		contentType: contentType,
-		url: rtdmRequestUrl,
-		data: JSON.stringify(rtdmRequest)
-	}).done(function(rtdmResponse) { 
-		// render templates
-		//processRtdmOffers(rtdmResponse)
-		if(reloadPage)
-			buildOfferPage();
-	});
-}
