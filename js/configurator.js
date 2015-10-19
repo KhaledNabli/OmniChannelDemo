@@ -172,52 +172,53 @@ function saveConfiguration() {
 	/*** for-loop to get all fromFields from configurator.html ***/
 	for (var property in configScenario.general) {
         if (configScenario.general.hasOwnProperty(property)) {
-            if (property && $('#' + property).val())
+            if (property)
                configScenario.general[property] = $('#' + property).val();
         }
     }
 
     for (var property in configScenario.customers[0]) {
 		if (configScenario.customers[0].hasOwnProperty(property)) {
-            if (property && $('#' + property).val())
+            if (property)
                 configScenario.customers[0][property] = $('#c1' + property).val();
         }       
     }
 
     for (var property in configScenario.customers[1]) {
 		if (configScenario.customers[1].hasOwnProperty(property)) {
-            if (property && $('#' + property).val())
+            if (property)
                 configScenario.customers[1][property] = $('#c2' + property).val();
         }       
     }
 
     for (var property in configScenario.labels) {
 		if (configScenario.labels.hasOwnProperty(property)) {
-            if (property && $('#' + property).val())
+            if (property)
                 configScenario.labels[property] = $('#' + property).val();
         }       
     }
 
     for (var property in configScenario.mobileApp) {
 		if (configScenario.mobileApp.hasOwnProperty(property)) {
-            if (property && $('#' + property).val())
+            if (property)
                 configScenario.mobileApp[property] = $('#' + property).val();
         }       
     }
 
     for (var property in configScenario.advisorApp) {
 		if (configScenario.advisorApp.hasOwnProperty(property)) {
-            if (property && $('#' + property).val())
+            if (property)
                 configScenario.advisorApp[property] = $('#' + property).val();
         }       
     }
 
     for (var property in configScenario.web) {
 		if (configScenario.web.hasOwnProperty(property)) {
-            if (property && $('#' + property).val())
+            if (property)
                 configScenario.web[property] = utf8_encode($('#' + property).val());
         }       
     }
+
     var editor = ace.edit("nbaHtmlTemplateEditor");
     configScenario.web.nbaHtmlTemplate = utf8_encode(editor.getValue());
 
