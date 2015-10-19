@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Mobile App</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="apple-touch-icon" href="" />
+	<meta name="apple-mobile-web-app-capable" content="yes" /><!-- hide top bar in mobile safari-->
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="shortcut icon" href="">
+
+	<link rel="stylesheet" href="../css/jquery.mobile-1.4.5.min.css" />
+
+	<link rel="stylesheet" href="../css/themes/theme-classic.css" />
+
+</head>
+<body>
+
+<!-- Start of first page -->
+<div data-role="page"  class="ui-page-theme-b" id="pageHome">
+
+	<div data-role="header" data-position="fixed">
+		<h1><span id="titleMobileApp">Mobile App</span></h1>
+		<a href="#left-panel" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+		<a href="#pageLogin" data-transition="slide" data-iconpos="notext" data-icon="carat-r" class="ui-btn-right">Login</a>
+	</div><!-- /header -->
+
+
+	<div role="main" class="ui-content">
+		<img id="homeBackground" src="./images/background.jpg" width="100%" >
+<!--			     style="border:1px solid #;-webkit-border-radius: 20px;-moz-border-radius: 20px;border-radius: 20px;">
+-->
+	</div><!-- /content -->
+
+	<div data-role="panel" id="left-panel" data-position="left" data-display="overlay" data-theme="b">
+		<div class="ui-panel-inner">
+			<ul data-role="listview">
+			<li data-icon="back"><a href="#" data-rel="close" class="ui-btn ui-btn-icon-right ui-icon-delete">Close</a></li>
+			<li data-role="list-divider">
+			Token:
+			<input type="text" name="tokenLoad" id="tokenLoad" placeholder="Token here" value="">
+			<br></li>
+			<li><a href="#" data-rel="close" onclick="onLoadConfigurationBtn(this);">Load</a></li>			
+			</ul>
+		</div>
+	</div><!-- /panel -->
+
+
+
+	<div data-role="footer" data-position="fixed">
+		<div data-role="navbar">
+			<ul>
+				<li><a href="#pageHome"   data-transition="slide" data-icon="home" class="ui-btn-active">Home</a></li>
+				<li><a href="#pageLogin"  data-transition="slide" data-icon="user">Login</a></li>
+				<li><a href="#pageOffers" data-transition="slide" data-icon="shop">Offers</a></li>
+			</ul>
+		</div><!-- /navbar -->
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<!-- Start of first page -->
+<div data-role="page"  class="ui-page-theme-b" id="pageLogin">
+
+	<div data-role="header" data-position="fixed">
+		<h1>Login</h1>
+		<a href="#pageHome" data-transition="slide" data-iconpos="notext" data-icon="carat-l" class="ui-btn-left">Home</a>
+		<a href="#pageOffers" data-transition="slide" data-iconpos="notext" data-icon="carat-r" class="ui-btn-right">Offers</a>
+	</div><!-- /header -->
+
+
+	<div role="main" class="ui-content">
+		<p>
+			<label for="inputCustomerLogin">Customer:</label>
+			<input id="inputCustomerLogin" list="dataList_customers" placeholder="Enter your ID" type="text" class="form-control">
+                        
+            <datalist id="dataList_customers">
+            </datalist>
+
+			<label for="password">Password:</label>
+			<input type="password" name="password" id="password" value="" autocomplete="off">
+			<br>
+			<input id="submitBtn" type="button" value="Login" data-icon="check" onclick="onSelectCustomerBtn(this);">
+		</p>
+	</div><!-- /content -->
+
+
+
+
+	<div data-role="footer" data-position="fixed">
+		<div data-role="navbar">
+			<ul>
+				<li><a href="#pageHome"   data-transition="slide" data-icon="home">Home</a></li>
+				<li><a href="#pageLogin"  data-transition="slide" data-icon="user" class="ui-btn-active">Login</a></li>
+				<li><a href="#pageOffers" data-transition="slide" data-icon="shop">Offers</a></li>
+			</ul>
+		</div><!-- /navbar -->
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+
+<!-- Start of first page -->
+<div data-role="page"  class="ui-page-theme-b" id="pageOffers">
+
+	<div data-role="header" data-position="fixed">
+		<h1><span id="numberOfOffers"></span> Offers</h1>
+		<a href="#pageLogin" data-transition="slide" data-iconpos="notext" data-icon="carat-l" class="ui-btn-left">Login</a>
+		<a href="#pageHome" data-transition="slide" data-iconpos="notext" data-icon="carat-r" class="ui-btn-right">Home</a>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+		
+		<!-- Page: Offers-->
+		<span id="offers" style="display:none">
+			<div id="nba_table"></div>
+		</span><!-- Page: Offers-->
+
+		<!-- Page: Offer Details -->
+		<span id="offerDetails" style="display:none">
+			<h2><span id="offerDetailsLabel"></span></h2>
+			<img id="offerDetailsImage" src="" height="200" >
+			<span id="offerDetailsDescription"></span>
+			<input type="hidden" id="offerDetailsOfferCode">
+			<input id="acceptButton" onclick="onResponseBtnClick(this,'accept');" type="button" data-icon="check" value="Accept" >
+		    <input id="rejectButton" onclick="onResponseBtnClick(this,'reject');" type="button" data-icon="forbidden" value="Reject" >		    
+		</span><!-- Page: Offer Details -->
+
+	</div><!-- /content -->
+
+
+	<div data-role="footer" data-position="fixed">
+		<div data-role="navbar">
+			<ul>
+				<li><a href="#pageHome"   data-transition="slide" data-icon="home">Home</a></li>
+				<li><a href="#pageLogin"  data-transition="slide" data-icon="user">Login</a></li>
+				<li><a href="#pageOffers" data-transition="slide" data-icon="shop" class="ui-btn-active">Offers</a></li>
+			</ul>
+		</div><!-- /navbar -->
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+
+
+
+
+<script src="../js/ext/jquery-1.11.3.min.js"></script>
+<script src="../js/ext/jquery.mobile-1.4.5.min.js"></script>
+<script src="../js/mobileapp.js"></script>
+<script src="../js/api.js"></script>
+
+ <script type="text/javascript">
+        $( document ).ready(function() {
+            onMobileAppReady();
+        });
+ </script>
+
+</body>
+</html>
