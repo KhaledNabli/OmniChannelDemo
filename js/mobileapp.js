@@ -1,6 +1,5 @@
 var configScenario = {};
 configScenario.currentChannel = "Mobile";
-configScenario.maxOffers = 4;
 configScenario.selectedCustomer = "";
 configScenario.currentOffers = [];
 
@@ -12,7 +11,6 @@ function onMobileAppReady() {
 	getConfigurationByToken(token).done(function (config) {
 		configScenario = config;
 		configScenario.currentChannel = "Mobile";
-		configScenario.maxOffers = 4;
 		updateMobileAppUI();
 	});
 }
@@ -56,6 +54,7 @@ function updateMobileAppUI() {
 	$('#submitBtn').val(configScenario.mobileApp.login_button_text);
 	$('#titleMobileApp').html("Mobile App");
 	$('#tokenLoad').val(configScenario.token);
+	$('#homeBackground').attr('src', configScenario.mobileApp.homescreen_image);
 }
 
 
@@ -64,7 +63,7 @@ function loadOffers() {
 	var token = readToken();
 	var customer = configScenario.selectedCustomer.customerLogin;
 	var channel = configScenario.currentChannel;
-	var maxOffers = configScenario.maxOffers;
+	var maxOffers = configScenario.mobileApp.maxOffersMobile;
 	return getOffersForCustomer(token, customer, channel, maxOffers).done(function (offers) {
 			console.log("Offers Loaded..."); 
 			console.log(offers);
