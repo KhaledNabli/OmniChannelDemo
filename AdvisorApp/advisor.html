@@ -273,9 +273,8 @@
                         <div class="modal-footer text-center">
                           <form>
                             <button type="button" class="btn-lg btn-default" data-dismiss="modal">Close</button>
-                            <button id="offerDetailsAcceptBtn" type="button" class="btn-lg btn-success" onclick="onResponseBtnClick(this,'accept');">Accept</button>
-                            <button id="offerDetailsRejectBtn" type="button" class="btn-lg btn-danger" onclick="onResponseBtnClick(this,'reject');">Reject</button>
-                            <button id="offerDetailsMaybeBtn" type="button" class="btn-lg btn-warning" onclick="onResponseBtnClick(this,'interest');">Maybe</button>
+                            <button id="offerDetailsAcceptBtn" type="button" class="btn-lg btn-success" onclick="onResponseBtnClick(this,'accept');"><span id="offerDetailsAcceptBtnLabel">Accept</span></button>
+                            <button id="offerDetailsRejectBtn" type="button" class="btn-lg btn-danger" onclick="onResponseBtnClick(this,'reject');"><span id="offerDetailsRejectBtnLabel">Reject</span></button>
                             <input type="hidden" id="offerDetailsOfferCode">
                           </form>
                         </div>

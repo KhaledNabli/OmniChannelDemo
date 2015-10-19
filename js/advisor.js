@@ -41,6 +41,7 @@ function onSelectCustomerBtn(element) {
 	$('#pictureUrl').attr('src', configScenario.selectedCustomer.pictureUrl);
 
 
+
 	$('#bar_analyticsBar1').css("width",configScenario.selectedCustomer.analyticsBar1Value);
 	$('#txt_analyticsBar1').text(configScenario.selectedCustomer.analyticsBar1Value);
 	$('#analyticsBar1Label').text(configScenario.labels.analyticsBar1Label);
@@ -94,6 +95,14 @@ function updateAdvisorUI() {
 	$('#btn_SubmitLabel').html(configScenario.advisorApp.submitBtnAdvisor);
 	$('#titleAdvisor').html(configScenario.advisorApp.titleAdvisor);
 	$('#tokenLoad').val(configScenario.token);
+	$('#offerDetailsAcceptBtnLabel').html(configScenario.labels.acceptBtnAdvisor);
+	$('#offerDetailsRejectBtnLabel').html(configScenario.labels.rejectBtnAdvisor);
+
+	$('#analyticsBar1Label').html(configScenario.labels.analyticsBar1Label);
+	$('#analyticsBar2Label').html(configScenario.labels.analyticsBar2Label);
+	$('#analyticsBar3Label').html(configScenario.labels.analyticsBar3Label);
+	$('#analyticsBar4Label').html(configScenario.labels.analyticsBar4Label);
+	
 }
 
 

@@ -147,7 +147,9 @@ function initConfigurator() {
         	configScenario.nba[i]["offerSms"],
         	configScenario.nba[i]["maxContacts"],
         	configScenario.nba[i]["customer1Score"], 
-        	configScenario.nba[i]["customer2Score"] );
+        	configScenario.nba[i]["customer2Score"], 
+            configScenario.nba[i]["changeScoreByInterest"] 
+            );
     	}
     }
 
@@ -259,7 +261,7 @@ function clearNbaRecords() {
 	$('#configuratorNbaTbody').html("");
 }
 
-function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score) {
+function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjustscore) {
 	console.log("maxContacts: " + maxContacts);
 	if (!code) code = "";
 	if (!name) name = "";
@@ -268,10 +270,11 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score) {
 	if (!sms) sms = "";
 	if (!maxContacts) maxContacts = "";
 	if (!c1score) c1score = "";
-	if (!c2score) c2score = "";
+	if (!c2score) c2score = "";   
+    if (!adjustscore) adjustscore = "";
 
 	$('#configuratorNbaTbody').append(
-		"<tr><td><div style='padding: 7px 0px'><input name='offerCode' type='text' placeholder='code' size=\"4\" value='"+code+"' class='form-control input-md'/></div> </td>"
+		"<tr><td><div style='padding: 7px 0px'><input name='offerCode' type='text' size=\"4\" value='"+code+"' class='form-control input-md'/></div> </td>"
 		+"<td><textarea name='offerName' rows=\"3\" placeholder='Offer Name' class='form-control input-md'>"+name+"</textarea></td>" 
       	+"<td><textarea name='offerDesc' rows=\"3\" type='text' placeholder='Description' class='form-control input-md'>"+desc+"</textarea></td>"
       	+"<td><textarea name='offerImg' rows=\"3\" type='text' placeholder='Image' class='form-control input-md'>"+img+"</textarea></td>"
@@ -279,7 +282,8 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score) {
       	+"<td><div style='padding: 7px 0px'><input name='maxContacts' type='text' placeholder='' size=\"4\" value='"+maxContacts+"' class='form-control input-md'/></div></td>"
       	+"<td><div style='padding: 7px 0px'><input name='customer1Score' type='text' placeholder='' size=\"4\" value='"+c1score+"' class='form-control input-md'/></div></td>"
       	+"<td><div style='padding: 7px 0px'><input name='customer2Score' type='text' placeholder='' size=\"4\" value='"+c2score+"' class='form-control input-md'/></div></td>"
-      	+"<td><a onclick='dropRecord(this);' class='pull-right btn btn-danger btn-block'>Delete</a></td></tr>"		
+      	+"<td><div style='padding: 7px 0px'><input name='changeScoreByInterest' type='text' placeholder='' size=\"4\" value='"+adjustscore+"' class='form-control input-md'/></div></td>"
+        +"<td><a onclick='dropRecord(this);' class='pull-right btn btn-danger btn-block'>Delete</a></td></tr>"		
 	); 
     return false; 
 }
@@ -295,8 +299,10 @@ function getNbaRecords() {
 		var sms 		= $(this).find("textarea[name='offerSms']").val();
 		var contacts 	= $(this).find("input[name='maxContacts']").val();
 		var c1score 	= $(this).find("input[name='customer1Score']").val();
-		var c2score 	= $(this).find("input[name='customer2Score']").val();			
-		aNbaRecords.push({offerCode: code, offerName: name, offerDesc: desc, offerImg: img, offerSms: sms, maxContacts: contacts, customer1Score: c1score, customer2Score: c2score});
+		var c2score 	= $(this).find("input[name='customer2Score']").val();
+        var adjustscore     = $(this).find("input[name='changeScoreByInterest']").val();	
+
+		aNbaRecords.push({offerCode: code, offerName: name, offerDesc: desc, offerImg: img, offerSms: sms, maxContacts: contacts, customer1Score: c1score, customer2Score: c2score, changeScoreByInterest: adjustscore});
 	});
 	return aNbaRecords;
 }
