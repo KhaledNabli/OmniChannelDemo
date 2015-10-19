@@ -117,7 +117,9 @@ function initConfigurator() {
 	clearHistoryRecords('c1');
     if(configScenario.customers[0].actionHistory) {
     	for(var i = 0; i < configScenario.customers[0].actionHistory.length; i++) {
-        	addHistoryRecord('c1',        		configScenario.customers[0].actionHistory[i]["historyAction"], 
+        	addHistoryRecord('c1',    
+                configScenario.customers[0].actionHistory[i]["historyDate"],     		
+                configScenario.customers[0].actionHistory[i]["historyAction"], 
         		configScenario.customers[0].actionHistory[i]["historyChannel"],
         		configScenario.customers[0].actionHistory[i]["historyResponse"] );
     	}
