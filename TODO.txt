@@ -1,0 +1,38 @@
+
+
+API Change
+===========
+- scoring mechanism (testing on interest)
+- offer display tracking 
+
+
+Configurator
+===============
+- design offer table for better display
+- themes change for mobile and advisor app
+- move labels to mobile and advisor app section
+- redesign response history table
+- upload offer image button
+  - create offer_images folder 
+
+- add offer category for rescoring, if interest in offer A of category b then increase offers of category b
+
+
+
+
+Mobile App
+===========
+- add google maps integration
+
+
+
+Advisor App
+===========
+- move customer login to right pane 
+- hide navbar before login
+
+
+
+Website
+===========
+- unlimited changes
