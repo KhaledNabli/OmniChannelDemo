@@ -696,50 +696,50 @@
                                 <div class="form-group">
                                     <label for="startPageUrl" class="col-sm-4 control-label">Start Page</label>
                                     <div class="col-sm-8">
-                                        <a href="#" onclick="onViewWebsiteBtn('start');">
-                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View Website
+                                        <a href="#" onclick="onUploadWebsiteBtn('start');">
+                                            <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Import Content
                                         </a>
-                                        |
+                                        | 
                                         <a href="#" onclick="onEditWebsiteBtn('start');">
                                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Content
                                         </a>
                                         | 
-                                        <a href="#" onclick="onUploadWebsiteBtn('start');">
-                                            <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Import Content
+                                        <a href="#" onclick="onViewWebsiteBtn('start');">
+                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View Website
                                         </a> 
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="loginPageUrl" class="col-sm-4 control-label">Login Page</label>
-                                    <div class="col-sm-8">
-                                        <a href="#" onclick="onViewWebsiteBtn('login');">
-                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View Website
+                                    <div class="col-sm-8"> 
+                                        <a href="#" onclick="onUploadWebsiteBtn('login');">
+                                            <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Import Content
                                         </a>
-                                        |
+                                        | 
                                         <a href="#" onclick="onEditWebsiteBtn('login');">
                                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Content
                                         </a>
                                         | 
-                                        <a href="#" onclick="onUploadWebsiteBtn('login');">
-                                            <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Import Content
-                                        </a> 
+                                        <a href="#" onclick="onViewWebsiteBtn('login');">
+                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View Website
+                                        </a>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="col-sm-4 text-right">Landing Page</label>
                                     <div class="col-sm-8">
-                                        <a href="#" onclick="onViewWebsiteBtn('landing');">
-                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View Website
+                                        <a href="#" onclick="onUploadWebsiteBtn('landing');">
+                                            <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Import Content
                                         </a>
-                                        |
+                                        | 
                                         <a href="#" onclick="onEditWebsiteBtn('landing');">
                                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Content
                                         </a>
                                         | 
-                                        <a href="#" onclick="onUploadWebsiteBtn('landing');">
-                                            <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Import Content
+                                        <a href="#" onclick="onViewWebsiteBtn('landing');">
+                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View Website
                                         </a> 
                                     </div>
                                 </div>
@@ -853,9 +853,10 @@
                                     %Lastname%<br />
                                     %CustomerPicture%<br />
                                     %CustomerSegment%<br />
-                                    %AcceptOffer%<br />
-                                    %RejectOffer%<br />
-                                    %InterestOffer%<br />
+                                    <br />
+                                    <i>%TrackAsAccept%<br />
+                                    %TrackAsReject%<br />
+                                    %TrackAsInterest%</i><br />
                                 </p>
                             </div>
                         </div>
