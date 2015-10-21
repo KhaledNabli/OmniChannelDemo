@@ -36,7 +36,7 @@ return processRequest();
 
 function getRequestParameter($parameter) {
 	if($_SERVER['REQUEST_METHOD'] == "POST")
-		return @$_POST[$parameter];
+		return @$_POST[$parameter] ? @$_POST[$parameter] : @$_GET[$parameter] ;
 	else
 		return @$_GET[$parameter];
 }
@@ -71,9 +71,10 @@ function processRequest() {
 		displayEditor($token, $page);
 
 	} else if ($action == "save") {
+		// overwrite existing page
 		$content = getRequestParameter("content");
 		savePageToDatabase($token, $page, $content);
-		// overwrite existing page
+		
 
 	} else if ($action == "upload") {
 		$url = getRequestParameter("url");
@@ -84,8 +85,7 @@ function processRequest() {
 		}
 		
 		uploadWebsiteToDatabase($token, $page, $url, $options);
-		// read website and store it for token and page
-
+		
 	}
 }
 

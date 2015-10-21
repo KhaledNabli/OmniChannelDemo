@@ -17,7 +17,11 @@ $(document).ready(function () {
 		console.log("-- Demo libs loaded secussfully--");
 		websiteConfig = config;
 		websiteConfig.web = base64_decodeProperties(config.web);
-		
+		websiteConfig.web.nbaPlaceHolderSelectors = [	websiteConfig.web.nbaPlaceHolderSelector1, 
+														websiteConfig.web.nbaPlaceHolderSelector2,
+														websiteConfig.web.nbaPlaceHolderSelector3,
+														websiteConfig.web.nbaPlaceHolderSelector4
+													];
 		console.log(websiteConfig);
 		prepareWebsite();
 	});
@@ -28,12 +32,16 @@ $(document).ready(function () {
 
 function prepareWebsite() {
 	console.log("Prepare Website for Omni-Channel Demo");
+
+	var startPageURL = getBaseURL() + ".?page=start&token=" + readToken();
+	var loginPageURL = getBaseURL() + ".?page=login&token=" + readToken();
+	var landingPageURL = getBaseURL() + ".?page=landing&token=" + readToken();
 	// manipulate link to start page
-	if(websiteConfig.web.startLinkSelektor != "") {
-		$(websiteConfig.web.startLinkSelektor).attr("href", getBaseURL() + ".?page=start&token=" + readToken() );
+	if(websiteConfig.web.startLinkSelector != "") {
+		pointElementToLink(websiteConfig.web.startLinkSelector, startPageURL);
 	}
 	if(websiteConfig.web.loginLinkSelector != "") {
-		$(websiteConfig.web.loginLinkSelector).attr("href", getBaseURL() + ".?page=login&token=" + readToken() );
+		pointElementToLink(websiteConfig.web.loginLinkSelector, loginPageURL);
 	}
 	if(websiteConfig.web.loginLinkHtml.trim() != "" && websiteConfig.web.loginLinkSelector.trim() != "") {
 		$(websiteConfig.web.loginLinkSelector).html(websiteConfig.web.loginLinkHtml);
@@ -41,10 +49,10 @@ function prepareWebsite() {
 	
 	// manipulate form action to landing.html
 	if(websiteConfig.web.loginFormSelector != "") {
-		$(websiteConfig.web.loginFormSelector).attr("action", getBaseURL() + ".?page=landing&token=" + readToken());
+		$(websiteConfig.web.loginFormSelector).attr("action", landingPageURL);
 		$(websiteConfig.web.loginFormSelector).attr("onsubmit", "processLoginBtnClick();");
 		$(websiteConfig.web.loginFormSelector).on('submit', function () { processLoginBtnClick() });
-		console.log("Form Action set to: ?page=login" );
+		//console.log("Form Action set to: ?page=login" );
 	}
 	// remove validators
 	$(websiteConfig.web.loginUserInputSelector).unbind();
@@ -53,7 +61,7 @@ function prepareWebsite() {
 
 	// manipulate login btn onclick event;
 	if(websiteConfig.web.loginBtnInputSelector != "") {
-		$(loginBtnInputSelector).on('click', function () { processLoginBtnClick() });
+		$(websiteConfig.web.loginBtnInputSelector).on('click', function () { processLoginBtnClick() });
 	}
 
 	// Build Offers 
@@ -62,12 +70,32 @@ function prepareWebsite() {
 	}
 }
 
-function pointElementToLink(elem, link) {
+function pointElementToLink(selector, link) {
+	var tagType = $(selector).prop("tagName");
+
 	// if it is an ancher
+	if(tagType == "A") {
+		$(selector).attr('href', link);
+		$(selector).on('click', function () {
+			window.location.href = link;
+		});
+	}
 
 	// if it is an button
+	else if(tagType == "BUTTON") {
+		$(selector).on('click', function () {
+			window.location.href = link;
+		});
+	} 
 
 	// if it is something else
+	else {
+		// find next link
+		var closeElement = $(selector).closest("a");
+		console.log("Alert: Selector (" + selector + ") needs to point to a <a> or <button> element!. Currently it is pointing to an element: " + tagType + ". We found an approporiate element for you: " + closeElement );
+
+	}
+
 }
 
 function getCurrentPage() {
@@ -121,6 +149,7 @@ function processLoginBtnClick() {
 *
 */
 function buildOfferPage() {
+	console.log("Build Offer Page");
 	refreshOffers();
 }
 
@@ -129,7 +158,7 @@ function refreshOffers() {
 	var customerLogin = window.localStorage.omnichanneldemoWebsiteUser;
 	var maxOffers = websiteConfig.web.nbaPlaceHolderSelectors.length;
 	// request offers from API
-	getOffersForCustomer(Token(), customerLogin, "Website", maxOffers).done(function (offers) {
+	getOffersForCustomer(token, customerLogin, "Website", maxOffers).done(function (offers) {
 		websiteConfig.currentOffers = offers;
 		displayOffers(offers);
 	});
@@ -140,45 +169,50 @@ function displayOffers(offers) {
 	var countOffers = offers.length;
 	var countPlaceholder = websiteConfig.web.nbaPlaceHolderSelectors.length;
 
-	for ( var i = 0; i < countOffers && i < countPlaceholder; i ++ ) {
-		var templateContent = [];
-		var templateVariable = {};
-		var offerObj = offers[i];
-		offerObj.offerdetails = getOfferByCode(offerObj.offer, websiteConfig.nba);
-		offerObj.customerdetails = getCustomerByLogin(offerObj.customer, websiteConfig.customers);
-		offerObj.index = i+1;
+	for ( var i = 0; i < countPlaceholder; i ++ ) {
 
-		/*
-			count: null
-			customer: "1234"
-			display_limit: "3"
-			entrytype: null
-			offer: "oc02"
-			responded: "0"
-			score: "66.000"
-			token: "Wh5JRj88"
-		*/
+		if(i < countOffers) {
+			var templateContent = [];
+			var templateVariable = {};
+			var offerObj = offers[i];
+			offerObj.offerdetails = getOfferByCode(offerObj.offer, websiteConfig.nba);
+			offerObj.customerdetails = getCustomerByLogin(offerObj.customer, websiteConfig.customers);
+			offerObj.index = i+1;
 
-		templateContent.push({"name": "CustomerLogin", 	"value": 	offerObj.customer});
-		templateContent.push({"name": "OfferIndex", 	"value": 	offerObj.index});
-		templateContent.push({"name": "OfferCode", 		"value": 	offerObj.offer });
-		templateContent.push({"name": "OfferName", 		"value": 	offerObj.offerdetails.offerName });
-		templateContent.push({"name": "OfferDesc", 		"value": 	offerObj.offerdetails.offerDesc });
-		templateContent.push({"name": "OfferImage", 	"value": 	offerObj.offerdetails.offerImage });
+			/*
+				count: null
+				customer: "1234"
+				display_limit: "3"
+				entrytype: null
+				offer: "oc02"
+				responded: "0"
+				score: "66.000"
+				token: "Wh5JRj88"
+			*/
 
-		templateContent.push({"name": "CustomerId", 	"value": 	offerObj.customer });
-		templateContent.push({"name": "Firstname",		"value": 	offerObj.customerdetails.customerFirstname });
-		templateContent.push({"name": "Lastname",		"value": 	offerObj.customerdetails.customerLastname });
-		templateContent.push({"name": "CustomerPicture","value": 	offerObj.customerdetails.pictureUrl });
-		templateContent.push({"name": "CustomerSegment","value": 	offerObj.customerdetails.lifeStageSegment });
+			templateContent.push({"name": "CustomerLogin", 	"value": 	offerObj.customer});
+			templateContent.push({"name": "OfferIndex", 	"value": 	offerObj.index});
+			templateContent.push({"name": "OfferCode", 		"value": 	offerObj.offer });
+			templateContent.push({"name": "OfferName", 		"value": 	offerObj.offerdetails.offerName });
+			templateContent.push({"name": "OfferDesc", 		"value": 	offerObj.offerdetails.offerDesc });
+			templateContent.push({"name": "OfferImage", 	"value": 	offerObj.offerdetails.offerImg });
 
-		templateContent.push({"name": "TrackAsAccept", 	"value": 	renderAcceptButton(offerObj, 	true)});
-		templateContent.push({"name": "TrackAsReject", 	"value": 	renderRejectButton(offerObj, 	true)});
-		templateContent.push({"name": "TrackAsInterest","value": 	renderInterestButton(offerObj, 	true)});
-	
-		var renderedHtml = renderHtmlTemplate(websiteConfig.web.nbaHtmlTemplate, templateContent);
+			templateContent.push({"name": "CustomerId", 	"value": 	offerObj.customer });
+			templateContent.push({"name": "Firstname",		"value": 	offerObj.customerdetails.customerFirstname });
+			templateContent.push({"name": "Lastname",		"value": 	offerObj.customerdetails.customerLastname });
+			templateContent.push({"name": "CustomerPicture","value": 	offerObj.customerdetails.pictureUrl });
+			templateContent.push({"name": "CustomerSegment","value": 	offerObj.customerdetails.lifeStageSegment });
+			templateContent.push({"name": "TrackAsAccept", 	"value": 	renderTrackingElement(offerObj.customer, offerObj.offer, "Accept")});
+			templateContent.push({"name": "TrackAsReject", 	"value": 	renderTrackingElement(offerObj.customer, offerObj.offer, "Reject")});
+			templateContent.push({"name": "TrackAsInterest","value": 	renderTrackingElement(offerObj.customer, offerObj.offer, "Show Interest")});
+		
+			var renderedHtml = renderHtmlTemplate(websiteConfig.web.nbaHtmlTemplate, templateContent);
+			$(websiteConfig.web.nbaPlaceHolderSelectors[i]).html(renderedHtml);
+		} else {
+			$(websiteConfig.web.nbaPlaceHolderSelectors[i]).remove();
+		}
 
-		$(websiteConfig.web.nbaPlaceHolderSelectors[i]).html(renderedHtml);
+		
 	}
 }
 
@@ -204,7 +238,7 @@ function renderHtmlTemplate(htmlTemplate, templateContent) {
 
 function trackResponse(customer, offerCd, responseCd) {
 	var token = readToken();
-	respondToOffer(token, customer, offerCd, responseCd, "Website", details).done(function () {
+	respondToOffer(token, customer, offerCd, responseCd, "Website", "").done(function () {
 		refreshOffers();
 	});
 }
@@ -214,5 +248,29 @@ function replaceAll(find, replace, str) {
 }
 
 function renderTrackingElement(customer, offerCd, responseCd) {
-	return " onClick=\"trackingCd('" + customer + "', '" + offerCd + "', '" + responseCd + "');\"";
+	return " onClick=\"trackResponse('" + customer + "', '" + offerCd + "', '" + responseCd + "');\"";
 }
+
+
+jQuery.fn.getPath = function () {
+    if (this.length != 1) throw 'Requires one element.';
+
+    var path, node = this;
+    while (node.length) {
+        var realNode = node[0], name = realNode.localName;
+        if (!name) break;
+        name = name.toLowerCase();
+
+        var parent = node.parent();
+
+        var siblings = parent.children(name);
+        if (siblings.length > 1) { 
+            name += ':eq(' + siblings.index(realNode) + ')';
+        }
+
+        path = name + (path ? '>' + path : '');
+        node = parent;
+    }
+
+    return path;
+};
