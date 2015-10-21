@@ -17,6 +17,7 @@ $(document).ready(function () {
 		console.log("-- Demo libs loaded secussfully--");
 		websiteConfig = config;
 		websiteConfig.web = base64_decodeProperties(config.web);
+		
 		console.log(websiteConfig);
 		prepareWebsite();
 	});
@@ -59,6 +60,14 @@ function prepareWebsite() {
 	if (getCurrentPage() == "landing") {
 		buildOfferPage();
 	}
+}
+
+function pointElementToLink(elem, link) {
+	// if it is an ancher
+
+	// if it is an button
+
+	// if it is something else
 }
 
 function getCurrentPage() {
@@ -112,11 +121,15 @@ function processLoginBtnClick() {
 *
 */
 function buildOfferPage() {
-	// read user id
+	refreshOffers();
+}
+
+function refreshOffers() {
+	var token = readToken();
 	var customerLogin = window.localStorage.omnichanneldemoWebsiteUser;
 	var maxOffers = websiteConfig.web.nbaPlaceHolderSelectors.length;
 	// request offers from API
-	getOffersForCustomer(readToken(), customerLogin, "Website", maxOffers).done(function (offers) {
+	getOffersForCustomer(Token(), customerLogin, "Website", maxOffers).done(function (offers) {
 		websiteConfig.currentOffers = offers;
 		displayOffers(offers);
 	});
@@ -146,65 +159,28 @@ function displayOffers(offers) {
 			token: "Wh5JRj88"
 		*/
 
-		templateContent.push({"name": "customerLogin", 	"value": 	offerObj.customer});
-		templateContent.push({"name": "offerIndex", 	"value": 	offerObj.index});
-		templateContent.push({"name": "offerCode", 		"value": 	offerObj.offer });
-		templateContent.push({"name": "offerName", 		"value": 	offerObj.offerdetails.offerName });
-		templateContent.push({"name": "offerDesc", 		"value": 	offerObj.offerdetails.offerDesc });
-		templateContent.push({"name": "offerImage", 	"value": 	offerObj.offerdetails.offerImage });
+		templateContent.push({"name": "CustomerLogin", 	"value": 	offerObj.customer});
+		templateContent.push({"name": "OfferIndex", 	"value": 	offerObj.index});
+		templateContent.push({"name": "OfferCode", 		"value": 	offerObj.offer });
+		templateContent.push({"name": "OfferName", 		"value": 	offerObj.offerdetails.offerName });
+		templateContent.push({"name": "OfferDesc", 		"value": 	offerObj.offerdetails.offerDesc });
+		templateContent.push({"name": "OfferImage", 	"value": 	offerObj.offerdetails.offerImage });
 
-		templateContent.push({"name": "customerId", 	"value": 	offerObj.customer });
+		templateContent.push({"name": "CustomerId", 	"value": 	offerObj.customer });
 		templateContent.push({"name": "Firstname",		"value": 	offerObj.customerdetails.customerFirstname });
 		templateContent.push({"name": "Lastname",		"value": 	offerObj.customerdetails.customerLastname });
 		templateContent.push({"name": "CustomerPicture","value": 	offerObj.customerdetails.pictureUrl });
 		templateContent.push({"name": "CustomerSegment","value": 	offerObj.customerdetails.lifeStageSegment });
 
-		templateContent.push({"name": "acceptOffer", 	"value": 	renderAcceptButton(offerObj, 	true)});
-		templateContent.push({"name": "rejectOffer", 	"value": 	renderRejectButton(offerObj, 	true)});
-		templateContent.push({"name": "interestOffer", 	"value": 	renderInterestButton(offerObj, 	true)});
+		templateContent.push({"name": "TrackAsAccept", 	"value": 	renderAcceptButton(offerObj, 	true)});
+		templateContent.push({"name": "TrackAsReject", 	"value": 	renderRejectButton(offerObj, 	true)});
+		templateContent.push({"name": "TrackAsInterest","value": 	renderInterestButton(offerObj, 	true)});
 	
 		var renderedHtml = renderHtmlTemplate(websiteConfig.web.nbaHtmlTemplate, templateContent);
 
 		$(websiteConfig.web.nbaPlaceHolderSelectors[i]).html(renderedHtml);
 	}
 }
-
-/**
-*
-*/
-function processRtdmOffers(rtdmResponse){
-	// for each offer cd line, create template Content: ["offerCd": "TR001", "offerNm", "My Personal Offer"]
-	var countOffers = rtdmResponse.outputs["Offer_CDS"].length;
-	var countPlaceholder = nbaPlaceHolderSelectors.length;
-	for ( var i = 0; i < countOffers && i < countPlaceholder; i ++ ) {
-		var templateContent = [];
-		var templateVariable = {};
-		var offerObj = {};
-		offerObj.userid = rtdmResponse.outputs["Customer_ID"];
-		offerObj.index = i+1;
-		offerObj.code = rtdmResponse.outputs["Offer_CDS"][i];
-		offerObj.name = rtdmResponse.outputs["Offer_Names"][i];
-		offerObj.score = rtdmResponse.outputs["Offer_Scores"][i];
-		offerObj.trackingCd = "912312";
-
-		templateContent.push({"name": "userId", 	"value": 	offerObj.userid});
-		templateContent.push({"name": "offerIndex", "value": 	i});
-		templateContent.push({"name": "offerCode", 	"value": 	offerObj.code });
-		templateContent.push({"name": "offerName", 	"value": 	offerObj.name });
-		templateContent.push({"name": "offerScore", "value": 	offerObj.score });
-		templateContent.push({"name": "acceptOffer", "value": 	renderAcceptButton(offerObj, true) });
-		templateContent.push({"name": "rejectOffer", "value": 	renderRejectButton(offerObj, true) });
-		templateContent.push({"name": "interestOffer", "value": renderInterestButton(offerObj, true)});
-
-	//	console.log("Calling renderHtmlTemplate");
-	//	console.log(templateContent);
-
-		var renderedHtml = renderHtmlTemplate(nbaHtmlTemplate, templateContent);
-
-		$(nbaPlaceHolderSelectors[i]).html(renderedHtml);
-	}
-}
-
 
 
 /**
@@ -215,7 +191,7 @@ function renderHtmlTemplate(htmlTemplate, templateContent) {
 	// for each value, search an replace in htmlTemplate like
 	// value: offerCd -> template %UPCASE(offerCd)% -> %OFFERCD%
 	var renderedHtml = templateContent.reduce(function(previousValue, currentValue, index, array) {
-		var find = "%" + currentValue["name"].toUpperCase() + "%";
+		var find = "%" + currentValue["name"] + "%";
 		var replaceWith = currentValue["value"];
 		return replaceAll(find, replaceWith, previousValue);
 	}, htmlTemplate);
@@ -226,24 +202,17 @@ function renderHtmlTemplate(htmlTemplate, templateContent) {
 }
 
 
+function trackResponse(customer, offerCd, responseCd) {
+	var token = readToken();
+	respondToOffer(token, customer, offerCd, responseCd, "Website", details).done(function () {
+		refreshOffers();
+	});
+}
 
 function replaceAll(find, replace, str) {
   return str.replace(new RegExp(find, 'g'), replace);
 }
 
-function displayMoreDetails(elem) {
-	$(elem).append();
-}
-
-
-function renderAcceptButton(offerObj, reloadPage) {
-	return " onclick=\"rdmSendResponse('" + offerObj.userid + "','" + offerObj.index + "','" + offerObj.trackingCd +  "','" + offerObj.code + "','" + offerObj.name + "','accepted'," + reloadPage + ");\"";
-}
-
-function renderRejectButton(offerObj, reloadPage) {
-	return " onclick=\"rdmSendResponse('" + offerObj.userid + "','" + offerObj.index + "','" + offerObj.trackingCd +  "','" + offerObj.code + "','" + offerObj.name + "','rejected'," + reloadPage + ");\"";
-}
-
-function renderInterestButton(offerObj, reloadPage) {
-	return " onclick=\"rdmSendResponse('" + offerObj.userid + "','" + offerObj.index + "','" + offerObj.trackingCd +  "','Click','" + offerObj.name + "','Banner Click'," + reloadPage + ");\"";
+function renderTrackingElement(customer, offerCd, responseCd) {
+	return " onClick=\"trackingCd('" + customer + "', '" + offerCd + "', '" + responseCd + "');\"";
 }

@@ -34,6 +34,12 @@ return processRequest();
 // Continue reading in processRequest();
 
 
+function getRequestParameter($parameter) {
+	if($_SERVER['REQUEST_METHOD'] == "POST")
+		return @$_POST[$parameter];
+	else
+		return @$_GET[$parameter];
+}
 
 
 
@@ -71,7 +77,13 @@ function processRequest() {
 
 	} else if ($action == "upload") {
 		$url = getRequestParameter("url");
-		uploadWebsiteToDatabase($token, $page, $url, "");
+		$raw_options = getRequestParameter("uploadOptions");
+		$options = array();
+		if(!empty($raw_options)) {
+			$options = json_decode($raw_options);
+		}
+		
+		uploadWebsiteToDatabase($token, $page, $url, $options);
 		// read website and store it for token and page
 
 	}
@@ -111,22 +123,21 @@ function getConfigFromDatabase($token) {
 */
 function getPageFromDatabase($token,$page) {
 	global $mysql_link;
-	$content = null;
+	$content = "";
+	// check token
+	getConfigFromDatabase($token);
 
 	$mysql_link->query("set names 'utf8'");
 	$pageQuerySql = "SELECT * FROM `demo_website` WHERE `token` = '".$token."' and `site` = '".$page."'";
 	$pageQueryResult = $mysql_link->query($pageQuerySql);
 
-
-
 	if(!$pageQueryResult || $pageQueryResult->num_rows != 1) {
-		die("invalid token " . $pageQueryResult->num_rows);
+		//die("invalid token " . $pageQueryResult->num_rows);
 	}
 	else {
 		$pageItem = $pageQueryResult->fetch_assoc();;
 		$content = $pageItem["content"];
 	}
-
 
 	return $content;
 }
@@ -140,122 +151,57 @@ function savePageToDatabase($token, $page, $content) {
 	return $mysql_link->query($updateSqlQuery);
 } 
 
-function getPageFromUrl($URL)
-{
-    #Get the source content of the URL
-    $source =  utf8_encode(file_get_contents($URL));
-
-
-
-    return $source;
-}
-
-
-function http_get_contents($url)
-    {
-    	error_reporting(E_ALL);
-        $ch = curl_init();
-        $host = parse_url($url, PHP_URL_HOST); //Ex: www.google.com
-        curl_setopt($ch, CURLOPT_TIMEOUT, 500);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.4");
-		curl_setopt($ch, CURLOPT_REFERER, "http://google.com/");
-		//curl_setopt($ch, CURLOPT_HEADER, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_ENCODING, "gzip");
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-		//curl_setopt($ch, CURLOPT_SSLVERSION, 3);
-
-        if(FALSE === ($retval = curl_exec($ch))) {
-            echo curl_error($ch);
-        } else {
-            return $retval;
-        }
-    }
 
 
 function uploadWebsiteToDatabase($token, $page, $url, $options) {
-	$source = http_get_contents($url);
 
-	// clean up?
-	//$source = cleanHtml($source);
-	$source = manipulateWebsiteDOM($source, $url, "");
-	//$source = cleanHtml($source);
-
-
-	savePageToDatabase($token, $page, $source);
-}
-
-
-
-function manipulateWebsiteDOM($source, $url, $options){
-	$scheme = parse_url($url, PHP_URL_SCHEME); //Ex: http
-    $host = parse_url($url, PHP_URL_HOST); //Ex: www.google.com
-    $raw_url = $scheme . '://' . $host . '/'; //Ex: http://www.google.com
-
-	$doc = new DOMDocument();
-	@$doc->loadHTML($source);
-	// add base tag in head
-	$heads = $doc->getElementsByTagName('head');
-	if($heads->length > 0) {
-		$baseElement = $doc->createElement('base','');
-		$baseElement->setAttribute("href", $raw_url);
-		$heads->item(0)->insertBefore($baseElement, $heads->item(0)->firstChild);
+	// check token
+	// check url
+	// check page
+	if(empty($page) || empty($url) || getConfigFromDatabase($token) == null) {
+		die("Please provide an ID for page and a URL to grab");
 	}
 
-	$baseUrl = "http://localhost/OmniChannelDemo/";
+
+	$htmlContent = grabContentFromUrl($url);
+	$htmlDom = parseHtmlContent($htmlContent);
+
+	$insertBase = in_array("insert_base", $options);
+	$fixLinks 	= in_array("fix_relative_links", $options);
+	$tidyOutput = in_array("tidy_output", $options);
+	$insertJS 	= in_array("insert_js", $options);
+	$parsedUrl = parse_url($url);
+	// TODO
+	$jsFolderUrl = "http://localhost/OmniChannelDemo/";
+	$baseRefUrl = $parsedUrl["scheme"] . "://" . $parsedUrl["host"] . $parsedUrl["path"];
 
 
-	// add js script tag in head
-	$bodys = $doc->getElementsByTagName('body');
-	if($bodys->length > 0) {
-		$jsElement1 = $doc->createElement('script','');
-		$jsElement1->setAttribute("src", $baseUrl . "js/ext/jquery-1.11.3.min.js");
-		$jsElement2 = $doc->createElement('script','');
-		$jsElement2->setAttribute("src", $baseUrl . "js/api.js");
-		$jsElement3 = $doc->createElement('script','');
-		$jsElement3->setAttribute("src", $baseUrl . "js/website.js");
-		$bodys->item(0)->appendChild($jsElement1);
-		$bodys->item(0)->appendChild($jsElement2);
-		$bodys->item(0)->appendChild($jsElement3);
+	
+	if($fixLinks) {
+		$htmlDom = removeRelativeRefs($htmlDom, $baseRefUrl);
 	}
-	return $doc->saveHTML();
+	if($insertBase) {
+		$htmlDom = addBaseToDOM($htmlDom, $baseRefUrl);
+	}
+	if($insertJS) {
+		$htmlDom = addJsToDOM($htmlDom, $jsFolderUrl);
+	}
+	
+	$htmlOutput = outputDOMHtml($htmlDom, $tidyOutput);
+	
+
+	savePageToDatabase($token, $page, $htmlOutput);
+
+	var_dump($parsedUrl);
 }
 
 
-function cleanHtml($content) {
-	$html = $content;
 
-	// Specify configuration
-	$config = array(
-	           'indent'         => true,
-	           'output-xhtml'   => false,
-	           'wrap'           => 400);
 
-	// Tidy
-	$tidy = new tidy;
-	$tidy->parseString($html, $config, 'utf8');
-	$tidy->cleanRepair();
-
-	// Output
-	return $tidy;
-}
-
-function getRequestParameter($parameter) {
-	if($_SERVER['REQUEST_METHOD'] == "POST")
-		return @$_POST[$parameter];
-	else
-		return @$_GET[$parameter];
-}
 
 function displayEditor($token, $page) {
 	$content = getPageFromDatabase($token, $page);
 	$config = getConfigFromDatabase($token);
-
 
 ?>
 <!DOCTYPE html>
@@ -263,7 +209,7 @@ function displayEditor($token, $page) {
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title><?php echo $page ." Page of ". $config->general->demoName; ?></title>
+  <title><?php echo "Editor: " . $page ." Page of ". $config->general->demoName; ?></title>
   <style type="text/css" media="screen">
     body {
         overflow: hidden;
@@ -333,8 +279,100 @@ function displayEditor($token, $page) {
 
 }
 
+function parseHtmlContent($source) {
+	$domDocument = new DOMDocument();
+	@$domDocument->loadHTML($source);
+	return $domDocument;
+}
+
+function removeRelativeRefs($domDocument, $baseUrl) {
+	// get all js, css, img...
+	// public DOMNodeList DOMDocument::getElementsByTagName ( string $name )
+	return $domDocument;
+}
+
+function addBaseToDOM($domDocument, $baseUrl) {
+	$heads = $domDocument->getElementsByTagName('head');
+	if($heads->length > 0) {
+		$baseElement = $domDocument->createElement('base','');
+		$baseElement->setAttribute("href", $baseUrl);
+		$heads->item(0)->insertBefore($baseElement, $heads->item(0)->firstChild);
+	}
+
+	return $domDocument;
+}
+
+function addJsToDOM($domDocument, $jsFolderUrl) {
+
+	$bodys = $domDocument->getElementsByTagName('body');
+	if($bodys->length > 0) {
+		$jsElement1 = $domDocument->createElement('script','');
+		$jsElement1->setAttribute("src", $jsFolderUrl . "js/ext/jquery-1.11.3.min.js");
+		$jsElement2 = $domDocument->createElement('script','');
+		$jsElement2->setAttribute("src", $jsFolderUrl . "js/api.js");
+		$jsElement3 = $domDocument->createElement('script','');
+		$jsElement3->setAttribute("src", $jsFolderUrl . "js/website.js");
+		$bodys->item(0)->appendChild($jsElement1);
+		$bodys->item(0)->appendChild($jsElement2);
+		$bodys->item(0)->appendChild($jsElement3);
+	}
+	return $domDocument;
+}
 
 
+function outputDOMHtml($domDocument, $tidyOutput = false) {
+	if($tidyOutput) {
+		$domDocument->preserveWhiteSpace = false;
+		$domDocument->formatOutput = true;
+	}
+	return $domDocument->saveHTML();
+}
+
+
+function tidyHtml($content) {
+	$html = $content;
+
+	// Specify configuration
+	$config = array(
+	           'indent'         => true,
+	           'output-xhtml'   => false,
+	           'wrap'           => 400);
+
+	// Tidy
+	$tidy = new tidy;
+	$tidy->parseString($html, $config, 'utf8');
+	$tidy->cleanRepair();
+
+	// Output
+	return $tidy;
+}
+
+
+function grabContentFromUrl($url) {
+
+	error_reporting(E_ALL);
+	$ch = curl_init();
+    $host = parse_url($url, PHP_URL_HOST); //Ex: www.google.com
+    curl_setopt($ch, CURLOPT_TIMEOUT, 500);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.4");
+    curl_setopt($ch, CURLOPT_REFERER, "http://google.com/");
+	//curl_setopt($ch, CURLOPT_HEADER, 1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_ENCODING, "gzip");
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+	//curl_setopt($ch, CURLOPT_SSLVERSION, 3);
+
+    if(FALSE === ($retval = curl_exec($ch))) {
+    	echo curl_error($ch);
+    } else {
+    	return $retval;
+    }
+}
 
 
 

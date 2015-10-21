@@ -387,12 +387,14 @@ function onUploadWebsiteCommitBtn(element) {
     var page = $('#uploadWebsiteForPage').val();
     var token = window.localStorage.omnichanneltoken;
     var url = $('#uploadUrlInput').val();;
+    var options = $("input[name='uploadOptions[]']:checked").map(function(index, item) {return $(item).val();}).toArray();
     $('#popupUploadWebsite').modal('hide');
+
 
 
     return $.ajax("./Website/", {
         type: 'POST',
-        data: {action : "upload", token : token, url : url, page : page},
+        data: {action : "upload", token : token, url : url, page : page, uploadOptions: JSON.stringify(options)},
     }).done(function (result) {
         if(result == "") result = "upload successfull";
         $('#websiteInfo-'+page).html(result);

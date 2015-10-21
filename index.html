@@ -105,17 +105,22 @@
                   </div>
                   <div class="checkbox">
                     <label>
-                      <input type="checkbox"> Fix relative links for ressources (images / css / js ...)
+                      <input type="checkbox" name="uploadOptions[]" value="insert_base" checked/> Add Base Tag
                     </label>
                   </div>
                   <div class="checkbox">
                     <label>
-                      <input type="checkbox"> Tidy HTML output
+                      <input type="checkbox" name="uploadOptions[]" value="fix_relative_links" /> Fix relative links for resources (images / css / js ...)
                     </label>
                   </div>
                   <div class="checkbox">
                     <label>
-                      <input type="checkbox"> Add required Javascript files
+                      <input type="checkbox" name="uploadOptions[]" value="tidy_output" /> Tidy HTML output 
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="uploadOptions[]" value="insert_js" checked/> Add required Javascript files
                     </label>
                   </div>
                 </form>
