@@ -91,8 +91,12 @@ function pointElementToLink(selector, link) {
 	// if it is something else
 	else {
 		// find next link
-		var closeElement = $(selector).closest("a");
-		console.log("Alert: Selector (" + selector + ") needs to point to a <a> or <button> element!. Currently it is pointing to an element: " + tagType + ". We found an approporiate element for you: " + closeElement );
+		var closestElement = $(selector).closest("a");
+		console.log("Alert: Selector (" + selector + ") needs to point to a <a> or <button> element!. Currently it is pointing to an element: " + tagType + ".");
+		if(closestElement) {
+			console.log(" We found an approporiate element for you: " + closestElement.getPath() );
+		}
+		
 
 	}
 
@@ -265,10 +269,10 @@ jQuery.fn.getPath = function () {
 
         var siblings = parent.children(name);
         if (siblings.length > 1) { 
-            name += ':eq(' + siblings.index(realNode) + ')';
+            name += ':nth-child(' + siblings.index(realNode) + ')';
         }
 
-        path = name + (path ? '>' + path : '');
+        path = name + (path ? ' > ' + path : '');
         node = parent;
     }
 
