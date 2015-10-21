@@ -172,7 +172,7 @@ function uploadWebsiteToDatabase($token, $page, $url, $options) {
 	$insertJS 	= in_array("insert_js", $options);
 	$parsedUrl = parse_url($url);
 	// TODO
-	$jsFolderUrl = "http://localhost/OmniChannelDemo/";
+	$jsFolderUrl = "http://". $_SERVER['SERVER_NAME'] ."/OmniChannelDemo/";
 	$baseRefUrl = $parsedUrl["scheme"] . "://" . $parsedUrl["host"] . $parsedUrl["path"];
 
 
