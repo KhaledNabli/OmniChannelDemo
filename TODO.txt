@@ -2,6 +2,7 @@
 
 API Change
 ===========
+- add support for read-only
 - scoring mechanism (testing on interest)
 - offer display tracking 
 
@@ -35,4 +36,4 @@ Advisor App
 
 Website
 ===========
-- unlimited changes
+- utf-8 support in editor

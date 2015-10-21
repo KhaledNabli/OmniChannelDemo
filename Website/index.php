@@ -127,7 +127,7 @@ function getPageFromDatabase($token,$page) {
 	// check token
 	getConfigFromDatabase($token);
 
-	$mysql_link->query("set names 'utf8'");
+	$mysql_link->query("set names 'utf8';");
 	$pageQuerySql = "SELECT * FROM `demo_website` WHERE `token` = '".$token."' and `site` = '".$page."'";
 	$pageQueryResult = $mysql_link->query($pageQuerySql);
 
@@ -243,7 +243,7 @@ function displayEditor($token, $page) {
 
 <div>
 <pre>
-	<code id="editor"><?php echo htmlentities($content); ?>
+	<code id="editor"><?php echo htmlentities($content, ENT_QUOTES, "UTF-8"); ?>
 	</code>
 </pre>
 </div>

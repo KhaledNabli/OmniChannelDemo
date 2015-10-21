@@ -10,18 +10,29 @@ var websiteConfig = {};
 
 $(document).ready(function () {
 	console.log("-- Demo libs loaded secussfully--");
-	var token = readToken();
+	var token = readTokenFromURL();
 	
-	console.log("-- Demo loading config for token " + token + "--");
+	console.log("-- Demo loading config for token " + token + " --");
 	getConfigurationByToken(token).done(function (config) {
-		console.log("-- Demo libs loaded secussfully--");
+		console.log("-- Demo libs loaded successfully for demo: " + config.general.demoName + " --");
 		websiteConfig = config;
 		websiteConfig.web = base64_decodeProperties(config.web);
-		websiteConfig.web.nbaPlaceHolderSelectors = [	websiteConfig.web.nbaPlaceHolderSelector1, 
-														websiteConfig.web.nbaPlaceHolderSelector2,
-														websiteConfig.web.nbaPlaceHolderSelector3,
-														websiteConfig.web.nbaPlaceHolderSelector4
-													];
+		websiteConfig.web.nbaPlaceHolderSelectors = [];
+		if(websiteConfig.web.nbaPlaceHolderSelector1) {
+			websiteConfig.web.nbaPlaceHolderSelectors.push(websiteConfig.web.nbaPlaceHolderSelector1);
+		}
+		if(websiteConfig.web.nbaPlaceHolderSelector2) {
+			websiteConfig.web.nbaPlaceHolderSelectors.push(websiteConfig.web.nbaPlaceHolderSelector2);
+		}
+		if(websiteConfig.web.nbaPlaceHolderSelector3) {
+			websiteConfig.web.nbaPlaceHolderSelectors.push(websiteConfig.web.nbaPlaceHolderSelector3);
+		}
+		if(websiteConfig.web.nbaPlaceHolderSelector4) {
+			websiteConfig.web.nbaPlaceHolderSelectors.push(websiteConfig.web.nbaPlaceHolderSelector4);
+		}
+
+
+
 		console.log(websiteConfig);
 		prepareWebsite();
 	});
@@ -29,13 +40,16 @@ $(document).ready(function () {
 });
 
 
+function readTokenFromURL() {
+	return getQueryVariable("token");
+}
 
 function prepareWebsite() {
 	console.log("Prepare Website for Omni-Channel Demo");
 
-	var startPageURL = getBaseURL() + ".?page=start&token=" + readToken();
-	var loginPageURL = getBaseURL() + ".?page=login&token=" + readToken();
-	var landingPageURL = getBaseURL() + ".?page=landing&token=" + readToken();
+	var startPageURL = getBaseURL() + ".?page=start&token=" + readTokenFromURL();
+	var loginPageURL = getBaseURL() + ".?page=login&token=" + readTokenFromURL();
+	var landingPageURL = getBaseURL() + ".?page=landing&token=" + readTokenFromURL();
 	// manipulate link to start page
 	if(websiteConfig.web.startLinkSelector != "") {
 		pointElementToLink(websiteConfig.web.startLinkSelector, startPageURL);
@@ -158,7 +172,7 @@ function buildOfferPage() {
 }
 
 function refreshOffers() {
-	var token = readToken();
+	var token = readTokenFromURL();
 	var customerLogin = window.localStorage.omnichanneldemoWebsiteUser;
 	var maxOffers = websiteConfig.web.nbaPlaceHolderSelectors.length;
 	// request offers from API
@@ -241,7 +255,7 @@ function renderHtmlTemplate(htmlTemplate, templateContent) {
 
 
 function trackResponse(customer, offerCd, responseCd) {
-	var token = readToken();
+	var token = readTokenFromURL();
 	respondToOffer(token, customer, offerCd, responseCd, "Website", "").done(function () {
 		refreshOffers();
 	});
