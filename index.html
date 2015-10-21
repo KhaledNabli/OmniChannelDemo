@@ -45,7 +45,6 @@
         <li><a href="#tab_advisor" data-toggle="tab">Advisor App</a></li>
         <li><a href="#tab_web" data-toggle="tab">Website</a></li>
         <li><a href="#tab_mobile" data-toggle="tab">Mobile App</a></li>
-        <li><a href="#tab_labels" data-toggle="tab">Labels</a></li>
       </ul>
       
       <!-- navbar right -->
@@ -462,101 +461,6 @@
                 </div><!-- End Tab: Offers -->
 
 
-                <!-- Tab: Labels -->
-                <div role="tabpanel" class="tab-pane" id="tab_labels">
-                    
-                    <form class="form-horizontal" role="form">
-                        <div class="form-group"></div>
-
-                        <div class="row"> 
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-4"> <h3> Accept Button Labels </h3> </div>
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-4"> <h3> Reject Button Labels </h3> </div>
-                        </div>
-                        <!-- Accept / Reject Buttons -->
-                        <div class="form-group">
-                            <label for="acceptBtnMobile" class="col-sm-2 control-label">Accept Button Mobile</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="acceptBtnMobile" placeholder="">
-                            </div>
-                            <label for="rejectBtnMobile" class="col-sm-3 control-label">Reject Button Mobile</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="rejectBtnMobile" placeholder="">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="acceptBtnWeb" class="col-sm-2 control-label">Accept Button Web</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="acceptBtnWeb" placeholder="">
-                            </div>
-                            <label for="rejectBtnWeb" class="col-sm-3 control-label">Reject Button Web</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="rejectBtnWeb" placeholder="">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="acceptBtnAdvisor" class="col-sm-2 control-label">Accept Button Advisor</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="acceptBtnAdvisor" placeholder="">
-                            </div>
-                            <label for="rejectBtnAdvisor" class="col-sm-3 control-label">Reject Button Advisor</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="rejectBtnAdvisor" placeholder="">
-                            </div>
-                        </div>
-
-                        <!-- Analytics Bars -->
-                        <div class="row"> 
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-4"> <h3> Analytics Bar Labels </h3> </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="analyticsBar1Label" class="col-sm-2 control-label">Analytics Bar 1</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="analyticsBar1Label" placeholder="">
-                            </div>
-                            <label for="analyticsBar2Label" class="col-sm-3 control-label">Analytics Bar 2</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="analyticsBar2Label" placeholder="">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="analyticsBar3Label" class="col-sm-2 control-label">Analytics Bar 3</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="analyticsBar3Label" placeholder="">
-                            </div>
-                            <label for="analyticsBar4Label" class="col-sm-3 control-label">Analytics Bar 4</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="analyticsBar4Label" placeholder="">
-                            </div>
-                        </div>
-
-                        <!-- Miscellaneous Buttons -->
-                        <div class="row"> 
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-4"> <h3> Other Button Labels </h3> </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="detailsBtnWeb" class="col-sm-2 control-label">Details Button Web</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="detailsBtnWeb" placeholder="">
-                            </div>
-                            <label for="maybeBtnAdvisor" class="col-sm-3 control-label">Maybe Button Advisor</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="maybeBtnAdvisor" placeholder="">
-                            </div>
-                        </div>
-
-                        <div class="form-group"></div>
-                    </form>
-
-                </div><!-- End Tab: Labels -->
-
-
                 <!-- Start Tab: Mobile App -->
                 <div role="tabpanel" class="tab-pane" id="tab_mobile">
                     <form class="form-horizontal" role="form">
@@ -602,13 +506,24 @@
                         
                         <div class="row"> 
                             <div class="col-sm-2"></div>
-                            <div class="col-sm-4"> <h3> Other Labels and Settings </h3> </div>
+                            <div class="col-sm-4"> <h3>Labels and Settings </h3> </div>
                         </div>
 
                         <div class="form-group">
                             <label for="maxOffersMobile" class="col-sm-2 control-label">Number of Offers</label>
                             <div class="col-sm-3">
                                 <input type="number" class="form-control" id="maxOffersMobile" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="acceptBtnMobile" class="col-sm-2 control-label">Accept Button </label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="acceptBtnMobile" placeholder="">
+                            </div>
+                            <label for="rejectBtnMobile" class="col-sm-3 control-label">Reject Button </label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="rejectBtnMobile" placeholder="">
                             </div>
                         </div>
 
@@ -681,6 +596,50 @@
 
                         <div class="form-group"></div>
 
+                        <!-- Analytics Bars -->
+                        <div class="row"> 
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-4"> <h3> Analytics Bar Labels </h3> </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="analyticsBar1Label" class="col-sm-2 control-label">Analytics Bar 1</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="analyticsBar1Label" placeholder="">
+                            </div>
+                            <label for="analyticsBar2Label" class="col-sm-3 control-label">Analytics Bar 2</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="analyticsBar2Label" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="analyticsBar3Label" class="col-sm-2 control-label">Analytics Bar 3</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="analyticsBar3Label" placeholder="">
+                            </div>
+                            <label for="analyticsBar4Label" class="col-sm-3 control-label">Analytics Bar 4</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="analyticsBar4Label" placeholder="">
+                            </div>
+                        </div>
+
+                        <!-- Analytics Bars -->
+                        <div class="row"> 
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-4"> <h3> Button Labels </h3> </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="acceptBtnAdvisor" class="col-sm-2 control-label">Accept Button</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="acceptBtnAdvisor" placeholder="">
+                            </div>
+                            <label for="rejectBtnAdvisor" class="col-sm-3 control-label">Reject Button</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="rejectBtnAdvisor" placeholder="">
+                            </div>
+                        </div>
+
                     </form>                   
                 </div><!-- End Tab: Advisor App -->
 
@@ -743,6 +702,28 @@
                                         </a> 
                                     </div>
                                 </div>
+
+                                <div class="col-sm-8 col-sm-offset-4"> <h3> Button Labels </h3> </div>
+
+                                <div class="form-group">
+                                    <label for="acceptBtnWeb" class="col-sm-4 control-label">Accept Button</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="acceptBtnWeb" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rejectBtnWeb" class="col-sm-4 control-label">Reject Button</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="rejectBtnWeb" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="detailsBtnWeb" class="col-sm-4 control-label">Details Button</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="detailsBtnWeb" placeholder="">
+                                    </div>
+                                </div>
+
                             </div>
 
 
