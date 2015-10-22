@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `contact_response_history` (
   `responsetype` varchar(64) NOT NULL,
   `responsedetails` varchar(512) NOT NULL,
   `datetime` varchar(32) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -85,12 +85,13 @@ DROP TABLE IF EXISTS `demo_config`;
 CREATE TABLE IF NOT EXISTS `demo_config` (
 `id` int(11) NOT NULL,
   `token` varchar(64) NOT NULL,
+  `read_only` int(11) DEFAULT NULL,
   `config_json` text NOT NULL,
   `create_dttm` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modify_dttm` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `modify_by` varchar(64) NOT NULL,
   `email_to` varchar(64) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -113,11 +114,11 @@ CREATE TABLE IF NOT EXISTS `demo_events` (
 
 -- --------------------------------------------------------
 
-
 --
 -- Tabellenstruktur für Tabelle `demo_website`
 --
 
+DROP TABLE IF EXISTS `demo_website`;
 CREATE TABLE IF NOT EXISTS `demo_website` (
   `token` varchar(32) NOT NULL,
   `site` varchar(32) NOT NULL,
@@ -127,18 +128,7 @@ CREATE TABLE IF NOT EXISTS `demo_website` (
   `modify_by` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `demo_website`
---
-ALTER TABLE `demo_website`
- ADD PRIMARY KEY (`token`,`site`);
-
-
-
+-- --------------------------------------------------------
 
 --
 -- Struktur des Views `contact_response_counts`
@@ -176,6 +166,12 @@ ALTER TABLE `demo_events`
  ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `demo_website`
+--
+ALTER TABLE `demo_website`
+ ADD PRIMARY KEY (`token`,`site`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -183,14 +179,17 @@ ALTER TABLE `demo_events`
 -- AUTO_INCREMENT for table `contact_response_history`
 --
 ALTER TABLE `contact_response_history`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=26;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT for table `demo_config`
 --
 ALTER TABLE `demo_config`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT for table `demo_events`
 --
 ALTER TABLE `demo_events`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
