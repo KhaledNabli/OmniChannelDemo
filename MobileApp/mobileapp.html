@@ -23,13 +23,8 @@
 	<div data-role="header" data-position="fixed">
 		<h1><span id="titleMobileApp">Mobile App</span></h1>
 		<a href="#left-panel" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
-		<a href="#pageLogin" data-transition="slide" data-iconpos="notext" data-icon="carat-r" class="ui-btn-right">Login</a>
+		<a href="#" data-transition="slide" data-iconpos="notext" data-icon="carat-r" onclick="onNavLoginBtn(this);" class="ui-btn-right">Login</a>
 	</div><!-- /header -->
-
-
-	<div id="backgroundImageHolder" role="main" class="ui-content">
-		<img id="homeBackground" src="" width="100%" >
-	</div><!-- /content -->
 
 	<div data-role="panel" id="left-panel" data-position="left" data-display="overlay" data-theme="b">
 		<div class="ui-panel-inner">
@@ -39,35 +34,19 @@
 			Token:
 			<input type="text" name="tokenLoad" id="tokenLoad" placeholder="Token here" value="">
 			<br></li>
-			<li><a href="#" data-rel="close" onclick="onLoadConfigurationBtn(this);">Load</a></li>			
+			<li><a href="#" data-rel="close" onclick="onLoadConfigurationBtn(this);">Load</a></li>	
+			<li><a href="#" data-rel="close" onclick="onResetDemoBtn(this);">Reset Demo</a></li>		
 			</ul>
 		</div>
 	</div><!-- /panel -->
 
+	<!-- HOME PAGE -->
+	<div id="backgroundImageHolder" role="main" class="ui-content">
+		<img id="homeBackground" src="" width="100%" >
+	</div><!-- /content -->
 
-
-	<div data-role="footer" data-position="fixed">
-		<div data-role="navbar">
-			<ul>
-				<li><a href="#pageHome"   data-transition="slide" data-icon="home" class="ui-btn-active">Home</a></li>
-				<li><a href="#pageLogin"  data-transition="slide" data-icon="user">Login</a></li>
-				<li><a href="#pageOffers" data-transition="slide" data-icon="shop">Offers</a></li>
-			</ul>
-		</div><!-- /navbar -->
-	</div><!-- /footer -->
-</div><!-- /page -->
-
-<!-- Start of first page -->
-<div data-role="page"  class="ui-page-theme-b" id="pageLogin">
-
-	<div data-role="header" data-position="fixed">
-		<h1>Login</h1>
-		<a href="#pageHome" data-transition="slide" data-iconpos="notext" data-icon="carat-l" class="ui-btn-left">Home</a>
-		<a href="#pageOffers" data-transition="slide" data-iconpos="notext" data-icon="carat-r" class="ui-btn-right">Offers</a>
-	</div><!-- /header -->
-
-
-	<div role="main" class="ui-content">
+	<!-- LOGIN PAGE -->
+	<div id="loginPage" role="main" class="ui-content" style="display:none">
 		<p>
 			<label for="inputCustomerLogin">Customer:</label>
 			<input id="inputCustomerLogin" list="dataList_customers" placeholder="Enter your ID" type="text" class="form-control">
@@ -83,33 +62,9 @@
 	</div><!-- /content -->
 
 
-
-
-	<div data-role="footer" data-position="fixed">
-		<div data-role="navbar">
-			<ul>
-				<li><a href="#pageHome"   data-transition="slide" data-icon="home">Home</a></li>
-				<li><a href="#pageLogin"  data-transition="slide" data-icon="user" class="ui-btn-active">Login</a></li>
-				<li><a href="#pageOffers" data-transition="slide" data-icon="shop">Offers</a></li>
-			</ul>
-		</div><!-- /navbar -->
-	</div><!-- /footer -->
-</div><!-- /page -->
-
-
-
-<!-- Start of first page -->
-<div data-role="page"  class="ui-page-theme-b" id="pageOffers">
-
-	<div data-role="header" data-position="fixed">
-		<h1><span id="numberOfOffers"></span> Offers</h1>
-		<a href="#pageLogin" data-transition="slide" data-iconpos="notext" data-icon="carat-l" class="ui-btn-left">Login</a>
-		<a href="#pageHome" data-transition="slide" data-iconpos="notext" data-icon="carat-r" class="ui-btn-right">Home</a>
-	</div><!-- /header -->
-
-	<div role="main" class="ui-content">
+	<!-- OFFER PAGE -->
+	<div id="offerPage" role="main" class="ui-content" style="display:none">
 		
-		<!-- Page: Offers-->
 		<span id="offers" style="display:none">
 			<div id="nba_table"></div>
 		</span><!-- Page: Offers-->
@@ -121,7 +76,7 @@
 			<span id="offerDetailsDescription"></span>
 			<input type="hidden" id="offerDetailsOfferCode">
 			<input id="acceptButton" onclick="onResponseBtnClick(this,'accept');" type="button" data-icon="check" value="Accept" >
-		    <input id="rejectButton" onclick="onResponseBtnClick(this,'reject');" type="button" data-icon="forbidden" value="Reject" >		    
+		    <input id="rejectButton" onclick="onResponseBtnClick(this,'reject');" type="button" data-icon="forbidden" value="Reject" >
 		</span><!-- Page: Offer Details -->
 
 	</div><!-- /content -->
@@ -130,16 +85,13 @@
 	<div data-role="footer" data-position="fixed">
 		<div data-role="navbar">
 			<ul>
-				<li><a href="#pageHome"   data-transition="slide" data-icon="home">Home</a></li>
-				<li><a href="#pageLogin"  data-transition="slide" data-icon="user">Login</a></li>
-				<li><a href="#pageOffers" data-transition="slide" data-icon="shop" class="ui-btn-active">Offers</a></li>
+				<li><a id="navHome" href="#" onclick="onNavHomeBtn(this);"  data-transition="slide" data-icon="home" class="ui-btn-active">Home</a></li>
+				<li><a id="navLogin" href="#" onclick="onNavLoginBtn(this);" data-transition="slide" data-icon="user">Login</a></li>
+				<li><a id="navOffer" href="#" onclick="onNavOfferBtn(this);" data-transition="slide" data-icon="shop">Offers</a></li>
 			</ul>
 		</div><!-- /navbar -->
 	</div><!-- /footer -->
 </div><!-- /page -->
-
-
-
 
 
 

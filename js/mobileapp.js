@@ -16,6 +16,29 @@ function onMobileAppReady() {
 	});
 }
 
+function onResetDemoBtn(element) {
+	resetDemo(configScenario.token);
+	window.location.href='#';
+}
+
+function onNavLoginBtn(element) {
+	$('#backgroundImageHolder').hide();
+	$('#loginPage').show();
+	$('#offerPage').hide();
+}
+
+function onNavHomeBtn(element) {
+	$('#backgroundImageHolder').show();
+	$('#loginPage').hide();
+	$('#offerPage').hide();
+}
+
+function onNavOfferBtn(element) {
+	$('#backgroundImageHolder').hide();
+	$('#loginPage').hide();
+	$('#offerPage').show();
+
+}
 
 function onSelectCustomerBtn(element) {
 	var customerLogin = $('#inputCustomerLogin').val();
@@ -26,14 +49,18 @@ function onSelectCustomerBtn(element) {
 	loadOffers().done(function () {
 		displayOffers();
 	});	
-	window.location.href='#pageOffers';
+	//window.location.href='#pageOffers';
+	onNavOfferBtn();
+	$('#navOffer').addClass('ui-btn-active');
+	$('#navHome').removeClass('ui-btn-active');
+	$('#navLogin').removeClass('ui-btn-active');
 }
 
 
 function onLoadConfigurationBtn(element) {
 	var token = $('#tokenLoad').val();
 	if(token == "") return;
-	window.location.href='#pageLogin';
+	window.location.href='#';
 	loadConfiguration(token);
 }
 
@@ -112,7 +139,7 @@ function displayOffers() {
 
 function showOfferDetails(offerCode) {
 	hideAll();
-	$('#offerDetails').toggle( "slide" );
+	$('#offerDetails').toggle( );
 	var offer = getOfferByCode(offerCode, configScenario.nba);
 	
 	$('#offerDetailsLabel').html(offer.offerName);
