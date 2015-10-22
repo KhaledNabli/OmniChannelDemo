@@ -5,7 +5,11 @@ function startConfigurator() {
 	console.log("startConfigurator");
 	var token = "";
 
-	if(window.localStorage.omnichanneltoken) {
+    if(readTokenFromURL() != undefined) {
+        token = readTokenFromURL();
+        console.log("read token from url: " + token);
+        window.localStorage.omnichanneltoken = token;
+    } else if(window.localStorage.omnichanneltoken) {
 		token = window.localStorage.omnichanneltoken;
 	} else {
 		token = "";
@@ -34,6 +38,20 @@ function onBtnLoad(element) {
 
 	$('#popupLoadToken').modal('hide');
 }
+
+function createChannelLinks(token) {
+    var baseUrl=window.location.href.split('#')[0];
+    if(token != '') {
+    $('#advisorLink').html(baseUrl + 'AdvisorApp/advisor.html'+'#'+token);
+    $('#advisorLink').attr('href',baseUrl + 'AdvisorApp/advisor.html'+'#'+token);
+
+    $('#mobileLink').html(baseUrl + 'MobileApp/mobileapp.html'+'#'+token);
+    $('#mobileLink').attr('href',baseUrl + 'MobileApp/mobileapp.html'+'#'+token);
+
+    $('#websiteLink').html(baseUrl+ 'Website/?token='+token);
+    $('#websiteLink').attr('href',baseUrl + 'Website/?token='+token);
+    }   
+}
 /**
 *	Init configuration ui
 *
@@ -41,6 +59,8 @@ function onBtnLoad(element) {
 function initConfigurator() {
 
 	console.log("configScenario: " + configScenario);
+
+    createChannelLinks(configScenario.token);
 
 	$("#sendSms").prop("checked", checkIfTrue(configScenario.general.sendSms));
 	$("#rtdmBackend").prop("checked", checkIfTrue(configScenario.general.rtdmBackend));
@@ -171,6 +191,8 @@ function resetConfiguration() {
 function saveConfiguration() {
 	console.log("Saving Config");
 
+
+
 	/*** for-loop to get all fromFields from configurator.html ***/
 	for (var property in configScenario.general) {
         if (configScenario.general.hasOwnProperty(property)) {
@@ -247,6 +269,8 @@ function saveConfiguration() {
 			//$("#tokenDiv").hide();
 		} else {
 			$('#token').html(configScenario.token);
+            createChannelLinks(configScenario.token);
+            
 			//$("#tokenDiv").show();
 		}
     });

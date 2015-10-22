@@ -7,7 +7,15 @@ configScenario.currentOffers = [];
 * on document ready
 */
 function onMobileAppReady() {
-	var token = readToken();
+	var token = "";
+
+    if(readTokenFromURL() != undefined) {
+        token = readTokenFromURL();
+        window.localStorage.omnichanneltoken = token;
+    } else {
+		token = readToken();
+	}
+
 	getConfigurationByToken(token).done(function (config) {
 		configScenario = config;
 		configScenario.currentChannel = "Mobile";

@@ -86,6 +86,7 @@ function prepareWebsite() {
 
 function pointElementToLink(selector, link) {
 	var tagType = $(selector).prop("tagName");
+	console.log("set link of " + tagType + " to " + link);
 
 	// if it is an ancher
 	if(tagType == "A") {
@@ -97,9 +98,7 @@ function pointElementToLink(selector, link) {
 
 	// if it is an button
 	else if(tagType == "BUTTON") {
-		$(selector).on('click', function () {
-			window.location.href = link;
-		});
+		$(selector).attr("onclick", "window.location.href='"+link+"'");
 	} 
 
 	// if it is something else
