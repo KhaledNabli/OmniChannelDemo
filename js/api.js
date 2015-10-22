@@ -22,7 +22,7 @@ function getOffersForCustomer(token, customer, channel, maxOffers, doNotTrack) {
 					customer: customer, 
 					channel: channel,
 					maxOffers : maxOffers,
-					doNotTrack : doNotTrack
+					DoNotTrack : doNotTrack
 				});
 }
 
