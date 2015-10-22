@@ -301,7 +301,7 @@ function respondToOffer($token, $customer, $offerCd, $responseCd, $channelCd, $d
 function insertHistoryEntry($token, $customer, $offerCd, $offer, $channel, $entrytype, $responsetype, $responsedetails, $datetime) {
 	global $mysql_link;
 
-	if($datetime != "") {
+	if($datetime == "") {
 		$insertHistorySql = "INSERT INTO `omnichanneldemo`.`contact_response_history` (`token`, `customer`, `offerCd`, `offer`, `channel`, `entrytype`, `responsetype`, `responsedetails`, `datetime`) VALUES ('".$token."', '".$customer."', '".$offerCd."', '".$offer."', '".$channel."', '".$entrytype."', '".$responsetype."', '".$responsedetails."', now())";
 	} else {
 		$insertHistorySql = "INSERT INTO `omnichanneldemo`.`contact_response_history` (`token`, `customer`, `offerCd`, `offer`, `channel`, `entrytype`, `responsetype`, `responsedetails`, `datetime`) VALUES ('".$token."', '".$customer."', '".$offerCd."', '".$offer."', '".$channel."', '".$entrytype."', '".$responsetype."', '".$responsedetails."', '" . $datetime . "')";
