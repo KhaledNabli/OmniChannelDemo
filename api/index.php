@@ -71,7 +71,7 @@ function processRequest() {
 		$channel = getRequestParameter("channel");
 		$list_size = getRequestParameter("maxOffers");
 		$do_not_track = getRequestParameter("DoNotTrack");
-		echo json_encode(getOffers($token, $customer, $channel, $list_size));
+		echo json_encode(getOffers($token, $customer, $channel, $list_size, $do_not_track));
 	
 	}
 	else if($action == 'respondToOffer') {
@@ -166,6 +166,7 @@ function getConfigFromDatabase($token) {
 	else {
 		$configItem = $configQueryResult->fetch_assoc();;
 		$config = json_decode($configItem["config_json"]);
+		$config->readOnly = $configItem["read_only"];
 	}
 
 
@@ -191,7 +192,9 @@ function saveConfig($config) {
 
 	if(!empty($token)) {
 		// check if token is valid.
-		if(getConfigFromDatabase($token) != null) $tokenValid = true;
+		$configFromDB = getConfigFromDatabase($token);
+		if($configFromDB != null && $configFromDB->readOnly != 1) $tokenValid = true;
+
 
 		if($tokenValid) {
 			// update existing configuration
@@ -229,7 +232,7 @@ function generateRandomToken($bytes = 6){
 /**
 *
 */
-function getOffers($token, $customer, $channel, $list_size = 10){
+function getOffers($token, $customer, $channel, $list_size = 10, $do_not_track){
 	global $mysql_link;
 	$offerList = array();
 
@@ -242,7 +245,10 @@ function getOffers($token, $customer, $channel, $list_size = 10){
 		if($i >= $list_size) break;
 		$offerList[$i] = $offerListResult->fetch_assoc();
 		// track display information
-		insertHistoryEntry($token, $customer, $offerList[$i]['offer'], '', $channel, 'Display', '', '', "");
+		id(!$do_not_track) {
+			insertHistoryEntry($token, $customer, $offerList[$i]['offer'], '', $channel, 'Display', '', '', "");
+		}
+		
 	}
 
 
