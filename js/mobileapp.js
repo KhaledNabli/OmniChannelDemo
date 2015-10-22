@@ -19,6 +19,10 @@ function onMobileAppReady() {
 function onResetDemoBtn(element) {
 	resetDemo(configScenario.token);
 	window.location.href='#';
+	onNavHomeBtn();
+	$('#navHome').removeClass('ui-btn-active');
+	$('#navLogin').removeClass('ui-btn-active');
+	$('#navOffer').removeClass('ui-btn-active');
 }
 
 function onNavLoginBtn(element) {

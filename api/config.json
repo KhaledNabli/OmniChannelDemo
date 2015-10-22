@@ -85,7 +85,7 @@
 		            "historyDate": "2015-09-25",
 		            "historyAction": "Personal Loan",
 		            "historyChannel": "Web",
-		            "historyResponse": "accepted"
+		            "historyResponse": "accept"
 		        }
 		    ]
 		},
@@ -113,7 +113,7 @@
 		            "historyDate": "2015-09-25",
 		            "historyAction": "Personal Loan",
 		            "historyChannel": "Web",
-		            "historyResponse": "accepted"
+		            "historyResponse": "accept"
 		        }
 		    ]
 		}

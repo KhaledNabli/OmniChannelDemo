@@ -242,6 +242,11 @@ function loadHistory() {
 				offer.historyType = historyItem.entrytype;
 				offer.historyDetails = historyItem.responsedetails;
 				offer.historyResponse = historyItem.responsetype;
+				offer.historyCounts = historyItem.counts;
+
+				if (historyItem.offer) { //TODO: preset history of the customers does not contain an offerCode for matching
+					offer.offerName = historyItem.offer;
+				}
 				return offer;
 			});
 	});
@@ -260,7 +265,7 @@ function displayHistory() {
 		var historyType     = historyItem.historyType;
 		var historyOffer    = historyItem.offerName;
 		var historyChannel  = historyItem.historyChannel;
-		var historyCounts   = "";
+		var historyCounts   = historyItem.historyCounts;
 		var historyResponse = historyItem.historyResponse;
 
 		historyRow = '<tr>'
