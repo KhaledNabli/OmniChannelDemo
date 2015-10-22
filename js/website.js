@@ -44,9 +44,9 @@ $(document).ready(function () {
 function prepareWebsite() {
 	console.log("Prepare Website for Omni-Channel Demo");
 
-	var startPageURL = getBaseURL() + ".?page=start&token=" + readTokenFromURL();
-	var loginPageURL = getBaseURL() + ".?page=login&token=" + readTokenFromURL();
-	var landingPageURL = getBaseURL() + ".?page=landing&token=" + readTokenFromURL();
+	var startPageURL = getBaseURL() + ".?page=start&token=" + encodeURI(readTokenFromURL());
+	var loginPageURL = getBaseURL() + ".?page=login&token=" + encodeURI(readTokenFromURL());
+	var landingPageURL = getBaseURL() + ".?page=landing&token=" + encodeURI(readTokenFromURL());
 	// manipulate link to start page
 	if(websiteConfig.web.startLinkSelector != "") {
 		pointElementToLink(websiteConfig.web.startLinkSelector, startPageURL);
@@ -154,15 +154,15 @@ function processLoginBtnClick() {
 */
 function buildOfferPage() {
 	console.log("Build Offer Page");
-	refreshOffers();
+	refreshOffers(false);
 }
 
-function refreshOffers() {
+function refreshOffers(doNotTrack) {
 	var token = readTokenFromURL();
 	var customerLogin = window.localStorage.omnichanneldemoWebsiteUser;
 	var maxOffers = websiteConfig.web.nbaPlaceHolderSelectors.length;
 	// request offers from API
-	getOffersForCustomer(token, customerLogin, "Website", maxOffers).done(function (offers) {
+	getOffersForCustomer(token, customerLogin, "Website", maxOffers, doNotTrack).done(function (offers) {
 		websiteConfig.currentOffers = offers;
 		displayOffers(offers);
 	});
@@ -243,7 +243,7 @@ function renderHtmlTemplate(htmlTemplate, templateContent) {
 function trackResponse(customer, offerCd, responseCd) {
 	var token = readTokenFromURL();
 	respondToOffer(token, customer, offerCd, responseCd, "Website", "").done(function () {
-		refreshOffers();
+		refreshOffers(true);
 	});
 }
 
