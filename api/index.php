@@ -245,7 +245,7 @@ function getOffers($token, $customer, $channel, $list_size = 10, $do_not_track){
 		if($i >= $list_size) break;
 		$offerList[$i] = $offerListResult->fetch_assoc();
 		// track display information
-		id(!$do_not_track) {
+		if(!$do_not_track) {
 			insertHistoryEntry($token, $customer, $offerList[$i]['offer'], '', $channel, 'Display', '', '', "");
 		}
 		
