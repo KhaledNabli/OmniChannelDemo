@@ -20,7 +20,7 @@ function onAdvisorReady() {
     } else {
 		token = readToken();
 	}
-	
+
 	getConfigurationByToken(token).done(function (config) {
 		configScenario = config;
 		configScenario.currentChannel = "Advisor";
@@ -92,6 +92,10 @@ function onClickNavItemHistory(element) {
 	});	
 }
 
+function onResetDemoBtn(element) {
+	resetDemo(configScenario.token);
+	$('#popupLoadToken').modal('hide');
+}
 
 function onLoadConfigurationBtn(element) {
 	var token = $('#tokenLoad').val();

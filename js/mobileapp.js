@@ -7,14 +7,7 @@ configScenario.currentOffers = [];
 * on document ready
 */
 function onMobileAppReady() {
-	var token = "";
-
-    if(readTokenFromURL() != undefined) {
-        token = readTokenFromURL();
-        window.localStorage.omnichanneltoken = token;
-    } else {
-		token = readToken();
-	}
+	var token = getToken();
 
 	getConfigurationByToken(token).done(function (config) {
 		configScenario = config;

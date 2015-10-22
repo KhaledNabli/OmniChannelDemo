@@ -1,4 +1,9 @@
 
+function resetDemo(token) {
+	return callApi({action: 'resetDemo', 
+					token: token
+				});
+}
 
 function respondToOffer(token, customer, offerCd, responseCd, channelCd, details) {
 	return callApi({action: 'respondToOffer', 
@@ -53,12 +58,43 @@ function callApi(parameters) {
 
 
 
-
+function getToken() {
+	var token = "";
+	var tokenFromUrl = readTokenFromURL();
+    if(tokenFromUrl != undefined) {
+    	// TODO: check if token is valid before overwriting the existing one
+        saveToken(tokenFromUrl);
+    } else {
+		token = readToken();
+	}
+	return token;
+}
 
 
 function readTokenFromURL() {
-	return window.location.href.split('#')[1];
+	var tokenFromParameter = getQueryVariable("token");
+	var tokenAfterHash = window.location.href.split('#')[1];
+	return tokenFromParameter ? tokenFromParameter : tokenAfterHash;
 }
+
+
+
+function getQueryVariable(variable) {
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    if (pair[0] == variable) {
+      return pair[1];
+    }
+  } 
+}
+
+function getBaseURL() {
+	return window.location.href.split("?")[0];
+}
+
+
 
 
 function readToken() {

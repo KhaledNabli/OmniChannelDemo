@@ -40,9 +40,6 @@ $(document).ready(function () {
 });
 
 
-function readTokenFromURL() {
-	return getQueryVariable("token");
-}
 
 function prepareWebsite() {
 	console.log("Prepare Website for Omni-Channel Demo");
@@ -128,16 +125,6 @@ function getCurrentFileName() {
 	return indexPageUrl;
 }
 
-function getQueryVariable(variable) {
-  var query = window.location.search.substring(1);
-  var vars = query.split("&");
-  for (var i=0;i<vars.length;i++) {
-    var pair = vars[i].split("=");
-    if (pair[0] == variable) {
-      return pair[1];
-    }
-  } 
-}
 
 function getBaseURL() {
 	return window.location.href.split("?")[0];
