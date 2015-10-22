@@ -300,7 +300,12 @@ function respondToOffer($token, $customer, $offerCd, $responseCd, $channelCd, $d
 */
 function insertHistoryEntry($token, $customer, $offerCd, $offer, $channel, $entrytype, $responsetype, $responsedetails, $datetime) {
 	global $mysql_link;
-	$insertHistorySql = "INSERT INTO `omnichanneldemo`.`contact_response_history` (`token`, `customer`, `offerCd`, `offer`, `channel`, `entrytype`, `responsetype`, `responsedetails`, `datetime`) VALUES ('".$token."', '".$customer."', '".$offerCd."', '".$offer."', '".$channel."', '".$entrytype."', '".$responsetype."', '".$responsedetails."', now())";
+
+	if($datetime != "") {
+		$insertHistorySql = "INSERT INTO `omnichanneldemo`.`contact_response_history` (`token`, `customer`, `offerCd`, `offer`, `channel`, `entrytype`, `responsetype`, `responsedetails`, `datetime`) VALUES ('".$token."', '".$customer."', '".$offerCd."', '".$offer."', '".$channel."', '".$entrytype."', '".$responsetype."', '".$responsedetails."', now())";
+	} else {
+		$insertHistorySql = "INSERT INTO `omnichanneldemo`.`contact_response_history` (`token`, `customer`, `offerCd`, `offer`, `channel`, `entrytype`, `responsetype`, `responsedetails`, `datetime`) VALUES ('".$token."', '".$customer."', '".$offerCd."', '".$offer."', '".$channel."', '".$entrytype."', '".$responsetype."', '".$responsedetails."', '" . $datetime . "')";
+	}
 	return $mysql_link->query($insertHistorySql);	
 }
 
@@ -311,7 +316,7 @@ function insertHistoryEntry($token, $customer, $offerCd, $offer, $channel, $entr
 function getCustomerHistory($token, $customer) {
 	global $mysql_link;
 	$historyList = array();
-	$historyListSql = "SELECT * FROM `contact_response_history` WHERE `token` = '".$token."' and `customer` = '".$customer."'";
+	$historyListSql = "SELECT * FROM `contact_response_history` WHERE `token` = '".$token."' and `customer` = '".$customer."' SORT BY `datetime` DESC;";
 	$historyListResult = $mysql_link->query($historyListSql);
 	$historyListSize = $historyListResult->num_rows;
 	for($i = 0; $i < $historyListSize; $i ++) {
