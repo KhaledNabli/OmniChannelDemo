@@ -316,9 +316,9 @@ function insertHistoryEntry($token, $customer, $offerCd, $offer, $channel, $entr
 function getCustomerHistory($token, $customer) {
 	global $mysql_link;
 	$historyList = array();
-	$historyListSql = "SELECT * FROM `contact_response_history` WHERE `token` = '".$token."' and `customer` = '".$customer."' SORT BY `datetime` DESC;";
+	$historyListSql = "SELECT * FROM `contact_response_history` WHERE `token` = '".$token."' and `customer` = '".$customer."' ORDER BY `datetime` DESC";
 	$historyListResult = $mysql_link->query($historyListSql);
-	$historyListSize = $historyListResult->num_rows;
+	$historyListSize   = @$historyListResult->num_rows;
 	for($i = 0; $i < $historyListSize; $i ++) {
 		$historyList[$i] = $historyListResult->fetch_assoc();
 	}
