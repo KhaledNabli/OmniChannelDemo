@@ -188,7 +188,7 @@ function loadOffers() {
 	var customer = configScenario.selectedCustomer.customerLogin;
 	var channel = configScenario.currentChannel;
 	var maxOffers = configScenario.maxOffers;
-	return getOffersForCustomer(token, customer, channel, maxOffers).done(function (offers) {
+	return getOffersForCustomer(token, customer, channel, maxOffers, true).done(function (offers) {
 			console.log("Offers Loaded..."); 
 			console.log(offers);
 			// store result in currentOffers - but transform response
@@ -235,6 +235,7 @@ function loadHistory() {
 			// store result in currentOffers - but transform response
 			//configScenario.currentHistory = historyList;
 			configScenario.currentHistory = historyList.map(function (historyItem) {
+				console.log("historyItem: " + historyItem);
 				var offer = getOfferByCode(historyItem.offerCd, configScenario.nba);
 				offer.historyChannel = historyItem.channel;
 				offer.historyDate = historyItem.datetime;
