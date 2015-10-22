@@ -434,7 +434,7 @@ function onEditWebsiteBtn(page) {
         alert("Please save your configuration first.");
         return;
     }
-    var redirectUrl = "./Website/?token=" + readToken() + "&action=edit&page=" + page;
+    var redirectUrl = "./Website/?token=" + encodeURIComponent(readToken()) + "&action=edit&page=" + page;
     window.open(redirectUrl);
 }
 
@@ -443,7 +443,7 @@ function onViewWebsiteBtn(page) {
         alert("Please save your configuration first.");
         return;
     }
-    var redirectUrl = "./Website/?token=" + readToken() + "&action=read&page=" + page;
+    var redirectUrl = "./Website/?token=" + encodeURIComponent(readToken()) + "&action=read&page=" + page;
     window.open(redirectUrl);
 }
 
