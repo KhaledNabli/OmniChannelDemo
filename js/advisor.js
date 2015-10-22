@@ -95,6 +95,19 @@ function onClickNavItemHistory(element) {
 function onResetDemoBtn(element) {
 	resetDemo(configScenario.token);
 	$('#popupLoadToken').modal('hide');
+	$('#nav_custDetails').hide();
+	$('#nav_nba').hide();
+	$('#nav_history').hide();
+
+	$('#nav_overview').addClass('active');
+	$('#nav_nba').removeClass('active');
+	$('#nav_history').removeClass('active');
+	$('#nav_custDetails').removeClass('active');
+
+	$('#tab_overview').removeClass('active');
+	$('#tab_custDetails').removeClass('active');
+	$('#tab_nba').removeClass('active');
+	$('#tab_history').removeClass('active');
 }
 
 function onLoadConfigurationBtn(element) {
@@ -133,8 +146,6 @@ function updateAdvisorUI() {
 	$('#analyticsBar4Label').html(configScenario.labels.analyticsBar4Label);
 	
 }
-
-
 
 
 function showOfferDetails(offerCode) {
