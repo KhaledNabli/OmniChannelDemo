@@ -16,12 +16,13 @@ function respondToOffer(token, customer, offerCd, responseCd, channelCd, details
 				});
 }
 
-function getOffersForCustomer(token, customer, channel, maxOffers) {
+function getOffersForCustomer(token, customer, channel, maxOffers, doNotTrack) {
 	return callApi({action: 'getOffers',
 					token: token,
 					customer: customer, 
 					channel: channel,
-					maxOffers : maxOffers
+					maxOffers : maxOffers,
+					doNotTrack : doNotTrack
 				});
 }
 
@@ -61,7 +62,7 @@ function callApi(parameters) {
 function getToken() {
 	var token = "";
 	var tokenFromUrl = readTokenFromURL();
-    if(tokenFromUrl != undefined) {
+    if(tokenFromUrl != undefined && tokenFromUrl != "") {
     	// TODO: check if token is valid before overwriting the existing one
         saveToken(tokenFromUrl);
     } else {

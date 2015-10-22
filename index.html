@@ -54,8 +54,8 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Options <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="#" data-toggle="modal" data-target="#popupLoadToken">Load Existing Demo</a></li>
-            <li><a href="#" data-toggle="modal" onclick="resetConfiguration();">Reset Demo</a></li>
-            <li><a href="#" onclick="saveConfiguration();">Save Demo</a></li>
+            <li><a href="#" data-toggle="modal" onclick="onResetConfigurationBtn();">Reset Demo</a></li>
+            <li><a href="#" onclick="onSaveConfigurationBtn();">Save Demo</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#">Help</a></li>
           </ul>
@@ -82,7 +82,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="onBtnLoad(this);">Load</button>
+                <button type="button" class="btn btn-primary" onclick="onLoadTokenBtn(this);">Load</button>
               </div>
             </div>
           </div>
@@ -138,7 +138,6 @@
 
         <div class="row">
             <div class="col-lg-2" id="tokenDiv" style="display: none"> 
-                <!--<h1> Token: <kbd><span id="token"></span></kbd> <h1>-->
             </div>
         </div>
 
@@ -898,12 +897,12 @@
             <div style="float:left;color:#737373;font-style:italic">Version 0.1 - last update 06.10.2015</div>
             
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#popupLoadToken">Load Existing Demo</button>
-            <button type="button" class="btn btn-default" data-toggle="modal" onclick="resetConfiguration();">Reset</button>
+            <button type="button" class="btn btn-default" data-toggle="modal" onclick="onResetConfigurationBtn();">Reset</button>
             
             <a id="aboutButton" href="#" class="btn btn-default" onclick="aboutUsClicked();"> 
                 <span id="aboutButtonLabel">Help</span> </a>
             
-            <button id="saveButton" class="btn btn-primary" onclick="saveConfiguration();"> Save Demo </button>
+            <button id="saveButton" class="btn btn-primary" onclick="onSaveConfigurationBtn();"> Save Demo </button>
         </div>
 
 

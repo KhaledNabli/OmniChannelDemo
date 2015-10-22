@@ -2,34 +2,31 @@
 var configScenario = "";
 
 function startConfigurator() {
-	console.log("startConfigurator");
-	var token = "";
+	var tokenFromURL = readTokenFromURL();
+    var token = readToken();
 
-    if(readTokenFromURL() != undefined) {
-        token = readTokenFromURL();
-        console.log("read token from url: " + token);
-        window.localStorage.omnichanneltoken = token;
-    } else if(window.localStorage.omnichanneltoken) {
-		token = window.localStorage.omnichanneltoken;
-	} else {
-		token = "";
-	}
+
+    if(tokenFromURL != undefined && tokenFromURL != "") {
+        token = tokenFromURL;
+    }
+
 
 	loadConfiguration(token);
-
-	console.log("end startConfigurator");
 }
 
 function loadConfiguration(token) {
-	callApi({action: 'getConfig', token: token}).done(function (jsonData) {
-    	//console.log("Loading Data done." + JSON.stringify(jsonData));
-    	configScenario = jsonData;
+	getConfigurationByToken(token).done(function (config) {
+    	configScenario = config;
+        if(config.token != undefined && config.token != "") {
+            saveToken(config.token);
+        }
+
     	initConfigurator();
     });
 }
 
 
-function onBtnLoad(element) {
+function onLoadTokenBtn(element) {
 	var token = $('#tokenLoad').val();
     if(token != "") {
         saveToken(token);
@@ -58,7 +55,7 @@ function createChannelLinks(token) {
 */
 function initConfigurator() {
 
-	console.log("configScenario: " + configScenario);
+	// console.log("configScenario: " + configScenario);
 
     createChannelLinks(configScenario.token);
 
@@ -77,10 +74,10 @@ function initConfigurator() {
 	}
 
 	if (checkIfTrue(configScenario.general.rtdmBackend)) {
-		console.log("true: " + configScenario.general.rtdmBackend);
+		//console.log("true: " + configScenario.general.rtdmBackend);
 	    $("#raceServer_form_group").show();
 	} else {
-		console.log("false: " + configScenario.general.rtdmBackend);
+		//console.log("false: " + configScenario.general.rtdmBackend);
 		$("#raceServer_form_group").hide();
 	}
 
@@ -180,7 +177,7 @@ function initConfigurator() {
 } /* end initConfigurator() */
 
 
-function resetConfiguration() {
+function onResetConfigurationBtn() {
 	window.localStorage.omnichanneltoken = "";
 	loadConfiguration("");
 	$("#token").html('not yet saved');
@@ -188,8 +185,8 @@ function resetConfiguration() {
 }
 
 
-function saveConfiguration() {
-	console.log("Saving Config");
+function onSaveConfigurationBtn() {
+	//console.log("Saving Config");
 
 
 
@@ -256,23 +253,18 @@ function saveConfiguration() {
     //console.log (" save config: " + JSON.stringify(configScenario));
 
 
-    callApi({action: 'saveConfig', config: JSON.stringify(configScenario)}).done(function (jsonData) {
-    	configScenario = jsonData;
-    	//$('#token').val(configScenario.token);
-    	//$('#token').html(configScenario.token);
-    	/* save generated token from server into local storage of browser */
-    	window.localStorage.omnichanneltoken = configScenario.token;
+    saveConfiguration(JSON.stringify(configScenario)).done(function (config) {
+    	configScenario = config;
+
+    	if(configScenario.token != undefined && configScenario.token != "") {
+            saveToken(config.token);
+            createChannelLinks(config.token);
+            $('#token').html(configScenario.token);
+        } else {
+
+        }
+
     	$("#tokenDiv").show();
-
-
-    	if (!configScenario.token) {
-			//$("#tokenDiv").hide();
-		} else {
-			$('#token').html(configScenario.token);
-            createChannelLinks(configScenario.token);
-            
-			//$("#tokenDiv").show();
-		}
     });
 	
     return false;
@@ -286,7 +278,7 @@ function clearNbaRecords() {
 }
 
 function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjustscore) {
-	console.log("maxContacts: " + maxContacts);
+	//console.log("maxContacts: " + maxContacts);
 	if (!code) code = "";
 	if (!name) name = "";
 	if (!desc) desc = "";
@@ -422,7 +414,7 @@ function onUploadWebsiteCommitBtn(element) {
     }).done(function (result) {
         if(result == "") result = "upload successfull";
         $('#websiteInfo-'+page).html(result);
-        console.log("setting #websiteInfo-"+ page + " : " + result);
+        //console.log("setting #websiteInfo-"+ page + " : " + result);
     });
 }
 
