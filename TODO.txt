@@ -5,6 +5,7 @@ API Change
 - add support for read-only
 - scoring mechanism (testing on interest)
 - offer display tracking 
+- SMS
 
 
 Configurator
