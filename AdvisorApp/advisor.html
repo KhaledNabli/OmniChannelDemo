@@ -41,6 +41,8 @@
               <h4 class="modal-title" id="myModalLabel">Load Existing Demo</h4>
             </div>
             <div class="modal-body">
+              <p>Please enter the token for your saved demo configuration. This is the token you can find in the top right corner of the Omni-Channel Configurator.</p>
+              <br>
              <input type="text" class="form-control" id="tokenLoad" value="" placeholder="Token here">
            </div>
            <div class="modal-footer">
@@ -87,16 +89,37 @@
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
+        <div class="col-sm-3 sidebar">
+
+          <div class="form-group">
+            <input id="inputCustomerLogin" list="dataList_customers" placeholder="CustomerID" type="text" class="form-control" aria-label="...">
+            <datalist id="dataList_customers"></datalist>
+          </div>
+          <div class="form-group">
+            
+            <button id="submitBtn" class="btn btn-primary btn-block" onclick="onSelectCustomerBtn(this);"> Submit </button>
+          </div>  
+
           <ul class="nav nav-sidebar">
-            <li id="nav_overview" class="active"><a href="#tab_overview" data-toggle="tab">Select Customer </a></li>
-            <li id="nav_custDetails"><a href="#tab_custDetails" data-toggle="tab">Customer Details</a></li>
-            <li id="nav_nba"><a href="#tab_nba" data-toggle="tab">Next Best Offers</a></li>
-            <li id="nav_history"><a href="#tab_history" data-toggle="tab">Response History</a></li>
+
+          
+
+            <!--
+            <li id="nav_overview" class="active">
+              <a href="#tab_overview" data-toggle="tab" onclick="onSelectCustomerBtn(this);">Select Customer </a></li>
+            <br>-->
+
+            <li id="nav_custDetails" style="display:none">
+              <a href="#tab_custDetails" data-toggle="tab">Customer Details</a></li>
+            <li id="nav_nba" style="display:none">
+              <a href="#tab_nba" data-toggle="tab" onclick="onClickNavItemNba(this);">Next Best Offers</a></li>
+            <li id="nav_history" style="display:none">
+              <a href="#tab_history" data-toggle="tab" onclick="onClickNavItemHistory(this);">Response History</a></li>
+
           </ul>
           
         </div>
-        <div class="col-sm-9 col-sm-offset-2 main">
+        <div class="col-sm-9 col-sm-offset-3 main">
 
           <div class="tab-content">
             <div id="tab_overview" class="tab-pane active">
@@ -105,24 +128,14 @@
               <div class="row">
                 <div class="col-sm-8 col-sm-offset-2">
 
-                  <div class="form-group"></div>
-                  <input id="inputCustomerLogin" list="dataList_customers" placeholder="Enter Customer" type="text" class="form-control" aria-label="...">
 
-
-                  <datalist id="dataList_customers">
-                  </datalist>
 
 
                 </div><!-- column end -->
               </div>
 
               <div class="row">
-                <div class="col-sm-8 col-sm-offset-5">
-                  <div class="form-group"></div>
-                  <button id="btn_Submit" type="button" class="btn btn-default" onclick="onSelectCustomerBtn(this);" >
-                    <span id="btn_SubmitLabel">Submit</span>
-                  </button>
-                </div><!-- column end -->
+                
               </div><!-- row end -->
 
             </div>

@@ -12,7 +12,15 @@ configScenario.currentHistoy = [];
 * on document ready
 */
 function onAdvisorReady() {
-	var token = readToken();
+	var token = "";
+
+    if(readTokenFromURL() != undefined) {
+        token = readTokenFromURL();
+        window.localStorage.omnichanneltoken = token;
+    } else {
+		token = readToken();
+	}
+	
 	getConfigurationByToken(token).done(function (config) {
 		configScenario = config;
 		configScenario.currentChannel = "Advisor";
@@ -58,10 +66,27 @@ function onSelectCustomerBtn(element) {
 	$('#txt_analyticsBar4').text(configScenario.selectedCustomer.analyticsBar4Value);
 	$('#analyticsBar4Label').text(configScenario.labels.analyticsBar4Label);
 
+	$('#nav_overview').removeClass('active');
+	$('#nav_nba').removeClass('active');
+	$('#nav_history').removeClass('active');
+
+	$('#nav_custDetails').addClass('active');
+
+	$('#tab_overview').removeClass('active');
+	$('#tab_custDetails').addClass('active');
+	
+	$('#nav_custDetails').toggle();
+	$('#nav_nba').toggle();
+	$('#nav_history').toggle();
+}
+
+function onClickNavItemNba(element) {
 	loadOffers().done(function () {
 		displayOffers();
-	});	
+	});
+}
 
+function onClickNavItemHistory(element) {
 	loadHistory().done(function () {
 		displayHistory();
 	});	
