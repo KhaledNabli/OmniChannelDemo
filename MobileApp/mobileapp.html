@@ -18,15 +18,35 @@
 <body>
 
 <!-- Start of first page -->
-<div data-role="page"  class="ui-page-theme-b" id="pageHome">
+<div id="mobilePage" data-role="page"  class="ui-page-theme-b" id="pageHome">
 
 	<div data-role="header" data-position="fixed">
 		<h1><span id="titleMobileApp">Mobile App</span></h1>
-		<a href="#left-panel" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+		<a id="navIconLeft" onclick='$("#leftPanel").panel("open");' data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+		<!--<a id="navIconLeft" data-transition="slide" data-iconpos="notext" data-icon="carat-l" 
+			onclick="onSelectCustomerBtn(this);" class="ui-btn-left" style="display: none">-->
 		<a href="#" data-transition="slide" data-iconpos="notext" data-icon="carat-r" onclick="onNavLoginBtn(this);" class="ui-btn-right">Login</a>
 	</div><!-- /header -->
 
-	<div data-role="panel" id="left-panel" data-position="left" data-display="overlay" data-theme="b">
+	<!--<div data-role="panel" id="left-panel" data-position="left" data-display="overlay" data-theme="b">
+	-->
+	<div data-role="panel" id="leftPanel" >
+		<div class="ui-panel-inner">
+			<ul data-role="listview">
+			<li data-icon="back"><a href="#" data-rel="close" class="ui-btn ui-btn-icon-right ui-icon-delete">Close</a></li>
+			<li data-role="list-divider">
+			Token:
+			<input type="text" name="tokenLoad" id="tokenLoad" placeholder="Token here" value="">
+			<br></li>
+			<li><a href="#" data-rel="close" onclick="onLoadConfigurationBtn(this);">Load</a></li>	
+			<li><a href="#" data-rel="close" onclick="onResetDemoBtn(this);">Reset Demo</a></li>		
+			</ul>
+		</div>
+		
+	</div><!-- /panel -->
+
+
+	<div id="xxxleft-panel" data-position="left" style="display:none">
 		<div class="ui-panel-inner">
 			<ul data-role="listview">
 			<li data-icon="back"><a href="#" data-rel="close" class="ui-btn ui-btn-icon-right ui-icon-delete">Close</a></li>
@@ -57,7 +77,8 @@
 			<label for="password">Password:</label>
 			<input type="password" name="password" id="password" value="" autocomplete="off">
 			<br>
-			<input id="submitBtn" type="button" value="Login" data-icon="check" onclick="onSelectCustomerBtn(this);">
+			<a id="submitBtn" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left ui-icon-check" onclick="onSelectCustomerBtn(this);">Submit</a>
+			
 		</p>
 	</div><!-- /content -->
 
@@ -71,12 +92,22 @@
 
 		<!-- Page: Offer Details -->
 		<span id="offerDetails" style="display:none">
-			<h2><span id="offerDetailsLabel"></span></h2>
+			<h3 style="text-align: center"><span id="offerDetailsLabel"></span></h3>
 			<img id="offerDetailsImage" src="" height="200" >
-			<span id="offerDetailsDescription"></span>
+			<p style="text-align: center"><span id="offerDetailsDescription" ></span></p>
 			<input type="hidden" id="offerDetailsOfferCode">
-			<input id="acceptButton" onclick="onResponseBtnClick(this,'accept');" type="button" data-icon="check" value="Accept" >
-		    <input id="rejectButton" onclick="onResponseBtnClick(this,'reject');" type="button" data-icon="forbidden" value="Reject" >
+			<p style="text-align: center">
+				<a id="acceptButton" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-check" 
+				onclick="onResponseBtnClick(this,'accept');" >Accept</a>
+				<a id="rejectButton" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-forbidden" 
+				onclick="onResponseBtnClick(this,'reject');" >Reject</a>
+			</p>
+				
+			<!--<button id="acceptButton" onclick="onResponseBtnClick(this,'accept');" 
+				 class="ui-btn-inline" data-icon="check" value="Accept" ></button>
+				 
+		    <input id="rejectButton" onclick="onResponseBtnClick(this,'reject');" 
+		    	type="button" class="ui-btn-inline" data-icon="forbidden" value="Reject" >-->
 		</span><!-- Page: Offer Details -->
 
 	</div><!-- /content -->
@@ -97,13 +128,28 @@
 
 <script src="../js/ext/jquery-1.11.3.min.js"></script>
 <script src="../js/ext/jquery.mobile-1.4.5.min.js"></script>
+<script src="../js/ext/jquery-ui.js"></script>
 <script src="../js/mobileapp.js"></script>
 <script src="../js/api.js"></script>
 
  <script type="text/javascript">
-        $( document ).ready(function() {
+
+ 	$( document ).on( "pageinit", "#mobilePage", function() {
+ 		onMobileAppReady();
+		$( document ).on( "swipeleft swiperight", "#mobilePage", function( e ) {
+			if ( $.mobile.activePage.jqmData( "panel" ) !== "open" ) {
+				if (e.type === "swipeleft"){
+					onNavLoginBtn(this);
+					//$( "#rightPanel" ).panel( "open" );
+				} else if ( e.type === "swiperight" ) {
+					$( "#leftPanel" ).panel( "open" );
+				}
+			}
+		});
+	});
+        /*$( document ).ready(function() {
             onMobileAppReady();
-        });
+        });*/
  </script>
 
 </body>

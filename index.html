@@ -136,6 +136,7 @@
           </div>
         </div>
 
+        <!-- Token Div -->
         <div class="row">
             <div class="col-lg-2" id="tokenDiv" style="display: none"> 
             </div>
@@ -143,12 +144,10 @@
 
         <div class="row">
 
- 
-
               <!-- Tab panes -->
             <div class="tab-content">
 
-                <!-- Start Tab: Global -->
+                <!-- Start Tab: General -->
                 <div role="tabpanel" class="tab-pane active" id="tab_general">
                     
                     <form class="form-horizontal" role="form">
@@ -229,9 +228,7 @@
                     </div>
 
                     </form>                   
-                </div><!-- End Tab: Global -->
-
-                
+                </div><!-- End Tab: General -->
 
                 <!-- Start Tab: Customer Profile -->
                 <div role="tabpanel" class="tab-pane" id="tab_customers">
@@ -495,7 +492,6 @@
                     </form>
                 </div><!-- End Tab: Offers -->
 
-
                 <!-- Start Tab: Mobile App -->
                 <div role="tabpanel" class="tab-pane" id="tab_mobile">
                     <form class="form-horizontal" role="form">
@@ -602,7 +598,6 @@
                     </form>                   
                 </div><!-- End Tab: Mobile App -->
 
-
                 <!-- Start Tab: Advisor App -->
                 <div role="tabpanel" class="tab-pane" id="tab_advisor">
                     <form class="form-horizontal" role="form">
@@ -678,7 +673,6 @@
                     </form>                   
                 </div><!-- End Tab: Advisor App -->
 
-
                 <!-- Start Tab: Website -->
                 <div role="tabpanel" class="tab-pane" id="tab_web">
                     <form class="form-horizontal" role="form">
@@ -686,11 +680,10 @@
                         
                         <div class="row">
 
-
                             <div class="col-sm-6">
                                 
-
                                 <div class="col-sm-8 col-sm-offset-4"> <h3> Website Content </h3> </div>
+                                <!-- Start Page of Website -->
                                 <div class="form-group">
                                     <label for="startPageUrl" class="col-sm-4 control-label">Start Page</label>
                                     <div class="col-sm-8">
@@ -708,6 +701,7 @@
                                     </div>
                                 </div>
 
+                                <!-- Login Page of Website -->
                                 <div class="form-group">
                                     <label for="loginPageUrl" class="col-sm-4 control-label">Login Page</label>
                                     <div class="col-sm-8"> 
@@ -725,6 +719,7 @@
                                     </div>
                                 </div>
 
+                                <!-- Landing Page of Website -->
                                 <div class="form-group">
                                     <label class="col-sm-4 text-right">Landing Page</label>
                                     <div class="col-sm-8">
@@ -742,31 +737,8 @@
                                     </div>
                                 </div>
                             </div>
-<!--
-                                <div class="col-sm-8 col-sm-offset-4"> <h3> Button Labels </h3> </div>
 
-                                <div class="form-group">
-                                    <label for="acceptBtnWeb" class="col-sm-4 control-label">Accept Button</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="acceptBtnWeb" placeholder="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="rejectBtnWeb" class="col-sm-4 control-label">Reject Button</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="rejectBtnWeb" placeholder="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="detailsBtnWeb" class="col-sm-4 control-label">Details Button</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="detailsBtnWeb" placeholder="">
-                                    </div>
-                                </div>
-
-                            </div>
--->
-
+                            <!-- Website Elements -->
                             <div class="col-sm-6"> 
                                 <div class="col-sm-8 col-sm-offset-4"> <h3> Website Element </h3> </div>
                                 <div class="form-group">
@@ -808,6 +780,7 @@
                                         <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                                     </div> 
                                 </div>
+
                                 <div class="form-group">
                                     <label for="loginFormSelector" class="col-sm-4 control-label">Login Form</label>
                                     <div class="col-sm-7">
@@ -817,6 +790,7 @@
                                         <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                                     </div> 
                                 </div>
+
                                 <div class="form-group">
                                     <label for="loginBtnInputSelector" class="col-sm-4 control-label">Login Button</label>
                                     <div class="col-sm-7">
@@ -826,63 +800,64 @@
                                         <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                                     </div> 
                                 </div>
-
                             </div>
-                            
+                        </div>    
 
                         
                         <div class="row"> 
                             <div class="col-sm-2"></div>
                             <div class="col-sm-10"> <h3> Offer Display Settings </h3> </div>
 
-                        <div class="form-group">
-                            <label for="nbaPlaceHolderSelector1" class="col-sm-2 control-label">Display Offer 1 at:</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="nbaPlaceHolderSelector1" required placeholder="Enter the CSS selector." >
+                            <div class="form-group">
+                                <label for="nbaPlaceHolderSelector1" class="col-sm-2 control-label">Display Offer 1 at:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="nbaPlaceHolderSelector1" required placeholder="Enter the CSS selector." >
+                                </div>
+                                <label for="nbaPlaceHolderSelector2" class="col-sm-2 control-label">Display Offer 2 at:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="nbaPlaceHolderSelector2" required placeholder="Enter the CSS selector." >
+                                </div>
                             </div>
-                            <label for="nbaPlaceHolderSelector2" class="col-sm-2 control-label">Display Offer 2 at:</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="nbaPlaceHolderSelector2" required placeholder="Enter the CSS selector." >
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="nbaPlaceHolderSelector3" class="col-sm-2 control-label">Display Offer 3 at:</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="nbaPlaceHolderSelector3" required placeholder="Enter the CSS selector." >
-                            </div>
-                            <label for="nbaPlaceHolderSelector4" class="col-sm-2 control-label">Display Offer 4 at:</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="nbaPlaceHolderSelector4" required placeholder="Enter the CSS selector." >
-                            </div>
-                        </div>
-                        
-                        <div class="col-sm-9"> <h3> Offer Display Template </h3> </div>  <div class="col-sm-3"> <h3> Available Variables </h3> </div>
-                        <div class="form-group">
-                            <div class="col-sm-9">
-                                <pre id="nbaHtmlTemplateEditor"></pre>
-                            </div>
-                            <div class="col-sm-3">
-                                <p>
-                                    %OfferIndex%<br />
-                                    %OfferCode%<br />
-                                    %OfferName%<br />
-                                    %OfferDesc%<br />
-                                    %OfferImage%<br />
-                                    %CustomerLogin%<br />
-                                    %CustomerId%<br />
-                                    %Firstname%<br />
-                                    %Lastname%<br />
-                                    %CustomerPicture%<br />
-                                    %CustomerSegment%<br />
-                                    <br />
-                                    <i>%TrackAsAccept%<br />
-                                    %TrackAsReject%<br />
-                                    %TrackAsInterest%</i><br />
-                                </p>
-                            </div>
-                        </div>
 
-                        <div class="form-group"></div>
+                            <div class="form-group">
+                                <label for="nbaPlaceHolderSelector3" class="col-sm-2 control-label">Display Offer 3 at:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="nbaPlaceHolderSelector3" required placeholder="Enter the CSS selector." >
+                                </div>
+                                <label for="nbaPlaceHolderSelector4" class="col-sm-2 control-label">Display Offer 4 at:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="nbaPlaceHolderSelector4" required placeholder="Enter the CSS selector." >
+                                </div>
+                            </div>
+                            
+                            <div class="col-sm-9"> <h3> Offer Display Template </h3> </div>  
+                            <div class="col-sm-3"> <h3> Available Variables </h3> </div>
+                            <div class="form-group">
+                                <div class="col-sm-9">
+                                    <pre id="nbaHtmlTemplateEditor"></pre>
+                                </div>
+                                <div class="col-sm-3">
+                                    <p>
+                                        %OfferIndex%<br />
+                                        %OfferCode%<br />
+                                        %OfferName%<br />
+                                        %OfferDesc%<br />
+                                        %OfferImage%<br />
+                                        %CustomerLogin%<br />
+                                        %CustomerId%<br />
+                                        %Firstname%<br />
+                                        %Lastname%<br />
+                                        %CustomerPicture%<br />
+                                        %CustomerSegment%<br />
+                                        <br />
+                                        <i>%TrackAsAccept%<br />
+                                        %TrackAsReject%<br />
+                                        %TrackAsInterest%</i><br />
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="form-group"></div>
                         </div>
                     </form>                   
                 </div><!-- End Tab: Website -->
@@ -904,8 +879,6 @@
             
             <button id="saveButton" class="btn btn-primary" onclick="onSaveConfigurationBtn();"> Save Demo </button>
         </div>
-
-
 
     </div> <!-- /container -->
 

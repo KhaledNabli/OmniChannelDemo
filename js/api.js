@@ -64,10 +64,12 @@ function getToken() {
 	var tokenFromUrl = readTokenFromURL();
     if(tokenFromUrl != undefined && tokenFromUrl != "") {
     	// TODO: check if token is valid before overwriting the existing one
+        token = readTokenFromURL();  // Mathias: this line was missing!!
         saveToken(tokenFromUrl);
     } else {
 		token = readToken();
 	}
+	console.log ("getToken: " + token);
 	return token;
 }
 

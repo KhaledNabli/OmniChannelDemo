@@ -8,15 +8,18 @@ configScenario.currentOffers = [];
 */
 function onMobileAppReady() {
 	var token = getToken();
+	console.log("onMobileAppReady getToken: " + token);
 
 	getConfigurationByToken(token).done(function (config) {
 		configScenario = config;
 		configScenario.currentChannel = "Mobile";
+		console.log("maxOffers from config " + token + ": " + configScenario.mobileApp.maxOffersMobile);
 		updateMobileAppUI();
 	});
 }
 
 function onResetDemoBtn(element) {
+	console.log("reset demo for token " + configScenario.token);
 	resetDemo(configScenario.token);
 	window.location.href='#';
 	onNavHomeBtn();
@@ -27,12 +30,14 @@ function onResetDemoBtn(element) {
 
 function onNavLoginBtn(element) {
 	$('#backgroundImageHolder').hide();
-	$('#loginPage').show();
 	$('#offerPage').hide();
+	slidePage('loginPage', 'right');
+	//$('#loginPage').show();
 }
 
 function onNavHomeBtn(element) {
-	$('#backgroundImageHolder').show();
+	//$('#backgroundImageHolder').show();
+	slidePage('backgroundImageHolder', 'left')
 	$('#loginPage').hide();
 	$('#offerPage').hide();
 }
@@ -40,7 +45,8 @@ function onNavHomeBtn(element) {
 function onNavOfferBtn(element) {
 	$('#backgroundImageHolder').hide();
 	$('#loginPage').hide();
-	$('#offerPage').show();
+	slidePage('offerPage', 'right');
+	//$('#offerPage').show();
 
 }
 
@@ -53,11 +59,13 @@ function onSelectCustomerBtn(element) {
 	loadOffers().done(function () {
 		displayOffers();
 	});	
-	//window.location.href='#pageOffers';
+
 	onNavOfferBtn();
 	$('#navOffer').addClass('ui-btn-active');
 	$('#navHome').removeClass('ui-btn-active');
 	$('#navLogin').removeClass('ui-btn-active');
+
+	changeHeaderNavButton('navIconLeft','ui-icon-bars','$("#leftPanel").panel("open");');
 }
 
 
@@ -87,16 +95,18 @@ function updateMobileAppUI() {
 	$('#titleMobileApp').html("Mobile App");
 	$('#tokenLoad').val(configScenario.token);
 	$('#homeBackground').attr('src', configScenario.mobileApp.homescreen_image);
+	$('#titleMobileApp').html('Mobile App');
+	$("body").css("overflow", "hidden");
 }
 
 
 
-function loadOffers() {
+function loadOffers(doNotTrack) {
 	var token = readToken();
 	var customer = configScenario.selectedCustomer.customerLogin;
 	var channel = configScenario.currentChannel;
 	var maxOffers = configScenario.mobileApp.maxOffersMobile;
-	return getOffersForCustomer(token, customer, channel, maxOffers).done(function (offers) {
+	return getOffersForCustomer(token, customer, channel, maxOffers, doNotTrack).done(function (offers) {
 			console.log("Offers Loaded..."); 
 			console.log(offers);
 			// store result in currentOffers - but transform response
@@ -117,6 +127,7 @@ function displayOffers() {
 
 	var countNBO = offerList.length;
   	console.log("[displayOffers] countNBO= " + countNBO);
+  	$('#titleMobileApp').html(countNBO + ' Top Offers');
   	
   	var htmlOfferList = '<ul data-role="listview" id="offerList">';
   	for (var i=0; i<countNBO; i++) {
@@ -137,12 +148,28 @@ function displayOffers() {
   	$("#numberOfOffers").html(countNBO);
   	$('#nba_table').html( htmlOfferList ).trigger('create');
   	
-  	hideAll();
-  	$('#offers').show();
+  	//hideAll();
+  	slidePage('offers', 'down');
+}
+
+function changeHeaderNavButton(elementid, icon, onClickFunction) {
+	$('#' + elementid).removeClass('ui-icon-bars');
+	$('#' + elementid).removeClass('ui-icon-carat-l');
+	$('#' + elementid).removeClass('ui-icon-carat-r');
+
+	$('#' + elementid).addClass(icon);
+	$('#' + elementid).attr('onclick', onClickFunction);
 }
 
 function showOfferDetails(offerCode) {
 	hideAll();
+	changeHeaderNavButton('navIconLeft','ui-icon-carat-l','onSelectCustomerBtn(this);');
+	//$('#navIconMenu').removeClass('ui-icon-bars');
+	//$('#navIconMenu').addClass('ui-icon-carat-l');
+	//$('#navIconMenu').attr('onclick', 'onSelectCustomerBtn(this);');	
+	//$('#navIconMenu').attr('href', '');
+	
+
 	$('#offerDetails').toggle( );
 	var offer = getOfferByCode(offerCode, configScenario.nba);
 	
@@ -156,6 +183,8 @@ function showOfferDetails(offerCode) {
 }
 
 function onResponseBtnClick(element, response) {
+	changeHeaderNavButton('navIconLeft','ui-icon-bars','$("#leftPanel").panel("open");');
+
 	//read the offerCode from the hidden value
 	var token = readToken();
 	var customer =configScenario.selectedCustomer.customerLogin;
@@ -166,8 +195,9 @@ function onResponseBtnClick(element, response) {
 	console.log("onResponseBtnClick exeucted");
 	respondToOffer(token, customer, offerCode, response, channel, details)
 	  .done(function(){
-		
-		loadOffers().done(function () {
+		slidePage('offerDetails', 'right', 'hide');
+
+		loadOffers(true).done(function () {
 			displayOffers();
 		});
 
@@ -178,4 +208,18 @@ function hideAll() {
 	$("#header_offers").hide();
 	$('#offerDetails').hide();
 	$('#offers').hide();
+}
+
+function slidePage(pageId, direction, type) {
+	var effect = 'slide';
+    // Set the options for the effect type chosen
+    var options = { direction: direction };
+
+    // Set the duration (default: 400 milliseconds)
+    var duration = 400;
+    if(type == "hide") {
+    	$('#' + pageId).hide(effect, options, duration); 
+	} else {
+    	$('#' + pageId).show(effect, options, duration);
+    }
 }

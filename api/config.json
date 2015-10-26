@@ -162,6 +162,28 @@
             "customer1Score": 44,
             "customer2Score": 78,
             "changeScoreByInterest": -2
+        },
+        {
+            "offerCode": "oc05",
+            "offerName": "Premium Depot",
+            "offerDesc": "This is more detail for the Premium Depot offer",
+            "offerImg": "/_demo_images/offerCode_05.jpg",		      
+            "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	 
+            "maxContacts": 10,    
+            "customer1Score": 23,
+            "customer2Score": 45,
+            "changeScoreByInterest": 2
+        },
+        {
+            "offerCode": "oc06",
+            "offerName": "Mortgage",
+            "offerDesc": "This is more detail for the Mortgage offer",
+            "offerImg": "/_demo_images/offerCode_06.jpg",		      
+            "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	 
+            "maxContacts": 10,    
+            "customer1Score": 33,
+            "customer2Score": 34,
+            "changeScoreByInterest": 2
         }
 	]
 }
