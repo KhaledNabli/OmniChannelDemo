@@ -2,9 +2,7 @@
 
 API Change
 ===========
-- add support for read-only (done)
 - scoring mechanism (testing on interest)
-- offer display tracking (done)
 
 
 Configurator

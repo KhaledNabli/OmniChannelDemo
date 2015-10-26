@@ -1,0 +1,47 @@
+        <!-- Upload Popup -->
+        <div class="modal fade" id="popupUploadWebsite" tabindex="-1" role="dialog" aria-labelledby="popupLoadToken">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Load Website</h4>
+              </div>
+              <div class="modal-body">
+                <form class="form">
+                <input type="hidden" id="uploadWebsiteForPage" value="" />
+                  <div class="form-group">
+                    <label for="uploadUrlInput">Website address</label>
+                    <input type="url" class="form-control" id="uploadUrlInput" placeholder="http:// or https://">
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="uploadOptions[]" value="insert_base" checked/> Add Base Tag
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="uploadOptions[]" value="fix_relative_links" /> Fix relative links for resources (images / css / js ...)
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="uploadOptions[]" value="tidy_output" /> Tidy HTML output 
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="uploadOptions[]" value="insert_js" checked/> Add required Javascript files
+                    </label>
+                  </div>
+                </form>
+
+
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="onUploadWebsiteCommitBtn(this);">Upload Website</button>
+              </div>
+            </div>
+          </div>
+        </div>

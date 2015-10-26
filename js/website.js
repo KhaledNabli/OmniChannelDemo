@@ -248,7 +248,7 @@ function trackResponse(customer, offerCd, responseCd) {
 }
 
 function replaceAll(find, replace, str) {
-  return str.replace(new RegExp(find, 'g'), replace);
+	return str.replace(new RegExp(find, 'g'), replace);
 }
 
 function renderTrackingElement(customer, offerCd, responseCd) {

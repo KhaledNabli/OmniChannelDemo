@@ -174,6 +174,8 @@ function initConfigurator() {
 
     // set template Code
     var editor = ace.edit("nbaHtmlTemplateEditor");
+    editor.setTheme("ace/theme/eclipse");
+    editor.getSession().setMode("ace/mode/html");
     editor.setValue(utf8_decode(configScenario.web.nbaHtmlTemplate));
 } /* end initConfigurator() */
 

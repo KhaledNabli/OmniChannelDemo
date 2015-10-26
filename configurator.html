@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CI360 Demo Configurator</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/configurator.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+    <!-- Navigation Start -->
+    <div id="configuratorNavigation">
+    </div>
+    <!-- Navigation End -->
+
+    <!-- Modal Popups Start -->
+    <div id="configuratorModalToken">
+    </div>
+    <div id="configuratorModalWebsite">
+    </div>
+    <!-- Modal Popups End -->
+
+    <!-- Tab Content Start -->
+    <div id="configuratorTabContent" class="tab-content">
+    </div>
+    <!-- Tab Content End -->
+
+
+    <!-- Footer Start -->
+    <nav id="footerNavBar" class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          <h6>CI360 Demo v0.3 <br /><small>last update 26.10.2015</small></h6>
+        </div>
+        <div class="col-sm-6 text-right">
+          <button type="button" class="btn btn-default" data-toggle="modal" data-target="#popupLoadToken">Load Existing Demo</button>
+          <button type="button" class="btn btn-default" data-toggle="modal" onclick="onResetConfigurationBtn();">Reset</button>
+
+          <a id="aboutButton" href="#" class="btn btn-default" onclick="aboutUsClicked();">
+            <span id="aboutButtonLabel">Help</span> 
+          </a>
+
+          <button id="saveButton" class="btn btn-primary" onclick="onSaveConfigurationBtn();"> Save Demo </button>
+        </div>
+
+      </div>
+    </div>
+    </nav>
+    <!-- Footer End -->
+
+
+    <script src="js/ext/jquery-1.11.3.min.js" type="text/javascript"></script>
+    <script src="js/ext/jquery-ui.js" type="text/javascript"></script>
+    <script src="js/ext/bootstrap.min.js" type="text/javascript"></script>
+    <script src="js/ext/ace/ace.js" type="text/javascript"></script>
+    <script src="js/api.js" type="text/javascript"></script>
+    <script src="js/configurator.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    $( document ).ready(function() {
+
+
+      
+      var contentToRender = [
+      {div:"#configuratorNavigation", contentUrl:"./Configurator/navigation.html"},
+      {div:"#configuratorModalToken", contentUrl:"./Configurator/modal_load_token.html"},
+      {div:"#configuratorModalWebsite", contentUrl:"./Configurator/modal_upload_website.html"},
+      {div:"#configuratorTabContent", contentUrl:[
+              "./Configurator/tab_general.html", 
+              "./Configurator/tab_customers.html", 
+              "./Configurator/tab_offers.html",
+              "./Configurator/tab_website.html",
+              "./Configurator/tab_advisorapp.html",
+              "./Configurator/tab_mobileapp.html",
+              ]
+            }
+          ];
+
+      contentToRender.map(function (contentObj) {
+        var tempDiv = $("<div></div>");
+        if(contentObj.contentUrl instanceof Array && contentObj.contentUrl.length > 0) {
+          for(var i = 0; i < contentObj.contentUrl.length; i++) {
+            tempDiv.load(contentObj.contentUrl[i], function (responseHtml){
+              $(contentObj.div).append(responseHtml);
+            });
+          }
+        }
+        else {
+          tempDiv.load(contentObj.contentUrl, function (responseHtml){
+            $(contentObj.div).append(responseHtml);
+          });
+        }
+      });
+
+      startConfigurator();
+    });
+    </script>
+  </body>
+</html>
+
+

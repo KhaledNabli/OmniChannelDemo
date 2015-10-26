@@ -1,3 +1,8 @@
+body { padding-bottom: 70px; }
+
+.navbar-fixed-bottom {
+	padding: 10px;
+}
 
 #nbaHtmlTemplateEditor {
 	height: 300px;
@@ -7,4 +12,5 @@
     margin-top: 5px;
     font-size: 16px;
 }
-    
+
+

@@ -56,9 +56,14 @@ function processRequest() {
 	$action = getRequestParameter("action");
 	$token = getRequestParameter("token");
 
+	if ($action == 'getAllDemos') {
+		$maxItems = getRequestParameter("maxItems");
+		$userEmail = getRequestParameter("userEmail");
+		echo json_encode(getAllConfigsFromDatabase($userEmail, $maxItems));
+	}
 
-	if($action == 'resetDemo') {
-		resetDemo($token);;
+	else if($action == 'resetDemo') {
+		resetDemo($token);
 	}
 
 	else if($action == 'saveConfig') {
@@ -160,7 +165,7 @@ function getConfigFromDatabase($token) {
 
 
 
-	if(!$configQueryResult || $configQueryResult->num_rows != 1) {
+	if(!$configQueryResult || @$configQueryResult->num_rows != 1) {
 		return null;
 	}
 	else {
@@ -186,6 +191,8 @@ function saveConfig($config) {
 	$token = $config->token;
 	$tokenValid = false;
 	$userEmail = $config->general->userEmail;
+	$configName = $config->general->demoName;
+	$configDesc = $config->general->demoDescription;
 	$userIP = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 	$config->message = "";
 
@@ -198,7 +205,7 @@ function saveConfig($config) {
 
 		if($tokenValid) {
 			// update existing configuration
-			$updateConfigSql = "UPDATE `omnichanneldemo`.`demo_config` SET `config_json` = '".json_encode($config)."', `email_to` = '".$userEmail."', `modify_by` = '".$userIP."' WHERE `demo_config`.`token` = '" . $token . "';";
+			$updateConfigSql = "UPDATE `omnichanneldemo`.`demo_config` SET  `config_name` = '".$configName."',  `config_desc` = '".$configDesc."', `config_json` = '".json_encode($config)."', `email_to` = '".$userEmail."', `modify_by` = '".$userIP."' WHERE `demo_config`.`token` = '" . $token . "';";
 			$mysql_link->query($updateConfigSql);
 			$config->message = "Update existing config";
 		}
@@ -209,7 +216,7 @@ function saveConfig($config) {
 		$token = generateRandomToken();
 		$config->token = $token;
 
-		$createConfigSql = "INSERT INTO `omnichanneldemo`.`demo_config` (`id`, `token`, `config_json`, `create_dttm`, `modify_dttm`, `modify_by`, `email_to`) VALUES (NULL, '".$token."', '".json_encode($config)."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."', '".$userEmail."');";
+		$createConfigSql = "INSERT INTO `omnichanneldemo`.`demo_config` (`id`, `token`, `config_name`, `config_desc`, `config_json`, `create_dttm`, `modify_dttm`, `modify_by`, `email_to`) VALUES (NULL, '".$token."', '".$configName."', '".$configDesc."', '".json_encode($config)."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."', '".$userEmail."');";
 		$createConfigResult = $mysql_link->query($createConfigSql);
 		$config->message = "Insert new config";
 	}
@@ -219,6 +226,30 @@ function saveConfig($config) {
 }
 
 
+function getAllConfigsFromDatabase($email, $limit) {
+	global $mysql_link;
+	$result = array();
+
+	$criteria = "";
+
+	if(!empty($email)) {
+		$criteria = "WHERE `email_to` = '".$email."'";
+	}
+
+	if(!empty($limit)) {
+		$criteria = $criteria . " LIMIT ". $limit;
+	}
+
+	$configQuerySql = "SELECT id, token, config_name, config_desc, read_only, create_dttm, modify_dttm, email_to  FROM `demo_config` " . $criteria . " ORDER BY `modify_dttm` DESC"; 
+	$configQueryResult = $mysql_link->query($configQuerySql);
+	$configQuerySize = @$configQueryResult->num_rows;
+
+	for($i = 0; $i < $configQuerySize; $i++) {
+		$result[$i] = $configQueryResult->fetch_assoc();
+	}
+
+	return $result;
+}
 
 
 
@@ -240,7 +271,7 @@ function getOffers($token, $customer, $channel, $list_size = 10, $do_not_track){
 
 	$offerListResult = $mysql_link->query($offerListSql);
 	// limit number of offers
-	$offerListSize = $offerListResult->num_rows;
+	$offerListSize = @$offerListResult->num_rows;
 	for($i = 0; $i < $offerListSize; $i++) {
 		if($i >= $list_size) break;
 		$offerList[$i] = $offerListResult->fetch_assoc();
