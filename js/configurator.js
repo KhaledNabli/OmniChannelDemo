@@ -136,7 +136,7 @@ function initConfigurator() {
     for (var property in configScenario.web) {
 		if (configScenario.web.hasOwnProperty(property)) {
             if (property)
-                $('#' + property).val(utf8_decode(configScenario.web[property]));
+                $('#' + property).val(base64_decode(configScenario.web[property]));
         }       
     }
 
@@ -186,7 +186,10 @@ function initConfigurator() {
     var editor = ace.edit("nbaHtmlTemplateEditor");
     editor.setTheme("ace/theme/eclipse");
     editor.getSession().setMode("ace/mode/html");
-    editor.setValue(utf8_decode(configScenario.web.nbaHtmlTemplate));
+    editor.setValue(base64_decode(configScenario.web.nbaHtmlTemplate));
+
+    $(".upload-image").on("click", onClickUploadImageField);
+
 } /* end initConfigurator() */
 
 
@@ -258,12 +261,12 @@ function onSaveConfigurationBtn() {
     for (var property in configScenario.web) {
 		if (configScenario.web.hasOwnProperty(property)) {
             if (property)
-                configScenario.web[property] = utf8_encode($('#' + property).val());
+                configScenario.web[property] = base64_encode($('#' + property).val());
         }       
     }
 
     var editor = ace.edit("nbaHtmlTemplateEditor");
-    configScenario.web.nbaHtmlTemplate = utf8_encode(editor.getValue());
+    configScenario.web.nbaHtmlTemplate = base64_encode(editor.getValue());
 
     /* save grids */
     configScenario.nba 				 			= getNbaRecords();
@@ -571,12 +574,47 @@ function onViewWebsiteBtn(page) {
 }
 
 
+function onClickUploadImageField(event) {
+    // we apply a trick here:
+    // we register all elements with the class = "upload-image" to call this function on click
+    var elem = event.currentTarget;
+    // find the element id who was clicked and store the id and css-selector
+    var fieldId = elem.id;
+    var fieldSelector = "#" + fieldId;
 
-
-function utf8_encode(str) {
-    return window.btoa(unescape(encodeURIComponent(str)));
+    // the selector is stored in a hidden field to be used when we upload the picture
+    $("#formUploadImage").children("input[name='uploadTriggeredBy']").val(fieldSelector);
+    // show the modal window
+    $('#popupUploadImage').modal('show');
 }
 
-function utf8_decode(str) {
-    return decodeURIComponent(escape(window.atob(str)));
+function onUploadImageSubmit(elem, e) {
+    // upload picture with ajax method
+    var formData = new FormData($(elem)[0]);
+
+    $.ajax({
+        url: "./images/",
+        type: "POST",
+        data: formData,
+        async: false,
+        success: function (result) {
+            if(result.status == "success") {
+                // when the picture is uploaded, we need to store the url in the field which initiated the upload
+                // the field is identified by the selector which is stored in the hidden field (name = uploadTriggeredBy)
+                var fieldToUpdate = $(elem).children("input[name='uploadTriggeredBy']").val();
+                // update the value of the field with the new url
+                $(fieldToUpdate).val(result.imageUrl);
+                // hide modal window
+                $('#popupUploadImage').modal('hide');
+            } else {
+                alert("An error while uploading image happened... See console for more details.");
+                console.log(result.message);
+            }
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+
+    e.preventDefault();
 }
