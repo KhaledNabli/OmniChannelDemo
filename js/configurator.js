@@ -37,7 +37,7 @@ function onLoadTokenBtn(element) {
 }
 
 function createChannelLinks(token) {
-    var baseUrl = window.location.href.split('#')[0];
+    var baseUrl = window.location.href.split('#')[0].replace("configurator.html", "");
     if(token != '') {
         var encodedToken = encodeURIComponent(token);
         $('#advisorLink').html(baseUrl + 'AdvisorApp/advisor.html#' + encodedToken);
