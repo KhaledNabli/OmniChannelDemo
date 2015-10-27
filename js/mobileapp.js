@@ -32,8 +32,33 @@ function onNavLoginBtn(element) {
 	$('#homePage').hide();
 	$('#offerPage').hide();
 	$('#offerDetails').hide();
+	$('#mapPage').hide();
 	slidePage('#loginPage', 'right');
-	//$('#loginPage').show();
+}
+
+function onNavMapBtn(element) {
+	$('#homePage').hide();
+	$('#offerPage').hide();
+	$('#offerDetails').hide();
+	$('#loginPage').hide();
+	$('#mapPage').show();
+
+	var defaultLatLng = new google.maps.LatLng(
+		configScenario.mobileApp.geo_latitude, configScenario.mobileApp.geo_longtitude);
+
+	if ( navigator.geolocation ) {
+		function success(pos) {
+			// Location found
+			drawMap(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+		}
+		function fail(error) {
+			drawMap(defaultLatLng);// Failed to find location, show default map
+		}
+		// Find the users current position.  Cache the location for 5 minutes, timeout after 6 seconds
+		navigator.geolocation.getCurrentPosition(success, fail, {maximumAge: 500000, enableHighAccuracy:true, timeout: 6000});
+	} else {
+		drawMap(defaultLatLng);// No geolocation support, show default map
+	}
 }
 
 function onNavHomeBtn(element) {
@@ -41,12 +66,14 @@ function onNavHomeBtn(element) {
 	$('#loginPage').hide();
 	$('#offerPage').hide();
 	$('#offerDetails').hide();
+	$('#mapPage').hide();
 }
 
 function onNavOfferBtn(element) {
 	$('#homePage').hide();
 	$('#loginPage').hide();
 	$('#offerDetails').hide();
+	$('#mapPage').hide();
 	slidePage('#offerPage', 'right');
 }
 
@@ -221,4 +248,26 @@ function slidePage(pageId, direction, type) {
 	} else {
     	$(pageId).show(effect, options, duration);
     }
+}
+
+
+function drawMap(latlng) {
+	var myOptions = {
+		zoom: parseInt(configScenario.mobileApp.geo_zoom),
+		center: latlng,
+		mapTypeControl: false,
+		zoomControl: false,
+		streetViewControl: false,
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+	var map = new google.maps.Map(document.getElementById("mapPageInner"), myOptions);
+	// Add an overlay to the map of current lat/lng
+	var marker = new google.maps.Marker({
+		position: latlng,
+		draggable: true,
+		icon: configScenario.mobileApp.map_pin_image,
+    	animation: google.maps.Animation.DROP,
+		map: map,
+		title: "Greetings!"
+	});
 }
