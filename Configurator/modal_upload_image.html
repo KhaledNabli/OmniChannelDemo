@@ -1,0 +1,21 @@
+<div class="modal fade" id="popupUploadImage" tabindex="-1" role="dialog" aria-labelledby="popupUploadImage">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Upload Image</h4>
+      </div>
+      <div class="modal-body">
+        <form id="formUploadImage" class="form-inline" method="POST" enctype="multipart/form-data" onsubmit="onUploadImageSubmit(this, event);">
+          <input type="hidden" name="uploadTriggeredBy" value="#c1pictureUrl" />
+          <input type="hidden" name="imageDesc" />
+          <input type="file" name="image" />
+          <button type="submit" class="btn btn-primary">Upload Image</button>
+        </form>
+     </div>
+     <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
+</div>

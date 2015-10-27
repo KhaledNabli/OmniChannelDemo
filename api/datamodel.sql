@@ -26,6 +26,7 @@ GRANT ALL PRIVILEGES ON `omnichanneldemo`.* TO 'omnichanneldemo'@'localhost';
 
 USE `omnichanneldemo`;
 
+
 -- --------------------------------------------------------
 
 --
@@ -57,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `contact_response_history` (
   `responsetype` varchar(64) NOT NULL,
   `responsedetails` varchar(512) NOT NULL,
   `datetime` varchar(32) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=740 ;
 
 -- --------------------------------------------------------
 
@@ -85,13 +86,15 @@ DROP TABLE IF EXISTS `demo_config`;
 CREATE TABLE IF NOT EXISTS `demo_config` (
 `id` int(11) NOT NULL,
   `token` varchar(64) NOT NULL,
+  `config_name` varchar(32) NOT NULL,
+  `config_desc` text NOT NULL,
   `read_only` int(11) DEFAULT NULL,
   `config_json` text NOT NULL,
   `create_dttm` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modify_dttm` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `modify_by` varchar(64) NOT NULL,
   `email_to` varchar(64) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
 
 -- --------------------------------------------------------
 
@@ -111,6 +114,23 @@ CREATE TABLE IF NOT EXISTS `demo_events` (
   `detail1` varchar(1024) NOT NULL,
   `detail2` varchar(1024) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `demo_image`
+--
+
+DROP TABLE IF EXISTS `demo_image`;
+CREATE TABLE IF NOT EXISTS `demo_image` (
+`id` int(11) NOT NULL,
+  `image` longblob NOT NULL,
+  `name` varchar(32) NOT NULL,
+  `desc` varchar(256) NOT NULL,
+  `create_dttm` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modify_dttm` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `uploaded_by` varchar(32) NOT NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=70 ;
 
 -- --------------------------------------------------------
 
@@ -166,6 +186,12 @@ ALTER TABLE `demo_events`
  ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `demo_image`
+--
+ALTER TABLE `demo_image`
+ ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `demo_website`
 --
 ALTER TABLE `demo_website`
@@ -179,17 +205,22 @@ ALTER TABLE `demo_website`
 -- AUTO_INCREMENT for table `contact_response_history`
 --
 ALTER TABLE `contact_response_history`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=740;
 --
 -- AUTO_INCREMENT for table `demo_config`
 --
 ALTER TABLE `demo_config`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=32;
 --
 -- AUTO_INCREMENT for table `demo_events`
 --
 ALTER TABLE `demo_events`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `demo_image`
+--
+ALTER TABLE `demo_image`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=70;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
