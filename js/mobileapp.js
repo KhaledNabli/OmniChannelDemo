@@ -29,25 +29,25 @@ function onResetDemoBtn(element) {
 }
 
 function onNavLoginBtn(element) {
-	$('#backgroundImageHolder').hide();
+	$('#homePage').hide();
 	$('#offerPage').hide();
-	slidePage('loginPage', 'right');
+	$('#offerDetails').hide();
+	slidePage('#loginPage', 'right');
 	//$('#loginPage').show();
 }
 
 function onNavHomeBtn(element) {
-	//$('#backgroundImageHolder').show();
-	slidePage('backgroundImageHolder', 'left')
+	slidePage('#homePage', 'left')
 	$('#loginPage').hide();
 	$('#offerPage').hide();
+	$('#offerDetails').hide();
 }
 
 function onNavOfferBtn(element) {
-	$('#backgroundImageHolder').hide();
+	$('#homePage').hide();
 	$('#loginPage').hide();
-	slidePage('offerPage', 'right');
-	//$('#offerPage').show();
-
+	$('#offerDetails').hide();
+	slidePage('#offerPage', 'right');
 }
 
 function onSelectCustomerBtn(element) {
@@ -148,8 +148,8 @@ function displayOffers() {
   	$("#numberOfOffers").html(countNBO);
   	$('#nba_table').html( htmlOfferList ).trigger('create');
   	
-  	//hideAll();
-  	slidePage('offers', 'down');
+  	hideAll();
+  	slidePage('#offerPage', 'up');
 }
 
 function changeHeaderNavButton(elementid, icon, onClickFunction) {
@@ -195,7 +195,7 @@ function onResponseBtnClick(element, response) {
 	console.log("onResponseBtnClick exeucted");
 	respondToOffer(token, customer, offerCode, response, channel, details)
 	  .done(function(){
-		slidePage('offerDetails', 'right', 'hide');
+		slidePage('#offerDetails', 'right', 'hide');
 
 		loadOffers(true).done(function () {
 			displayOffers();
@@ -205,9 +205,8 @@ function onResponseBtnClick(element, response) {
 }
 
 function hideAll() {
-	$("#header_offers").hide();
 	$('#offerDetails').hide();
-	$('#offers').hide();
+	$('#offerPage').hide();
 }
 
 function slidePage(pageId, direction, type) {
@@ -218,8 +217,8 @@ function slidePage(pageId, direction, type) {
     // Set the duration (default: 400 milliseconds)
     var duration = 400;
     if(type == "hide") {
-    	$('#' + pageId).hide(effect, options, duration); 
+    	$(pageId).hide(effect, options, duration); 
 	} else {
-    	$('#' + pageId).show(effect, options, duration);
+    	$(pageId).show(effect, options, duration);
     }
 }
