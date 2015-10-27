@@ -184,6 +184,15 @@ function onResetConfigurationBtn() {
 	window.localStorage.omnichanneltoken = "";
 	loadConfiguration("");
 	$("#token").html('not yet saved');
+
+    $('#advisorLink').html('Please save your configuration!');
+    $('#advisorLink').attr('href', '#');
+
+    $('#mobileLink').html('Please save your configuration!');
+    $('#mobileLink').attr('href', '#');
+
+    $('#websiteLink').html('Please save your configuration!');
+    $('#websiteLink').attr('href', '#');
 	//$("#tokenDiv").hide();
 }
 
