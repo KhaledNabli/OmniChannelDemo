@@ -31,6 +31,7 @@ function onResetDemoBtn(element) {
 function onNavLoginBtn(element) {
 	$('#homePage').hide();
 	$('#offerPage').hide();
+	$('#offerDetails').hide();
 	slidePage('#loginPage', 'right');
 	//$('#loginPage').show();
 }
@@ -39,11 +40,13 @@ function onNavHomeBtn(element) {
 	slidePage('#homePage', 'left')
 	$('#loginPage').hide();
 	$('#offerPage').hide();
+	$('#offerDetails').hide();
 }
 
 function onNavOfferBtn(element) {
 	$('#homePage').hide();
 	$('#loginPage').hide();
+	$('#offerDetails').hide();
 	slidePage('#offerPage', 'right');
 }
 
@@ -202,7 +205,6 @@ function onResponseBtnClick(element, response) {
 }
 
 function hideAll() {
-	$("#header_offers").hide();
 	$('#offerDetails').hide();
 	$('#offerPage').hide();
 }
