@@ -36,6 +36,15 @@ function onLoadTokenBtn(element) {
 	$('#popupLoadToken').modal('hide');
 }
 
+function onUndoConfigurationBtn(element) {
+    var token = configScenario.token;
+    console.log("undo all changes for token: " + token);
+    if(token != "") {
+        saveToken(token);
+        loadConfiguration(token);
+    }
+}
+
 function createChannelLinks(token) {
     var baseUrl = window.location.href.split('#')[0].replace("configurator.html", "");
     if(token != '') {
@@ -154,7 +163,6 @@ function initConfigurator() {
     	}
     }
 
-
     clearNbaRecords();
     if(configScenario.nba) {
     	for(var i = 0; i < configScenario.nba.length; i++) {
@@ -166,7 +174,9 @@ function initConfigurator() {
         	configScenario.nba[i]["maxContacts"],
         	configScenario.nba[i]["customer1Score"], 
         	configScenario.nba[i]["customer2Score"], 
-            configScenario.nba[i]["changeScoreByInterest"] 
+            configScenario.nba[i]["changeScoreByInterest"],
+            configScenario.customers[0].firstName, 
+            configScenario.customers[1].firstName
             );
     	}
     }
@@ -278,6 +288,25 @@ function onSaveConfigurationBtn() {
 
     	$("#tokenDiv").show();
     });
+
+    /* rebuild the offers table after saving, because images could have been changed */
+    clearNbaRecords();
+    if(configScenario.nba) {
+        for(var i = 0; i < configScenario.nba.length; i++) {
+            addNbaRecord(configScenario.nba[i]["offerCode"], 
+            configScenario.nba[i]["offerName"], 
+            configScenario.nba[i]["offerDesc"],
+            configScenario.nba[i]["offerImg"],
+            configScenario.nba[i]["offerSms"],
+            configScenario.nba[i]["maxContacts"],
+            configScenario.nba[i]["customer1Score"], 
+            configScenario.nba[i]["customer2Score"], 
+            configScenario.nba[i]["changeScoreByInterest"],
+            configScenario.customers[0].firstName, 
+            configScenario.customers[1].firstName 
+            );
+        }
+    }
 	
     return false;
 } /* end saveConfiguration */
@@ -289,7 +318,7 @@ function clearNbaRecords() {
 	$('#configuratorNbaTbody').html("");
 }
 
-function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjustscore) {
+function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjustscore, c1name, c2name) {
 	//console.log("maxContacts: " + maxContacts);
 	if (!code) code = "";
 	if (!name) name = "";
@@ -300,19 +329,96 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
 	if (!c1score) c1score = "";
 	if (!c2score) c2score = "";   
     if (!adjustscore) adjustscore = "";
+    if (!c1name) c1name = "";
+    if (!c2name) c2name = ""; 
 
-	$('#configuratorNbaTbody').append(
-		"<tr><td><div style='padding: 7px 0px'><input name='offerCode' type='text' size=\"4\" value='"+code+"' class='form-control input-md'/></div> </td>"
-		+"<td><textarea name='offerName' rows=\"3\" placeholder='Offer Name' class='form-control input-md'>"+name+"</textarea></td>" 
-      	+"<td><textarea name='offerDesc' rows=\"3\" type='text' placeholder='Description' class='form-control input-md'>"+desc+"</textarea></td>"
-      	+"<td><textarea name='offerImg' rows=\"3\" type='text' placeholder='Image' class='form-control input-md'>"+img+"</textarea></td>"
-      	+"<td><textarea name='offerSms' rows=\"3\" type='text' placeholder='SMS' class='form-control input-md'>"+sms+"</textarea></td>"
-      	+"<td><div style='padding: 7px 0px'><input name='maxContacts' type='text' placeholder='' size=\"4\" value='"+maxContacts+"' class='form-control input-md'/></div></td>"
-      	+"<td><div style='padding: 7px 0px'><input name='customer1Score' type='text' placeholder='' size=\"4\" value='"+c1score+"' class='form-control input-md'/></div></td>"
-      	+"<td><div style='padding: 7px 0px'><input name='customer2Score' type='text' placeholder='' size=\"4\" value='"+c2score+"' class='form-control input-md'/></div></td>"
-      	+"<td><div style='padding: 7px 0px'><input name='changeScoreByInterest' type='text' placeholder='' size=\"4\" value='"+adjustscore+"' class='form-control input-md'/></div></td>"
-        +"<td><a onclick='dropRecord(this);' class='pull-right btn btn-danger btn-block'>Delete</a></td></tr>"		
-	); 
+	/*$('#configuratorNbaTbody').append(
+        "<tr><td><div style='padding: 7px 0px'><input name='offerCode' type='text' size=\"4\" value='"+code+"' class='form-control input-md'/></div> </td>"
+        +"<td><textarea name='offerName' rows=\"3\" placeholder='Offer Name' class='form-control input-md'>"+name+"</textarea></td>" 
+        +"<td><textarea name='offerDesc' rows=\"3\" type='text' placeholder='Description' class='form-control input-md'>"+desc+"</textarea></td>"
+        +"<td><textarea name='offerImg' rows=\"3\" type='text' placeholder='Image' class='form-control input-md'>"+img+"</textarea></td>"
+        +"<td><textarea name='offerSms' rows=\"3\" type='text' placeholder='SMS' class='form-control input-md'>"+sms+"</textarea></td>"
+        +"<td><div style='padding: 7px 0px'><input name='maxContacts' type='text' placeholder='' size=\"4\" value='"+maxContacts+"' class='form-control input-md'/></div></td>"
+        +"<td><div style='padding: 7px 0px'><input name='customer1Score' type='text' placeholder='' size=\"4\" value='"+c1score+"' class='form-control input-md'/></div></td>"
+        +"<td><div style='padding: 7px 0px'><input name='customer2Score' type='text' placeholder='' size=\"4\" value='"+c2score+"' class='form-control input-md'/></div></td>"
+        +"<td><div style='padding: 7px 0px'><input name='changeScoreByInterest' type='text' placeholder='' size=\"4\" value='"+adjustscore+"' class='form-control input-md'/></div></td>"
+        +"<td><a onclick='dropRecord(this);' class='pull-right btn btn-danger btn-block'>Delete</a></td></tr>"      
+    );*/
+
+    $('#configuratorNbaTbody').append("<tr>"
+        +"<td>"
+        +"<div class='form-group'>"
+        +"  <label class='col-sm-2 control-label'>Code</label>"
+        +"  <div class='col-sm-9'>"
+        +"    <input name='offerCode' value='"+code+"' type='text' class='form-control'>"
+        +"  </div>"
+        +"</div>"
+        
+        +"<div class='form-group'>"
+        +"  <label class='col-sm-2 control-label'>Name</label>"
+        +"  <div class='col-sm-9'>"
+        +"    <input name='offerName' value='"+name+"' type='text' class='form-control'>"
+        +"  </div>"
+        +"</div>"
+
+        +"<div class='form-group'>"
+        +"  <label class='col-sm-8 control-label'>Maximal Number of Contacts</label>"
+        +"  <div class='col-sm-3'>"
+        +"    <input name='maxContacts' value='"+maxContacts+"' type='number' class='form-control'>"
+        +"  </div>"
+        +"</div>"
+        +"</td>"
+
+        +"<td>"
+        +"<div class='form-group'>"
+        +"  <label class='col-sm-1 control-label'>Desc</label>"
+        +"  <div class='col-sm-11'>"
+        +"    <input name='offerDesc' value='"+desc+"' type='text' class='form-control'>"
+        +"  </div>"
+        +"</div>"
+        
+        +"<div class='form-group'>"
+        +"  <label class='col-sm-1 control-label'>SMS</label>"
+        +"  <div class='col-sm-11'>"
+        +"    <input name='offerSms' value='"+sms+"' type='text' class='form-control'>"
+        +"  </div>"
+        +"</div>"
+
+        +"<div class='form-group'>"
+        +"  <label class='col-sm-1 control-label'>Image</label>"
+        +"  <div class='col-sm-11'>"
+        +"    <input name='offerImg' value='"+img+"' type='text' class='form-control'>"
+        +"  </div>"
+        +"</div>"
+        +"</td>"
+
+        +"<td><img src='"+img+"' height='40%' style='padding:1px;border-radius: 10px;border:1px solid #021a40;''></td>"
+
+        +"<td>"
+        +"<div class='form-group'>"
+        +"  <label class='col-sm-7 control-label'>Score of "+c1name+"</label>"
+        +"  <div class='col-sm-3'>"
+        +"    <input name='customer1Score' value='"+c1score+"' type='number' class='form-control'>"
+        +"  </div>"
+        +"</div>"
+        
+        +"<div class='form-group'>"
+        +"  <label class='col-sm-7 control-label'>Score of "+c2name+"</label>"
+        +"  <div class='col-sm-3'>"
+        +"    <input name='customer2Score' value='"+c2score+"' type='number' class='form-control'>"
+        +"  </div>"
+        +"</div>"
+
+        +"<div class='form-group'>"
+        +"  <label class='col-sm-7 control-label'>Adjust Score by</label>"
+        +"  <div class='col-sm-3'>"
+        +"    <input name='changeScoreByInterest' value='"+adjustscore+"' type='number' class='form-control'>"
+        +"  </div>"
+        +"</div>"
+        +"</td>"
+
+        +"<td><a onclick='dropRecord(this);' class='pull-right btn btn-danger btn-block'>Delete</a></td></tr>"      
+    ); 
     return false; 
 }
 
@@ -321,10 +427,14 @@ function getNbaRecords() {
 
 	$('#configuratorNbaTbody tr').each(function() {
 		var code 		= $(this).find("input[name='offerCode']").val();
-		var name 		= $(this).find("textarea[name='offerName']").val();		
-		var desc 		= $(this).find("textarea[name='offerDesc']").val();
-		var img 		= $(this).find("textarea[name='offerImg']").val();
-		var sms 		= $(this).find("textarea[name='offerSms']").val();
+		/*var name        = $(this).find("textarea[name='offerName']").val();     
+        var desc        = $(this).find("textarea[name='offerDesc']").val();
+        var img         = $(this).find("textarea[name='offerImg']").val();
+        var sms         = $(this).find("textarea[name='offerSms']").val();*/
+        var name 		= $(this).find("input[name='offerName']").val();		
+		var desc 		= $(this).find("input[name='offerDesc']").val();
+		var img 		= $(this).find("input[name='offerImg']").val();
+		var sms 		= $(this).find("input[name='offerSms']").val();
 		var contacts 	= $(this).find("input[name='maxContacts']").val();
 		var c1score 	= $(this).find("input[name='customer1Score']").val();
 		var c2score 	= $(this).find("input[name='customer2Score']").val();
