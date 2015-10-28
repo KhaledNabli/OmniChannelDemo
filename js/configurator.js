@@ -190,6 +190,8 @@ function initConfigurator() {
 
     $(".upload-image").on("dblclick", onClickUploadImageField);
 
+    $(".image-preview").on("click", onClickPreviewImage);
+
 } /* end initConfigurator() */
 
 
@@ -310,6 +312,10 @@ function onSaveConfigurationBtn() {
             );
         }
     }
+
+    // after saving and rebuilding the offers table, we need to listen again on the double click event
+    $(".upload-image").on("dblclick", onClickUploadImageField);
+    $(".image-preview").on("click", onClickPreviewImage);
 	
     return false;
 } /* end saveConfiguration */
@@ -390,17 +396,13 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
         +"<div class='form-group'>"
         +"  <label class='col-lg-1 col-sm-2 control-label'>Image</label>"
         +"  <div class='col-lg-11 col-sm-12'>"
-<<<<<<< HEAD
-        +"    <input id='offerImg_"+code+"' name='offerImg' value='"+img+"' type='text' class='form-control upload-image'>"
-=======
         +"    <input name='offerImg' value='"+img+"' type='url' class='form-control upload-image' >"
->>>>>>> origin/master
         +"  </div>"
         +"</div>"
         +"</td>"
 
         +"<td>"
-        +"  <img src='"+img+"' height='30%' style='padding:1px;border-radius: 10px;border:1px solid #021a40;'>"
+        +"  <img src='"+img+"' class='img-responsive' style='margin: 0 auto;padding:1px;border-radius:10px;border:1px solid #021a40;'>"
         +"</td>"
 
         +"<td>"
@@ -626,4 +628,24 @@ function onUploadImageSubmit(elem, e) {
     });
 
     e.preventDefault();
+}
+
+
+function onClickPreviewImage(event) {
+    // get element of clicked target
+    var elem = event.currentTarget;
+    var fieldId = elem.id;
+    var fieldSelector = "#" + fieldId;
+
+    // retrieve value of attribute FOR
+    var forValue = $(fieldSelector).attr('for');
+    // retrieve the label text
+    var fieldTitle = $(fieldSelector).text();
+
+    $('#imgPreviewImage').attr('src', $('#' + forValue).val());
+    console.log(" input image field value: " + $('#' + forValue).val());
+
+    $('#modalTitlePreviewImage').text(fieldTitle);
+
+    $('#popupPreviewImage').modal('show');
 }

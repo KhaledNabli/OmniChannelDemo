@@ -128,12 +128,12 @@ function updateMobileAppUI() {
 
 
 
-function loadOffers(doNotTrack) {
+function loadOffers() {
 	var token = readToken();
 	var customer = configScenario.selectedCustomer.customerLogin;
 	var channel = configScenario.currentChannel;
 	var maxOffers = configScenario.mobileApp.maxOffersMobile;
-	return getOffersForCustomer(token, customer, channel, maxOffers, doNotTrack).done(function (offers) {
+	return getOffersForCustomer(token, customer, channel, maxOffers, true).done(function (offers) {
 			console.log("Offers Loaded..."); 
 			console.log(offers);
 			// store result in currentOffers - but transform response
@@ -207,6 +207,15 @@ function showOfferDetails(offerCode) {
 	// set the offerCode as a hidden value
 	$('#offerDetailsOfferCode').val(offerCode);
 
+	// track response of offer details click 
+	var token = readToken();
+	var customer =configScenario.selectedCustomer.customerLogin;
+	var channel = configScenario.currentChannel;
+	var details = "";
+	respondToOffer(token, customer, offerCode, "show interest", channel, details)
+	  .done(function(){
+	});
+
 }
 
 function onResponseBtnClick(element, response) {
@@ -224,7 +233,7 @@ function onResponseBtnClick(element, response) {
 	  .done(function(){
 		slidePage('#offerDetails', 'right', 'hide');
 
-		loadOffers(true).done(function () {
+		loadOffers().done(function () {
 			displayOffers();
 		});
 
