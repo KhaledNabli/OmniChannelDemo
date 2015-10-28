@@ -109,7 +109,18 @@ function saveToken(token) {
 	window.localStorage.omnichanneltoken = token;
 }
 
+function getOfferNameByCode(offerCode, offerList) {
+	var offerName = "";
+	
+	for(var i=0;i<offerList.length;i++) {
+		if (offerCode == offerList[i].offerCode) {
+			offerName = offerList[i].offerName;
+			//console.log("offer found! " + offerList[i].offerName);
+		}
+	}
 
+	return offerName;
+}
 
 function getOfferByCode(offerCode, offerList) {
 	var offer = {};

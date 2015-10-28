@@ -230,23 +230,26 @@ function loadHistory() {
 	var customer = configScenario.selectedCustomer.customerLogin;
 	var channel = configScenario.currentChannel;
 	return getHistoryForCustomer(token, customer).done(function (historyList) {
-			console.log("History Loaded..."); 
+			console.log("History Loaded: "); 
 			console.log(historyList);
 			// store result in currentOffers - but transform response
 			//configScenario.currentHistory = historyList;
 			configScenario.currentHistory = historyList.map(function (historyItem) {
-				console.log("historyItem: " + historyItem);
-				var offer = getOfferByCode(historyItem.offerCd, configScenario.nba);
-				offer.historyChannel = historyItem.channel;
-				offer.historyDate = historyItem.datetime;
-				offer.historyType = historyItem.entrytype;
-				offer.historyDetails = historyItem.responsedetails;
-				offer.historyResponse = historyItem.responsetype;
-				offer.historyCounts = historyItem.counts;
+				var offer = {};
 
-				if (historyItem.offer) { //TODO: preset history of the customers does not contain an offerCode for matching
+				if (historyItem.offerCd) {
+					//var offer = getOfferByCode(historyItem.offerCd, configScenario.nba);
+					offer.offerName = getOfferNameByCode(historyItem.offerCd, configScenario.nba);
+				} else if (historyItem.offer) {
 					offer.offerName = historyItem.offer;
 				}
+
+				offer.historyChannel  = historyItem.channel;
+				offer.historyDate     = historyItem.datetime;
+				offer.historyType     = historyItem.entrytype;
+				offer.historyDetails  = historyItem.responsedetails;
+				offer.historyResponse = historyItem.responsetype;
+				//offer.historyCounts = historyItem.counts;
 				return offer;
 			});
 	});
@@ -262,18 +265,18 @@ function displayHistory() {
    		var historyItem		= historyList[i];
 
    		var historyDate     = historyItem.historyDate; 
-		var historyType     = historyItem.historyType;
+		//var historyType     = historyItem.historyType;
 		var historyOffer    = historyItem.offerName;
 		var historyChannel  = historyItem.historyChannel;
-		var historyCounts   = historyItem.historyCounts;
+		//var historyCounts   = historyItem.historyCounts;
 		var historyResponse = historyItem.historyResponse;
 
 		historyRow = '<tr>'
 		    +'<td>'+historyDate+'</td>'
-		    +'<td>'+historyType+'</td>'
+		    //+'<td>'+historyType+'</td>'
 		    +'<td>'+historyOffer+'</td>'
 		    +'<td>'+historyChannel+'</td>'
-		    +'<td>'+historyCounts+'</td>'
+		    //+'<td>'+historyCounts+'</td>'
 		    +'<td>'+historyResponse+'</td>'
 		    +'</tr>';
 		$('#historyTbody').append(historyRow);

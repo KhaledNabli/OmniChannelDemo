@@ -348,7 +348,7 @@ function getCustomerHistory($token, $customer) {
 	global $mysql_link;
 	$historyList = array();
 	//$historyListSql = "SELECT * FROM `contact_response_history` WHERE `token` = '".$token."' and `customer` = '".$customer."' ORDER BY `datetime` DESC";
-	$historyListSql = "SELECT *, count(*) as counts FROM `contact_response_history` WHERE `token` = '".$token."' and `customer` = '".$customer."' GROUP BY offerCd, entrytype, offer ORDER BY `datetime` DESC";
+	$historyListSql = "SELECT * FROM `contact_response_history` WHERE `token` = '".$token."' and `customer` = '".$customer."' ORDER BY `datetime` DESC";
 	
 	$historyListResult = $mysql_link->query($historyListSql);
 	$historyListSize   = @$historyListResult->num_rows;

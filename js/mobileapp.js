@@ -191,11 +191,6 @@ function changeHeaderNavButton(elementid, icon, onClickFunction) {
 function showOfferDetails(offerCode) {
 	hideAll();
 	changeHeaderNavButton('navIconLeft','ui-icon-carat-l','onSelectCustomerBtn(this);');
-	//$('#navIconMenu').removeClass('ui-icon-bars');
-	//$('#navIconMenu').addClass('ui-icon-carat-l');
-	//$('#navIconMenu').attr('onclick', 'onSelectCustomerBtn(this);');	
-	//$('#navIconMenu').attr('href', '');
-	
 
 	$('#offerDetails').toggle( );
 	var offer = getOfferByCode(offerCode, configScenario.nba);

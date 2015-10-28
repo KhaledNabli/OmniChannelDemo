@@ -4,11 +4,14 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes" /><!-- hide top bar in mobile safari-->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link rel="icon" href="../../favicon.ico">
+  <link rel="shortcut icon" href="../images/advisor_icon.png">
+  <link rel="apple-touch-icon" href="../images/advisor_icon.png" />
 
   <title>Advisor App</title>
 
@@ -17,9 +20,6 @@
 
   <!-- Custom styles for this template -->
   <link href="./css/dashboard.css" rel="stylesheet">
-
-
-
   <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
   <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
   <!--script src="../../assets/js/ie-emulation-modes-warning.js"></script-->
@@ -29,11 +29,12 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
       <![endif]-->
-    </head>
+</head>
 
-    <body>
+<body>
 
-      <div class="modal fade" id="popupLoadToken" tabindex="-1" role="dialog" aria-labelledby="popupLoadToken">
+    <!-- MODAL Token Load -->
+    <div class="modal fade" id="popupLoadToken" tabindex="-1" role="dialog" aria-labelledby="popupLoadToken">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -59,14 +60,14 @@
               <br>
            </div>
 
-
            <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+           </div>
           </div>
         </div>
-      </div>
     </div>
 
+    <!-- TOP BAR -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -91,6 +92,7 @@
       </div>
     </nav>
 
+    <!-- BOTTOM BAR -->
     <nav class="navbar navbar-inverse navbar-fixed-bottom">
       <div class="container">
         <div id="navbar" class="navbar-collapse collapse">
@@ -101,65 +103,57 @@
       </div>
     </nav>
 
+    <!-- MIDDLE CONTENT -->
     <div class="container-fluid">
       <div class="row">
+
+        <!-- Sidebar Navigation -->
         <div class="col-sm-3 sidebar">
 
           <div class="form-group">
             <input id="inputCustomerLogin" list="dataList_customers" placeholder="CustomerID" type="text" class="form-control" aria-label="...">
             <datalist id="dataList_customers"></datalist>
           </div>
-          <div class="form-group">
-            
+
+          <div class="form-group">            
             <button id="submitBtn" class="btn btn-primary btn-block" onclick="onSelectCustomerBtn(this);">
               <span id="btn_SubmitLabel">Submit</span> </button>
           </div>  
 
           <ul class="nav nav-sidebar">
-
-          
-
-            <!--
-            <li id="nav_overview" class="active">
-              <a href="#tab_overview" data-toggle="tab" onclick="onSelectCustomerBtn(this);">Select Customer </a></li>
-            <br>-->
-
             <li id="nav_custDetails" style="display:none">
               <a href="#tab_custDetails" data-toggle="tab">Customer Details</a></li>
             <li id="nav_nba" style="display:none">
               <a href="#tab_nba" data-toggle="tab" onclick="onClickNavItemNba(this);">Next Best Offers</a></li>
             <li id="nav_history" style="display:none">
               <a href="#tab_history" data-toggle="tab" onclick="onClickNavItemHistory(this);">Response History</a></li>
-
           </ul>
           
-        </div>
+        </div><!-- /Sidebar Navigation -->
+
+        <!-- Main Content -->
         <div class="col-sm-9 col-sm-offset-3 main">
 
           <div class="tab-content">
+
+            <!-- Tab: Overview -->
             <div id="tab_overview" class="tab-pane active">
               <h3 class="sub-header">Select Customer</h3>
 
               <div class="row">
                 <div class="col-sm-8 col-sm-offset-2">
-
-
-
-
                 </div><!-- column end -->
               </div>
 
-              <div class="row">
-                
+              <div class="row">               
               </div><!-- row end -->
+            </div><!-- /Tab: Overview -->
 
-            </div>
-
-
+            <!-- Tab: Customer Details -->
             <div id="tab_custDetails" class="tab-pane ">
               <form class="form-horizontal" role="form">
                 <div class="row">
-                  <!--h1 class="page-header">Page Header</h1-->
+                  
                   <h3 class="sub-header">Customer's Details</h3>
 
 
@@ -248,10 +242,11 @@
                 </div><!-- end of row -->
 
               </form> 
-            </div><!-- end of tab_custDetails -->
+            </div><!-- /TAB: Customer Details -->
 
-
+            <!-- Tab: Next Best Actions -->
             <div id="tab_nba" class="tab-pane">
+              
               <h3 class="sub-header">Customer's Next Best Offers</h3>
 
               <div class="table-responsive">
@@ -263,25 +258,12 @@
                       <th></th>
                     </tr>
                   </thead>
-                  <tbody id="nbaTbody">
+                  <tbody id="nbaTbody"></tbody>
+                </table>
+              </div><!-- TABLE responsive -->
 
-                        <!--<tr>
-                          <td width="20%">
-                            <a href="#" data-toggle="modal" data-target=".bs-example-modal-sm">
-                            <img src="https://dl.dropboxusercontent.com/u/16250684/offer_images/offerCode_01.jpg" width="200" class="img-thumbnail">
-                            </a>
-                          </td>
-                          <td width="80%">
-                            <h4><b>Current Account</b> <img src="./images/3starsborder.png"></h4>
-                            <p>This is the very cool new Current Account offer, if you want to know more then click me!</p>
-                          </td>
-                        </tr>-->
-
-                      </tbody>
-                    </table>
-                  </div><!-- TABLE responsive -->
-
-                  <div id="offerDetailsModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+              <!-- MODAL: Offer Details -->
+              <div id="offerDetailsModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
                     <div class="modal-dialog modal-lg">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -308,66 +290,42 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+              </div><!-- /MODAL: Offer Details -->
+            </div><!-- /Tab: Next Best Actions -->
 
+            <!-- Tab: History -->
+            <div id="tab_history" class="tab-pane">
+              <h3 class="sub-header">Customer's History</h3>
 
-                </div>
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <!--<th>History Type</th>-->
+                      <th>Offer</th>
+                      <th>Channel</th>
+                      <!--<th>Counts</th>-->
+                      <th>Response</th>
+                    </tr>
+                  </thead>
+                  <tbody id="historyTbody"></tbody>
+                </table>
+              </div><!-- TABLE responsive -->
+            </div><!-- /Tab: History -->
 
+          </div><!--/tab-content-->
 
-                <div id="tab_history" class="tab-pane">
-                  <h3 class="sub-header">Customer's History</h3>
+        </div><!-- /Main Content -->
+      </div><!-- /row -->
+    </div><!-- MIDDLE CONTENT -->
 
-                  <div class="table-responsive">
-                    <table class="table table-striped">
-                      <thead>
-                        <tr>
-                          <th>Date</th>
-                          <th>History Type</th>
-                          <th>Offer</th>
-                          <th>Channel</th>
-                          <th>Counts</th>
-                          <th>Response</th>
-                        </tr>
-                      </thead>
-                      <tbody id="historyTbody">
-                        <!--<tr>
-                          <td>22.09.2015</td>
-                          <td>Offer Personal Loan</td>
-                          <td>Website</td>
-                          <td>Offer Click</td>
-                        </tr>
+    <script src="../js/ext/jquery-1.11.3.min.js"></script>
+    <script src="../js/ext/bootstrap.min.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/advisor.js"></script>
 
-                        <tr>
-                          <td>10.10.2015</td>
-                          <td>Offer Current Account</td>
-                          <td>Mobile App</td>
-                          <td>Accept</td>
-                        </tr>
-
-                        <tr>
-                          <td>12.08.2015</td>
-                          <td>Offer Savings</td>
-                          <td>Website</td>
-                          <td>Rejected</td>
-                        </tr>-->
-
-                      </tbody>
-                    </table>
-                  </div><!-- TABLE responsive -->
-
-                </div>
-              </div><!--/.tab-content-->
-
-            </div>
-          </div>
-        </div>
-
-        <script src="../js/ext/jquery-1.11.3.min.js"></script>
-        <script src="../js/ext/bootstrap.min.js"></script>
-        <script src="../js/api.js"></script>
-        <script src="../js/advisor.js"></script>
-
-        <script type="text/javascript">
+    <script type="text/javascript">
         $( document ).ready(function() {
           onAdvisorReady();
 
@@ -377,7 +335,7 @@
           });
 
         });
-        </script>
+    </script>
 
-      </body>
-      </html>
+</body>
+</html>
