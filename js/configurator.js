@@ -188,7 +188,7 @@ function initConfigurator() {
     editor.getSession().setMode("ace/mode/html");
     editor.setValue(base64_decode(configScenario.web.nbaHtmlTemplate));
 
-    $(".upload-image").on("click", onClickUploadImageField);
+    $(".upload-image").on("dblclick", onClickUploadImageField);
 
 } /* end initConfigurator() */
 
@@ -390,7 +390,7 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
         +"<div class='form-group'>"
         +"  <label class='col-lg-1 col-sm-2 control-label'>Image</label>"
         +"  <div class='col-lg-11 col-sm-12'>"
-        +"    <input name='offerImg' value='"+img+"' type='text' class='form-control'>"
+        +"    <input name='offerImg' value='"+img+"' type='url' class='form-control upload-image' >"
         +"  </div>"
         +"</div>"
         +"</td>"
@@ -577,8 +577,13 @@ function onViewWebsiteBtn(page) {
 function onClickUploadImageField(event) {
     // we apply a trick here:
     // we register all elements with the class = "upload-image" to call this function on click
-    var elem = event.currentTarget;
+    
     // find the element id who was clicked and store the id and css-selector
+    var elem = event.currentTarget;
+    // if element do not have an id assigned - then assign temporary id
+    if(!elem.id || elem.id == "") {
+        elem.id = "tempImageUploadId" + Math.ceil(Math.random()*1000000);
+    }
     var fieldId = elem.id;
     var fieldSelector = "#" + fieldId;
 
