@@ -390,7 +390,7 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
         +"<div class='form-group'>"
         +"  <label class='col-lg-1 col-sm-2 control-label'>Image</label>"
         +"  <div class='col-lg-11 col-sm-12'>"
-        +"    <input name='offerImg' value='"+img+"' type='text' class='form-control'>"
+        +"    <input id='offerImg_"+code+"' name='offerImg' value='"+img+"' type='text' class='form-control upload-image'>"
         +"  </div>"
         +"</div>"
         +"</td>"
