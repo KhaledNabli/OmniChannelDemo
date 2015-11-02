@@ -46,14 +46,16 @@ function onUndoConfigurationBtn(element) {
 }
 
 function createChannelLinks(token) {
-    var baseUrl = window.location.href.split('#')[0].replace("configurator.html", "");
+    var baseUrl = window.location.href.split('#')[0].split("OmniChannelDemo")[0];
+    baseUrl = baseUrl + 'OmniChannelDemo/';
+
     if(token != '') {
         var encodedToken = encodeURIComponent(token);
-        $('#advisorLink').html(baseUrl + 'AdvisorApp/advisor.html#' + encodedToken);
-        $('#advisorLink').attr('href', baseUrl + 'AdvisorApp/advisor.html#' + encodedToken);
+        $('#advisorLink').html(baseUrl + 'AdvisorApp/#' + encodedToken);
+        $('#advisorLink').attr('href', baseUrl + 'AdvisorApp/#' + encodedToken);
 
-        $('#mobileLink').html(baseUrl + 'MobileApp/mobileapp.html#' + encodedToken);
-        $('#mobileLink').attr('href', baseUrl + 'MobileApp/mobileapp.html#' + encodedToken);
+        $('#mobileLink').html(baseUrl + 'MobileApp/#' + encodedToken);
+        $('#mobileLink').attr('href', baseUrl + 'MobileApp/#' + encodedToken);
 
         $('#websiteLink').html(baseUrl + 'Website/?token=' + encodedToken);
         $('#websiteLink').attr('href', baseUrl + 'Website/?token=' + encodedToken);
