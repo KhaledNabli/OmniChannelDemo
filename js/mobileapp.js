@@ -21,7 +21,7 @@ function onMobileAppReady() {
 
 function updateMobileAppUI() {
 	// add listeners on map move (drag and drop)
-	//google.maps.event.addListener(map, 'dragend', function() { alert('map dragged'); } );
+	
 	//google.maps.event.addListener(marker, 'dragend', function() { alert('marker dragged'); } );
 
 	// adding available customers to datalist
@@ -60,12 +60,17 @@ function onNavLoginBtn(element) {
 }
 
 function onNavMapBtn(element) {
-	$('#titleMobileApp').html('Geolocation');
+	$('#titleMobileApp').html(configScenario.mobileApp.title_geo_offer_panel);
 	$('#homePage').hide();
 	$('#offerPage').hide();
 	$('#offerDetails').hide();
 	$('#loginPage').hide();
 	$('#mapPage').show();
+
+	// get Geo Offer Information
+	$('#imgGeoOffer').attr('src', getOfferImageByCode('geo_offer',configScenario.nba));
+	$('#titleGeoOffer').html(getOfferNameByCode('geo_offer',configScenario.nba));
+	console.log('getOfferImage: ' + getOfferImageByCode('geo_offer',configScenario.nba));
 
 	var defaultLatLng = new google.maps.LatLng(
 		configScenario.mobileApp.geo_latitude, configScenario.mobileApp.geo_longtitude);
@@ -95,6 +100,7 @@ function onNavHomeBtn(element) {
 }
 
 function onNavOfferBtn(element) {
+	//$('#titleMobileApp').html(configScenario.mobileApp.title_offer_panel);
 	$('#titleMobileApp').html('Offers');
 	$('#homePage').hide();
 	$('#loginPage').hide();
@@ -243,6 +249,24 @@ function onResponseBtnClick(element, response) {
 	  });
 }
 
+function onGeoResponseBtnClick(element, response) {
+	changeHeaderNavButton('navIconLeft','ui-icon-bars','$("#leftPanel").panel("open");');
+
+	//read the offerCode from the hidden value
+	var token = readToken();
+	var customer = $('#inputCustomerLogin').val();
+	//var customer = configScenario.selectedCustomer.customerLogin;
+	var channel = 'Geolocation';
+	var offerCode = 'geo_offer';
+	var details = "";
+
+	console.log("onGeoResponseBtnClick exeucted" + token +" "+ customer +" "+ offerCode +" "+ response +" "+ channel );
+	respondToOffer(token, customer, offerCode, response, channel, details)
+	  .done(function(){
+	  	// do nothing
+	  });
+}
+
 function hideAll() {
 	$('#offerDetails').hide();
 	$('#offerPage').hide();
@@ -273,6 +297,11 @@ function drawMap(latlng) {
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	map = new google.maps.Map(document.getElementById("mapPageInner"), myOptions);
+	
+	google.maps.event.addListener(map, 'dragend', function() { 
+		$('#mapLatPosition').html('' + map.getCenter().lat());
+		$('#mapLngPosition').html('' + map.getCenter().lng()); 
+	} );
 	// Add an overlay to the map of current lat/lng
 	var marker = new google.maps.Marker({
 		position: latlng,
@@ -282,10 +311,4 @@ function drawMap(latlng) {
 		map: map,
 		title: "Greetings!"
 	});
-}
-
-function getMapCenterPosition() {
-
-	$('#mapLatPosition').html('' + map.getCenter().lat());
-	$('#mapLngPosition').html('' + map.getCenter().lng());
 }

@@ -4,6 +4,8 @@
 
             <div class="form-group"></div>
 
+            <!--addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjustscore, c1name, c2name)-->
+            
             <!-- NBA Grid -->
             <div class="col-sm-12">
                 <table id="configuratorNbaTable" class="table table-striped table-hover">
@@ -13,7 +15,10 @@
                             <th class="text-center" width="45%">Offer Details</th>
                             <th class="text-center" width="10%">Image</th>
                             <th class="text-center" width="20%">Score </th>
-                            <th width="2%"><a id="add_row" onclick="addNbaRecord('','','');" class="btn pull-right btn-primary btn-block">Add</a></th>
+                            <th width="2%">
+                                <a id="add_row" class="btn pull-right btn-primary btn-block"
+                onclick="addNbaRecord('geo_offer','Geo Offer','This is the geo offer shown on the mobile app','','Hi %FIRSTNAME%. Come into our shop a present is waiting for you!','0','0','0','0','','');" >Add Geo Offer</a>
+                                <a id="add_row" onclick="addNbaRecord();" class="btn pull-right btn-primary btn-block">Add</a></th>
                         </tr>
                     </thead>
                     <tbody id="configuratorNbaTbody">

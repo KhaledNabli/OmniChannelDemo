@@ -75,9 +75,9 @@ function onSelectCustomerBtn(element) {
 	$('#tab_overview').removeClass('active');
 	$('#tab_custDetails').addClass('active');
 	
-	$('#nav_custDetails').toggle();
-	$('#nav_nba').toggle();
-	$('#nav_history').toggle();
+	$('#nav_custDetails').show();
+	$('#nav_nba').show();
+	$('#nav_history').show();
 }
 
 function onClickNavItemNba(element) {
@@ -237,13 +237,16 @@ function loadHistory() {
 			//configScenario.currentHistory = historyList;
 			configScenario.currentHistory = historyList.map(function (historyItem) {
 				var offer = {};
+				console.log(historyItem);
 
-				if (historyItem.offerCd) {
-					//var offer = getOfferByCode(historyItem.offerCd, configScenario.nba);
+				if (historyItem.offerCd != undefined && historyItem.offerCd != "") {
+					//offer = getOfferByCode(historyItem.offerCd, configScenario.nba);
 					offer.offerName = getOfferNameByCode(historyItem.offerCd, configScenario.nba);
 				} else if (historyItem.offer) {
 					offer.offerName = historyItem.offer;
 				}
+
+				console.log(offer);
 
 				offer.historyChannel  = historyItem.channel;
 				offer.historyDate     = historyItem.datetime;
@@ -251,6 +254,7 @@ function loadHistory() {
 				offer.historyDetails  = historyItem.responsedetails;
 				offer.historyResponse = historyItem.responsetype;
 				//offer.historyCounts = historyItem.counts;
+				console.log(offer);
 				return offer;
 			});
 	});

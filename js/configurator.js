@@ -71,6 +71,9 @@ function initConfigurator() {
 
     createChannelLinks(configScenario.token);
 
+    // setup labels in configurator gui
+    initLabels();
+
 	$("#sendSms").prop("checked", checkIfTrue(configScenario.general.sendSms));
 	$("#rtdmBackend").prop("checked", checkIfTrue(configScenario.general.rtdmBackend));
 
@@ -196,6 +199,18 @@ function initConfigurator() {
 
 } /* end initConfigurator() */
 
+function initLabels() {
+    $("#c1bar1Label").html(configScenario.labels.analyticsBar1Label);
+    $("#c1bar2Label").html(configScenario.labels.analyticsBar2Label);
+    $("#c1bar3Label").html(configScenario.labels.analyticsBar3Label);
+    $("#c1bar4Label").html(configScenario.labels.analyticsBar4Label);
+
+    $("#c2bar1Label").html(configScenario.labels.analyticsBar1Label);
+    $("#c2bar2Label").html(configScenario.labels.analyticsBar2Label);
+    $("#c2bar3Label").html(configScenario.labels.analyticsBar3Label);
+    $("#c2bar4Label").html(configScenario.labels.analyticsBar4Label);
+}
+
 
 function onResetConfigurationBtn() {
 	window.localStorage.omnichanneltoken = "";
@@ -215,9 +230,6 @@ function onResetConfigurationBtn() {
 
 
 function onSaveConfigurationBtn() {
-	//console.log("Saving Config");
-
-
 
 	/*** for-loop to get all fromFields from configurator.html ***/
 	for (var property in configScenario.general) {
@@ -318,6 +330,9 @@ function onSaveConfigurationBtn() {
     // after saving and rebuilding the offers table, we need to listen again on the double click event
     $(".upload-image").on("dblclick", onClickUploadImageField);
     $(".image-preview").on("click", onClickPreviewImage);
+
+    // setup labels in configurator gui
+    initLabels();
 	
     return false;
 } /* end saveConfiguration */
@@ -340,8 +355,8 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
 	if (!c1score) c1score = "";
 	if (!c2score) c2score = "";   
     if (!adjustscore) adjustscore = "";
-    if (!c1name) c1name = "";
-    if (!c2name) c2name = ""; 
+    if (!c1name) c1name = configScenario.customers[0].firstName;
+    if (!c2name) c2name = configScenario.customers[1].firstName; 
 
 	/*$('#configuratorNbaTbody').append(
         "<tr><td><div style='padding: 7px 0px'><input name='offerCode' type='text' size=\"4\" value='"+code+"' class='form-control input-md'/></div> </td>"
@@ -355,8 +370,9 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
         +"<td><div style='padding: 7px 0px'><input name='changeScoreByInterest' type='text' placeholder='' size=\"4\" value='"+adjustscore+"' class='form-control input-md'/></div></td>"
         +"<td><a onclick='dropRecord(this);' class='pull-right btn btn-danger btn-block'>Delete</a></td></tr>"      
     );*/
+    var existingRecords = $('#configuratorNbaTbody').html();
 
-    $('#configuratorNbaTbody').append("<tr>"
+    $('#configuratorNbaTbody').html("<tr>"
         +"<td>"
         +"<div class='form-group'>"
         +"  <label class='col-lg-3 col-sm-3  control-label'>Code</label>"
@@ -398,7 +414,7 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
         +"<div class='form-group'>"
         +"  <label class='col-lg-1 col-sm-2 control-label'>Image</label>"
         +"  <div class='col-lg-11 col-sm-12'>"
-        +"    <input name='offerImg' value='"+img+"' type='url' class='form-control upload-image' >"
+        +"    <input name='offerImg' value='"+img+"' type='url' placeholder='<please save demo first and double click here>' class='form-control upload-image' >"
         +"  </div>"
         +"</div>"
         +"</td>"
@@ -432,6 +448,9 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
 
         +"<td><a onclick='dropRecord(this);' class='pull-right btn btn-danger btn-block'>Delete</a></td></tr>"      
     ); 
+
+    $('#configuratorNbaTbody').append(existingRecords);
+
     return false; 
 }
 
@@ -453,7 +472,7 @@ function getNbaRecords() {
 		var c2score 	= $(this).find("input[name='customer2Score']").val();
         var adjustscore     = $(this).find("input[name='changeScoreByInterest']").val();	
 
-		aNbaRecords.push({offerCode: code, offerName: name, offerDesc: desc, offerImg: img, offerSms: sms, maxContacts: contacts, customer1Score: c1score, customer2Score: c2score, changeScoreByInterest: adjustscore});
+		aNbaRecords.unshift({offerCode: code, offerName: name, offerDesc: desc, offerImg: img, offerSms: sms, maxContacts: contacts, customer1Score: c1score, customer2Score: c2score, changeScoreByInterest: adjustscore});
 	});
 	return aNbaRecords;
 }

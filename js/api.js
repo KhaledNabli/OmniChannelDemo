@@ -122,6 +122,19 @@ function getOfferNameByCode(offerCode, offerList) {
 	return offerName;
 }
 
+function getOfferImageByCode(offerCode, offerList) {
+	var offerImg = "";
+	
+	for(var i=0;i<offerList.length;i++) {
+		if (offerCode == offerList[i].offerCode) {
+			offerImg = offerList[i].offerImg;
+			console.log("offer found! " + offerList[i].offerImg);
+		}
+	}
+
+	return offerImg;
+}
+
 function getOfferByCode(offerCode, offerList) {
 	var offer = {};
 	var offerIndex = getOfferIndexByCode(offerCode, offerList);

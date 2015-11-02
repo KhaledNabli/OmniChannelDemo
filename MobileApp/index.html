@@ -102,7 +102,7 @@
 		<div role="main" class="ui-content">
 			<a id="getPositionBtn" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left ui-icon-check"
 				href="#popupLogin" data-rel="popup" data-position-to="window" data-transition="pop"
-				onclick="getMapCenterPosition();" >Current Position</a>
+				 >Current Position</a>
 			
 			<br><b>Latitude: </b><span id="mapLatPosition"> </span>
 			<br><b>Longtitude: </b><span id="mapLngPosition"> </span>
@@ -120,13 +120,13 @@
 			<div data-role="popup" id="popupLogin" data-theme="b" class="ui-corner-all">
 				<form>
 					<div style="padding:10px 20px;">
-						<h3 style="text-align: center">New Geo Offer</h3>
-						<img src="../../_demo_images/geo_offer.jpg" width="100%">
+						<h3 style="text-align: center" id="titleGeoOffer">New Geo Offer</h3>
+						<img id="imgGeoOffer" src="" width="100%">
 						<p style="text-align: center">
-							<a id="acceptButton" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-check" 
-								onclick="onResponseBtnClick(this,'accept');" >Accept</a>
-							<a id="rejectButton" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-forbidden" 
-								onclick="onResponseBtnClick(this,'reject');" >Reject</a>
+							<a id="acceptButton" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-check" data-rel="back"
+								onclick="onGeoResponseBtnClick(this,'accept');" >Accept</a>
+							<a id="rejectButton" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-forbidden" data-rel="back"
+								onclick="onGeoResponseBtnClick(this,'reject');" >Reject</a>
 						</p>
 				</div>
 				</form>

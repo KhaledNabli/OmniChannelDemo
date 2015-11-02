@@ -42,6 +42,8 @@
 		"login_button_text": "Login",
 		"title_offer_panel": "Top Angebote",
 		"title_geo_offer_panel": "Geolocation Angebote",
+		"title_geo_offer": "Coffee Offer",
+		"image_geo_offer": "/_demo_images/geo_offer.jpg",
 		"homescreen_image": "/_demo_images/coba_home.jpg",		
 		"map_pin_image": "/_demo_images/pin.png",
 		"maxOffersMobile": 3
