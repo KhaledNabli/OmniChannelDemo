@@ -46,7 +46,7 @@ function onUndoConfigurationBtn(element) {
 }
 
 function createChannelLinks(token) {
-    var baseUrl = window.location.href.split('#')[0].split("OmniChannelDemo")[0];
+    var baseUrl = window.location.href.split("OmniChannelDemo")[0];
     baseUrl = baseUrl + 'OmniChannelDemo/';
 
     if(token != '') {

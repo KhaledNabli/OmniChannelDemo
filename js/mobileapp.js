@@ -2,6 +2,7 @@ var configScenario = {};
 configScenario.currentChannel = "Mobile";
 configScenario.selectedCustomer = "";
 configScenario.currentOffers = [];
+var map;
 
 /**
 * on document ready
@@ -18,6 +19,27 @@ function onMobileAppReady() {
 	});
 }
 
+function updateMobileAppUI() {
+	// add listeners on map move (drag and drop)
+	//google.maps.event.addListener(map, 'dragend', function() { alert('map dragged'); } );
+	//google.maps.event.addListener(marker, 'dragend', function() { alert('marker dragged'); } );
+
+	// adding available customers to datalist
+	$('#dataList_customers').html('');
+	for (i = 0; i < configScenario.customers.length; i++) { 
+		$('#dataList_customers').append('<option value="'+ configScenario.customers[i].customerLogin + '">' 
+			+ configScenario.customers[i].firstName + ' ' + configScenario.customers[i].lastName + '</option>') ;
+	}
+
+	$('#submitBtn').val(configScenario.mobileApp.login_button_text);
+	$('#titleMobileApp').html("Mobile App");
+	$('#tokenLoad').val(configScenario.token);
+	$('#homeBackground').attr('src', configScenario.mobileApp.homescreen_image);
+	$('#titleMobileApp').html('Mobile App');
+	$('#submitBtn').html(configScenario.mobileApp.login_button_text);	
+	$("body").css("overflow", "hidden");
+}
+
 function onResetDemoBtn(element) {
 	console.log("reset demo for token " + configScenario.token);
 	resetDemo(configScenario.token);
@@ -29,6 +51,7 @@ function onResetDemoBtn(element) {
 }
 
 function onNavLoginBtn(element) {
+	$('#titleMobileApp').html('Login');
 	$('#homePage').hide();
 	$('#offerPage').hide();
 	$('#offerDetails').hide();
@@ -37,6 +60,7 @@ function onNavLoginBtn(element) {
 }
 
 function onNavMapBtn(element) {
+	$('#titleMobileApp').html('Geolocation');
 	$('#homePage').hide();
 	$('#offerPage').hide();
 	$('#offerDetails').hide();
@@ -62,6 +86,7 @@ function onNavMapBtn(element) {
 }
 
 function onNavHomeBtn(element) {
+	$('#titleMobileApp').html('Mobile App');
 	slidePage('#homePage', 'left')
 	$('#loginPage').hide();
 	$('#offerPage').hide();
@@ -70,6 +95,7 @@ function onNavHomeBtn(element) {
 }
 
 function onNavOfferBtn(element) {
+	$('#titleMobileApp').html('Offers');
 	$('#homePage').hide();
 	$('#loginPage').hide();
 	$('#offerDetails').hide();
@@ -109,24 +135,6 @@ function loadConfiguration(token) {
     	updateMobileAppUI();
     });
 }
-
-function updateMobileAppUI() {
-	// adding available customers to datalist
-	$('#dataList_customers').html('');
-	for (i = 0; i < configScenario.customers.length; i++) { 
-		$('#dataList_customers').append('<option value="'+ configScenario.customers[i].customerLogin + '">' 
-			+ configScenario.customers[i].firstName + ' ' + configScenario.customers[i].lastName + '</option>') ;
-	}
-
-	$('#submitBtn').val(configScenario.mobileApp.login_button_text);
-	$('#titleMobileApp').html("Mobile App");
-	$('#tokenLoad').val(configScenario.token);
-	$('#homeBackground').attr('src', configScenario.mobileApp.homescreen_image);
-	$('#titleMobileApp').html('Mobile App');
-	$("body").css("overflow", "hidden");
-}
-
-
 
 function loadOffers() {
 	var token = readToken();
@@ -264,7 +272,7 @@ function drawMap(latlng) {
 		streetViewControl: false,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
-	var map = new google.maps.Map(document.getElementById("mapPageInner"), myOptions);
+	map = new google.maps.Map(document.getElementById("mapPageInner"), myOptions);
 	// Add an overlay to the map of current lat/lng
 	var marker = new google.maps.Marker({
 		position: latlng,
@@ -274,4 +282,10 @@ function drawMap(latlng) {
 		map: map,
 		title: "Greetings!"
 	});
+}
+
+function getMapCenterPosition() {
+
+	$('#mapLatPosition').html('' + map.getCenter().lat());
+	$('#mapLngPosition').html('' + map.getCenter().lng());
 }

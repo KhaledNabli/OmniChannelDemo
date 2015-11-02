@@ -100,7 +100,14 @@
 	<div id="mapPage" role="main" class="ui-content"  style="display:none" >
 		<div id="mapPageInner" style="height: 300px;" ></div>
 		<div role="main" class="ui-content">
-            <div class="ui-select">
+			<a id="getPositionBtn" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left ui-icon-check"
+				href="#popupLogin" data-rel="popup" data-position-to="window" data-transition="pop"
+				onclick="getMapCenterPosition();" >Current Position</a>
+			
+			<br><b>Latitude: </b><span id="mapLatPosition"> </span>
+			<br><b>Longtitude: </b><span id="mapLngPosition"> </span>
+            
+            <!--<div class="ui-select">
                 <div id="select-native-2-button" class="ui-btn ui-icon-carat-d ui-btn-icon-right ui-corner-all ui-shadow">
                 	<select name="select-native-2" id="select-native-2">
 	                    <option value="small">One</option>
@@ -108,7 +115,23 @@
 	                    <option value="large">Three</option>
                 	</select>
             	</div>
-        	</div>		
+        	</div>	-->	
+
+			<div data-role="popup" id="popupLogin" data-theme="b" class="ui-corner-all">
+				<form>
+					<div style="padding:10px 20px;">
+						<h3 style="text-align: center">New Geo Offer</h3>
+						<img src="../../_demo_images/geo_offer.jpg" width="100%">
+						<p style="text-align: center">
+							<a id="acceptButton" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-check" 
+								onclick="onResponseBtnClick(this,'accept');" >Accept</a>
+							<a id="rejectButton" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-forbidden" 
+								onclick="onResponseBtnClick(this,'reject');" >Reject</a>
+						</p>
+				</div>
+				</form>
+			</div>
+
 		</div>
 	</div><!-- /GOOGLE MAPS PAGE -->
 
@@ -150,9 +173,7 @@
 			}
 		});
 	});
-        /*$( document ).ready(function() {
-            onMobileAppReady();
-        });*/
+
  </script>
 
 </body>

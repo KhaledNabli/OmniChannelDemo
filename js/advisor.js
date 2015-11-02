@@ -136,6 +136,7 @@ function updateAdvisorUI() {
 
 	$('#btn_SubmitLabel').html(configScenario.advisorApp.submitBtnAdvisor);
 	$('#titleAdvisor').html(configScenario.advisorApp.titleAdvisor);
+	$('#titlePage').html(configScenario.advisorApp.titleAdvisor);
 	$('#tokenLoad').val(configScenario.token);
 	$('#offerDetailsAcceptBtnLabel').html(configScenario.labels.acceptBtnAdvisor);
 	$('#offerDetailsRejectBtnLabel').html(configScenario.labels.rejectBtnAdvisor);
