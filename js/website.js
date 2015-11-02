@@ -194,6 +194,7 @@ function displayOffers(offers) {
 				token: "Wh5JRj88"
 			*/
 
+			templateContent.push({"name": "Token", 	"value": 	readToken()});
 			templateContent.push({"name": "CustomerLogin", 	"value": 	offerObj.customer});
 			templateContent.push({"name": "OfferIndex", 	"value": 	offerObj.index});
 			templateContent.push({"name": "OfferCode", 		"value": 	offerObj.offer });
@@ -201,14 +202,15 @@ function displayOffers(offers) {
 			templateContent.push({"name": "OfferDesc", 		"value": 	offerObj.offerdetails.offerDesc });
 			templateContent.push({"name": "OfferImage", 	"value": 	offerObj.offerdetails.offerImg });
 
+
 			templateContent.push({"name": "CustomerId", 	"value": 	offerObj.customer });
 			templateContent.push({"name": "Firstname",		"value": 	offerObj.customerdetails.customerFirstname });
 			templateContent.push({"name": "Lastname",		"value": 	offerObj.customerdetails.customerLastname });
 			templateContent.push({"name": "CustomerPicture","value": 	offerObj.customerdetails.pictureUrl });
 			templateContent.push({"name": "CustomerSegment","value": 	offerObj.customerdetails.lifeStageSegment });
-			templateContent.push({"name": "TrackAsAccept", 	"value": 	renderTrackingElement(offerObj.customer, offerObj.offer, "Accept")});
-			templateContent.push({"name": "TrackAsReject", 	"value": 	renderTrackingElement(offerObj.customer, offerObj.offer, "Reject")});
-			templateContent.push({"name": "TrackAsInterest","value": 	renderTrackingElement(offerObj.customer, offerObj.offer, "Show Interest")});
+			templateContent.push({"name": "TrackAsAccept", 	"value": 	renderTrackingElement(offerObj.customer, offerObj.offer, "accept")});
+			templateContent.push({"name": "TrackAsReject", 	"value": 	renderTrackingElement(offerObj.customer, offerObj.offer, "reject")});
+			templateContent.push({"name": "TrackAsInterest","value": 	renderTrackingElement(offerObj.customer, offerObj.offer, "show interest")});
 		
 			var renderedHtml = renderHtmlTemplate(websiteConfig.web.nbaHtmlTemplate, templateContent);
 			$(websiteConfig.web.nbaPlaceHolderSelectors[i]).html(renderedHtml);
@@ -257,7 +259,10 @@ function renderTrackingElement(customer, offerCd, responseCd) {
 
 
 jQuery.fn.getPath = function () {
-    if (this.length != 1) throw 'Requires one element.';
+    if (this.length != 1) {
+    	console.log('jQuery.fn.getPath Requires one element.');
+    	return;//throw 'Requires one element.';
+    } 
 
     var path, node = this;
     while (node.length) {

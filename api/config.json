@@ -65,7 +65,7 @@
 	"customers": [
 		{
 			"customerLogin": "1234",
-			"pictureUrl": "/_demo_images/Mathias.jpg",
+			"pictureUrl": "",
 			"firstName": "Mathias", 
 			"lastName": "Bouten",
 			"mobileNumber": "+491735755021",
@@ -93,7 +93,7 @@
 		},
 		{
 			"customerLogin": "5678",
-			"pictureUrl": "/_demo_images/khaled.jpg",
+			"pictureUrl": "",
 			"firstName": "Khaled", 
 			"lastName": "Nabli",
 			"mobileNumber": "+491735755021",
@@ -125,67 +125,67 @@
             "offerCode": "oc01",
             "offerName": "Current Account",
             "offerDesc": "This is more detail for the Current Account offer",
-            "offerImg": "/_demo_images/offerCode_01.jpg",
+            "offerImg": "",
             "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	 
             "maxContacts": 10,           
             "customer1Score": 78,
             "customer2Score": 33,
-            "changeScoreByInterest": 2
+            "changeScoreByInterest": 10
 	    },
         {
             "offerCode": "oc02",
             "offerName": "Personal Loan",
             "offerDesc": "This is more detail for the Personal Loan offer",
-            "offerImg": "/_demo_images/offerCode_02.jpg",		      
+            "offerImg": "",		      
             "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	 
             "maxContacts": 10,    
             "customer1Score": 66,
             "customer2Score": 45,
-            "changeScoreByInterest": -2
+            "changeScoreByInterest": 10
         },
         {
             "offerCode": "oc03",
             "offerName": "Car Loan",
             "offerDesc": "This is more detail for the Car Loan offer",
-            "offerImg": "/_demo_images/offerCode_03.jpg",		      
+            "offerImg": "",		      
             "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	 
             "maxContacts": 10,    
             "customer1Score": 45,
             "customer2Score": 67,
-            "changeScoreByInterest": -2
+            "changeScoreByInterest": 10
         },
         {
             "offerCode": "oc04",
             "offerName": "Baby Savings",
             "offerDesc": "This is more detail for the Baby Savings offer",
-            "offerImg": "/_demo_images/offerCode_04.jpg",		      
+            "offerImg": "",		      
             "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	 
             "maxContacts": 10,    
             "customer1Score": 44,
             "customer2Score": 78,
-            "changeScoreByInterest": -2
+            "changeScoreByInterest": 10
         },
         {
             "offerCode": "oc05",
             "offerName": "Premium Depot",
             "offerDesc": "This is more detail for the Premium Depot offer",
-            "offerImg": "/_demo_images/offerCode_05.jpg",		      
+            "offerImg": "",		      
             "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	 
             "maxContacts": 10,    
             "customer1Score": 23,
             "customer2Score": 45,
-            "changeScoreByInterest": 2
+            "changeScoreByInterest": 10
         },
         {
             "offerCode": "oc06",
             "offerName": "Mortgage",
             "offerDesc": "This is more detail for the Mortgage offer",
-            "offerImg": "/_demo_images/offerCode_06.jpg",		      
+            "offerImg": "",		      
             "offerSms": "Dear %FIRSTNAME% , your product-details are sent in parallel via Email",	 
             "maxContacts": 10,    
             "customer1Score": 33,
             "customer2Score": 34,
-            "changeScoreByInterest": 2
+            "changeScoreByInterest": 10
         }
 	]
 }
