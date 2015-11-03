@@ -1,6 +1,7 @@
 
 API Change
 ===========
+- implement SMS send out for Geo Offer
 
 
 
@@ -10,6 +11,7 @@ Configurator
 - redesign response history table
 - add offer category for rescoring, if interest in offer A of category b then increase offers of category b
 - token should not start with or contain + Symbol 
+- add information to help modal page
 
 Mobile App
 ===========
@@ -39,3 +41,8 @@ DONE
 - move labels to mobile and advisor app section
 - upload offer image button
 - hardcoded "select customer" in advisor app should be deleted
+- sms send out implemented for accept offer response
+- added error alert if no offer code or name was entered when saving
+- added OFFERNAME placeholder for SMS
+- reorderd saving and addind of offers, new offer appears at beginning of list now
+- added Help modal
