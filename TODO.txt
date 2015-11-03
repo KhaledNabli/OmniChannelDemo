@@ -1,37 +1,41 @@
 
-
 API Change
 ===========
-- scoring mechanism (testing on interest)
+
 
 
 Configurator
 ===============
-- design offer table for better display
 - themes change for mobile and advisor app
-- move labels to mobile and advisor app section
 - redesign response history table
-- upload offer image button
-  - create offer_images folder 
-
 - add offer category for rescoring, if interest in offer A of category b then increase offers of category b
-
-
-
+- token should not start with or contain + Symbol 
 
 Mobile App
 ===========
-- add google maps integration
-
+- make geo location scenario optional, hide nav button with configurator
 
 
 Advisor App
 ===========
-- move customer login to right pane 
-- hide navbar before login
-
+- close button - label should be changeable
 
 
 Website
 ===========
 - utf-8 support in editor
+- login form can be detected by "parent" object
+- create a standard website with changable logo and title
+
+
+
+DONE
+=======
+- scoring mechanism (testing on interest)
+- move customer login to right pane 
+- hide navbar before login
+- add google maps integration
+- design offer table for better display
+- move labels to mobile and advisor app section
+- upload offer image button
+- hardcoded "select customer" in advisor app should be deleted
