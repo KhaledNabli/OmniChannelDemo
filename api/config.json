@@ -6,7 +6,7 @@
 		"demoDescription": "This is the omni channel demo",
 		"userEmail": "mathias.bouten@sas.com",
 		"rtdmBackend": false,
-		"sendSms": true
+		"sendSms": false
 	},
 	"advisorApp": {
 		"titleAdvisor": "Advisor Frontend",

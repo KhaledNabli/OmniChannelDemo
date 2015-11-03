@@ -239,7 +239,7 @@ function loadHistory() {
 				var offer = {};
 				console.log(historyItem);
 
-				if (historyItem.offerCd != undefined && historyItem.offerCd != "") {
+				if (historyItem.offerCd) {
 					//offer = getOfferByCode(historyItem.offerCd, configScenario.nba);
 					offer.offerName = getOfferNameByCode(historyItem.offerCd, configScenario.nba);
 				} else if (historyItem.offer) {

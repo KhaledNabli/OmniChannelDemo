@@ -293,46 +293,49 @@ function onSaveConfigurationBtn() {
 
     //console.log (" save config: " + JSON.stringify(configScenario));
 
+    // check if getting NBA records was successful
+    if (configScenario.nba != false) {
+        // save configuration - call api
+        saveConfiguration(JSON.stringify(configScenario)).done(function (config) {
+        	configScenario = config;
 
-    saveConfiguration(JSON.stringify(configScenario)).done(function (config) {
-    	configScenario = config;
+        	if(configScenario.token != undefined && configScenario.token != "") {
+                saveToken(config.token);
+                createChannelLinks(config.token);
+                $('#token').html(configScenario.token);
+            } else {
 
-    	if(configScenario.token != undefined && configScenario.token != "") {
-            saveToken(config.token);
-            createChannelLinks(config.token);
-            $('#token').html(configScenario.token);
-        } else {
+            }
 
+        	$("#tokenDiv").show();
+        });
+
+        /* rebuild the offers table after saving, because images could have been changed */
+        clearNbaRecords();
+        if(configScenario.nba) {
+            for(var i = 0; i < configScenario.nba.length; i++) {
+                addNbaRecord(configScenario.nba[i]["offerCode"], 
+                configScenario.nba[i]["offerName"], 
+                configScenario.nba[i]["offerDesc"],
+                configScenario.nba[i]["offerImg"],
+                configScenario.nba[i]["offerSms"],
+                configScenario.nba[i]["maxContacts"],
+                configScenario.nba[i]["customer1Score"], 
+                configScenario.nba[i]["customer2Score"], 
+                configScenario.nba[i]["changeScoreByInterest"],
+                configScenario.customers[0].firstName, 
+                configScenario.customers[1].firstName 
+                );
+            }
         }
 
-    	$("#tokenDiv").show();
-    });
+        // after saving and rebuilding the offers table, we need to listen again on the double click event
+        $(".upload-image").on("dblclick", onClickUploadImageField);
+        $(".image-preview").on("click", onClickPreviewImage);
 
-    /* rebuild the offers table after saving, because images could have been changed */
-    clearNbaRecords();
-    if(configScenario.nba) {
-        for(var i = 0; i < configScenario.nba.length; i++) {
-            addNbaRecord(configScenario.nba[i]["offerCode"], 
-            configScenario.nba[i]["offerName"], 
-            configScenario.nba[i]["offerDesc"],
-            configScenario.nba[i]["offerImg"],
-            configScenario.nba[i]["offerSms"],
-            configScenario.nba[i]["maxContacts"],
-            configScenario.nba[i]["customer1Score"], 
-            configScenario.nba[i]["customer2Score"], 
-            configScenario.nba[i]["changeScoreByInterest"],
-            configScenario.customers[0].firstName, 
-            configScenario.customers[1].firstName 
-            );
-        }
-    }
-
-    // after saving and rebuilding the offers table, we need to listen again on the double click event
-    $(".upload-image").on("dblclick", onClickUploadImageField);
-    $(".image-preview").on("click", onClickPreviewImage);
-
-    // setup labels in configurator gui
-    initLabels();
+        // setup labels in configurator gui
+        initLabels();
+    } // endif 
 	
     return false;
 } /* end saveConfiguration */
@@ -414,13 +417,13 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
         +"<div class='form-group'>"
         +"  <label class='col-lg-1 col-sm-2 control-label'>Image</label>"
         +"  <div class='col-lg-11 col-sm-12'>"
-        +"    <input name='offerImg' value='"+img+"' type='url' placeholder='<please save demo first and double click here>' class='form-control upload-image' >"
+        +"    <input name='offerImg' value='"+img+"' type='url' placeholder='*** Please save demo first and double click here to upload image ***' class='form-control upload-image' >"
         +"  </div>"
         +"</div>"
         +"</td>"
 
         +"<td>"
-        +"  <img src='"+img+"' class='img-responsive' style='margin: 0 auto;padding:1px;border-radius:10px;border:1px solid #021a40;'>"
+        +"  <img alt='*** Upload Image and save demo to see preview ***' src='"+img+"' class='img-responsive' style='margin: 0 auto;padding:1px;border-radius:10px;border:1px solid #021a40;'>"
         +"</td>"
 
         +"<td>"
@@ -446,10 +449,14 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
         +"</div>"
         +"</td>"
 
-        +"<td><a onclick='dropRecord(this);' class='pull-right btn btn-danger btn-block'>Delete</a></td></tr>"      
+        +"<td><a onclick='dropRecord(this);' class='pull-right btn btn-danger btn-block'>"
+        +"    Delete</a>"
+        +"</td></tr>"      
     ); 
 
     $('#configuratorNbaTbody').append(existingRecords);
+    
+    $(".upload-image").on("dblclick", onClickUploadImageField);
 
     return false; 
 }
@@ -471,9 +478,13 @@ function getNbaRecords() {
 		var c1score 	= $(this).find("input[name='customer1Score']").val();
 		var c2score 	= $(this).find("input[name='customer2Score']").val();
         var adjustscore     = $(this).find("input[name='changeScoreByInterest']").val();	
-
-		aNbaRecords.unshift({offerCode: code, offerName: name, offerDesc: desc, offerImg: img, offerSms: sms, maxContacts: contacts, customer1Score: c1score, customer2Score: c2score, changeScoreByInterest: adjustscore});
-	});
+        if (code == "" || name == "") {
+            alert('You forgot to enter an offer code or name!');
+            return false;
+        } else {
+		    aNbaRecords.unshift({offerCode: code, offerName: name, offerDesc: desc, offerImg: img, offerSms: sms, maxContacts: contacts, customer1Score: c1score, customer2Score: c2score, changeScoreByInterest: adjustscore});
+	    }
+    });
 	return aNbaRecords;
 }
 

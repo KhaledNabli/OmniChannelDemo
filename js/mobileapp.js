@@ -51,20 +51,23 @@ function onResetDemoBtn(element) {
 }
 
 function onNavLoginBtn(element) {
+	hideAll();
+	$('#loginPage').show();
 	$('#titleMobileApp').html('Login');
-	$('#homePage').hide();
-	$('#offerPage').hide();
-	$('#offerDetails').hide();
-	$('#mapPage').hide();
+	//$('#homePage').hide();
+	//$('#offerPage').hide();
+	//$('#offerDetails').hide();
+	//$('#mapPage').hide();
 	slidePage('#loginPage', 'right');
 }
 
 function onNavMapBtn(element) {
+	hideAll();
 	$('#titleMobileApp').html(configScenario.mobileApp.title_geo_offer_panel);
-	$('#homePage').hide();
-	$('#offerPage').hide();
-	$('#offerDetails').hide();
-	$('#loginPage').hide();
+	//$('#homePage').hide();
+	//$('#offerPage').hide();
+	//$('#offerDetails').hide();
+	//$('#loginPage').hide();
 	$('#mapPage').show();
 
 	// get Geo Offer Information
@@ -91,21 +94,23 @@ function onNavMapBtn(element) {
 }
 
 function onNavHomeBtn(element) {
+	hideAll();
 	$('#titleMobileApp').html('Mobile App');
 	slidePage('#homePage', 'left')
-	$('#loginPage').hide();
-	$('#offerPage').hide();
-	$('#offerDetails').hide();
-	$('#mapPage').hide();
+	//$('#loginPage').hide();
+	//$('#offerPage').hide();
+	//$('#offerDetails').hide();
+	//$('#mapPage').hide();
 }
 
 function onNavOfferBtn(element) {
 	//$('#titleMobileApp').html(configScenario.mobileApp.title_offer_panel);
+	hideAll();
 	$('#titleMobileApp').html('Offers');
-	$('#homePage').hide();
-	$('#loginPage').hide();
-	$('#offerDetails').hide();
-	$('#mapPage').hide();
+	//$('#homePage').hide();
+	//$('#loginPage').hide();
+	//$('#offerDetails').hide();
+	//$('#mapPage').hide();
 	slidePage('#offerPage', 'right');
 }
 
@@ -206,7 +211,7 @@ function showOfferDetails(offerCode) {
 	hideAll();
 	changeHeaderNavButton('navIconLeft','ui-icon-carat-l','onSelectCustomerBtn(this);');
 
-	$('#offerDetails').toggle( );
+	$('#offerDetails').toggle();
 	var offer = getOfferByCode(offerCode, configScenario.nba);
 	
 	$('#offerDetailsLabel').html(offer.offerName);
@@ -268,8 +273,11 @@ function onGeoResponseBtnClick(element, response) {
 }
 
 function hideAll() {
-	$('#offerDetails').hide();
+	$('#homePage').hide();
 	$('#offerPage').hide();
+	$('#loginPage').hide();
+	$('#offerDetails').hide();
+	$('#mapPage').hide();
 }
 
 function slidePage(pageId, direction, type) {
@@ -299,6 +307,7 @@ function drawMap(latlng) {
 	map = new google.maps.Map(document.getElementById("mapPageInner"), myOptions);
 	
 	google.maps.event.addListener(map, 'dragend', function() { 
+		// update latitude and longtitude
 		$('#mapLatPosition').html('' + map.getCenter().lat());
 		$('#mapLngPosition').html('' + map.getCenter().lng()); 
 	} );
@@ -311,4 +320,8 @@ function drawMap(latlng) {
 		map: map,
 		title: "Greetings!"
 	});
+
+	// display latitude and longtitude (first time)
+	$('#mapLatPosition').html('' + map.getCenter().lat());
+	$('#mapLngPosition').html('' + map.getCenter().lng());
 }

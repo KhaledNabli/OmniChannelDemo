@@ -322,7 +322,13 @@ function respondToOffer($token, $customer, $offerCd, $responseCd, $channelCd, $d
 
 	insertHistoryEntry($token, $customer, $offerCd, "", $channelCd, "Response", $responseCd, $details, ""); // TODO: need to be fixed
 
-	return array('msg' => 'response successful');
+	// send SMS if response is accept
+	$smsSendResponse = "noSMS";
+	if($responseCd == "accept") {
+		$smsSendResponse = sendSMS($token, $customer, $offer);
+	}
+
+	return array('msg' => 'response successful with ' .$smsSendResponse);
 }
 
 
@@ -442,7 +448,63 @@ function getOfferIndexByCode($offerList, $offerCode) {
 }
 
 
+function sendSMS($token, $customerId, $offer) {
+	global $mysql_link;
+	//check if token is valid
+	$config = getConfigFromDatabase($token);
+	if($config == null) return;
 
+	//echo ' sendSms = ' .$config->general->sendSms;
+	//echo ' customer: ' .$customerId;
+	$response = "SMS activated";
+	if($config->general->sendSms==0 || $config->general->sendSms==""){
+		$response = "SMS deactivated";
+		return $response;
+	} 
+
+	global $http_proxy;
+	
+	$api_key="594b5de6";
+	$api_secret="bd95b0d2";
+	$api_from="SAS";
+	$nexmo_endpoint="http://rest.nexmo.com/sms/json";
+
+	$customerListSize = sizeof($config->customers);
+	$customer = null;
+	for($customerIndex = 0; $customerIndex < $customerListSize; $customerIndex++) {
+		$customer = $config->customers[$customerIndex];
+		if($config->customers[$customerIndex]->customerLogin == $customerId) {
+			break;
+		}
+	}
+
+	$mobileNumber = $customer->mobileNumber;
+	$mobileName   = $customer->firstName;
+	$mobileSmsText= $offer->offerSms;
+	$offerName    = $offer->offerName;
+	//echo ' smsText: ' .$mobileSmsText;
+	$newText      = str_replace("%FIRSTNAME%",$mobileName,$mobileSmsText);   // REPLACE name placeholder in SMS text
+	$newText      = str_replace("%OFFERNAME%",$offerName,$newText); // REPLACE offername placeholder in SMS text
+	$newText      = str_replace(" ","+",$newText);  // REPLACE all spaces with a plus symbol
+		
+	$nexmo_url=$nexmo_endpoint."?api_key=".$api_key."&api_secret=".$api_secret."&from=".$api_from."&to=".$mobileNumber."&text=".$newText;		
+	$nexmo_url;
+	//echo 'nexmo_url: ' .$nexmo_url;
+
+	// contact NEXMO for SMS
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $nexmo_url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_HEADER, 1);
+	if(!empty($http_proxy)) {
+		curl_setopt($ch, CURLOPT_PROXY, $http_proxy);  		  
+	}
+	$output = curl_exec($ch); // execute the request		
+	//echo($output) . PHP_EOL; // output the profile information - includes the header	
+	curl_close($ch); // close curl resource to free up system resources
+		
+	return $response;		
+}
 
 
 
