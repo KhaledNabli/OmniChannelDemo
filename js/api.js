@@ -33,8 +33,11 @@ function getHistoryForCustomer(token, customer) {
 				});
 }
 
-function getExistingDemos() {
-	return callApi({action: 'getAllDemos'});
+function getExistingDemos(userEmail, maxItems) {
+	return callApi({action: 'getAllDemos',
+					maxItems: maxItems,
+					userEmail : userEmail
+				});
 }
 
 

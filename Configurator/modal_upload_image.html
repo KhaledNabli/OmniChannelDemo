@@ -7,10 +7,15 @@
       </div>
       <div class="modal-body">
         <form id="formUploadImage" class="form-inline" method="POST" enctype="multipart/form-data" onsubmit="onUploadImageSubmit(this, event);">
+
+          <div class="form-group">
+            <label for="imageUploadFile">Select Image</label>
+            <input type="file" name="image" id="imageUploadFile" />
+            <p class="help-block">Example block-level help text here.</p>
+          </div>
           <input type="hidden" name="uploadTriggeredBy" value="#c1pictureUrl" />
           <input type="hidden" name="imageDesc" />
           
-          <input type="file" name="image" />
           <br>
           <button type="submit" class="btn btn-primary">Upload Image</button>
         </form>
