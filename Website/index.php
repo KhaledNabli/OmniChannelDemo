@@ -288,7 +288,7 @@ function displayEditor($token, $page) {
 
 function parseHtmlContent($source) {
 	$domDocument = new DOMDocument();
-	@$domDocument->loadHTML($source);
+	@$domDocument->loadHTML('<?xml encoding="utf-8" ?>' . $source);
 	return $domDocument;
 }
 

@@ -76,7 +76,6 @@ function getToken() {
     } else {
 		token = readToken();
 	}
-	console.log ("getToken: " + token);
 	return token;
 }
 
@@ -122,7 +121,6 @@ function getOfferNameByCode(offerCode, offerList) {
 	for(var i=0;i<offerList.length;i++) {
 		if (offerCode == offerList[i].offerCode) {
 			offerName = offerList[i].offerName;
-			//console.log("offer found! " + offerList[i].offerName);
 		}
 	}
 
@@ -135,7 +133,6 @@ function getOfferImageByCode(offerCode, offerList) {
 	for(var i=0;i<offerList.length;i++) {
 		if (offerCode == offerList[i].offerCode) {
 			offerImg = offerList[i].offerImg;
-			console.log("offer found! " + offerList[i].offerImg);
 		}
 	}
 

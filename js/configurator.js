@@ -2,22 +2,27 @@
 var configScenario = "";
 
 function startConfigurator() {
-	var tokenFromURL = readTokenFromURL();
-    var token = readToken();
+	var tokenFromURL = readTokenFromURL(); // look after # if token is present
+    var tokenFromLS = readToken(); // look if token is present in localStorage
+    var token = "";
 
 
-    if(tokenFromURL != undefined && tokenFromURL != "") {
+    if(tokenFromURL != undefined && tokenFromURL != "undefined" && tokenFromURL != "") {
         token = tokenFromURL;
+    } else if (tokenFromLS != undefined && tokenFromLS != "undefined" && tokenFromLS != "") {
+        token = tokenFromLS;
     }
-
 
 	loadConfiguration(token);
 }
 
 function loadConfiguration(token) {
+    console.log("load config for token: " + token);
 	getConfigurationByToken(token).done(function (config) {
     	configScenario = config;
-        if(config.token != undefined && config.token != "") {
+
+        if(token != "" && config.token == token) {
+            // if token is valid, then save it for later usage
             saveToken(config.token);
         }
 
@@ -194,8 +199,9 @@ function initConfigurator() {
     editor.getSession().setMode("ace/mode/html");
     editor.setValue(base64_decode(configScenario.web.nbaHtmlTemplate));
 
+    $(".upload-image").off();
     $(".upload-image").on("dblclick", onClickUploadImageField);
-
+    $(".image-preview").off();
     $(".image-preview").on("click", onClickPreviewImage);
 
 } /* end initConfigurator() */
@@ -331,7 +337,9 @@ function onSaveConfigurationBtn() {
         }
 
         // after saving and rebuilding the offers table, we need to listen again on the double click event
+        $(".upload-image").off();
         $(".upload-image").on("dblclick", onClickUploadImageField);
+        $(".image-preview").off();
         $(".image-preview").on("click", onClickPreviewImage);
 
         // setup labels in configurator gui
@@ -456,8 +464,10 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
     ); 
 
     $('#configuratorNbaTbody').append(existingRecords);
-
+    $(".upload-image").off();
     $(".upload-image").on("dblclick", onClickUploadImageField);
+    $(".image-preview").off();
+    $(".image-preview").on("click", onClickPreviewImage);
 
     return false; 
 }
@@ -614,6 +624,12 @@ function onViewWebsiteBtn(page) {
 
 
 function onClickUploadImageField(event) {
+    var currentToken = readToken();
+
+    if(currentToken == "") {
+        alert("Please save your configuration before uploading images.");
+        return;
+    }
     // we apply a trick here:
     // we register all elements with the class = "upload-image" to call this function on click
     
@@ -676,7 +692,7 @@ function onClickPreviewImage(event) {
     var fieldTitle = $(fieldSelector).text();
 
     $('#imgPreviewImage').attr('src', $('#' + forValue).val());
-    console.log(" input image field value: " + $('#' + forValue).val());
+    //console.log(" input image field value: " + $('#' + forValue).val());
 
     $('#modalTitlePreviewImage').text(fieldTitle);
 
