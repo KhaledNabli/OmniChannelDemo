@@ -93,8 +93,11 @@
         }
       });
 
+      // wait 100ms until content is fully loaded
+      setTimeout(function () {
+        startConfigurator();
+      }, 100)
       
-      startConfigurator();
     });
     </script>
   </body>

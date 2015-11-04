@@ -77,7 +77,7 @@ function getToken() {
 function readTokenFromURL() {
 	var tokenFromParameter = getQueryVariable("token");
 	var tokenAfterHash = window.location.href.split('#')[1];
-	return tokenFromParameter ? tokenFromParameter : tokenAfterHash;
+	return decodeURIComponent(tokenFromParameter ? tokenFromParameter : tokenAfterHash);
 }
 
 

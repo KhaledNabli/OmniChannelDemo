@@ -29,9 +29,17 @@ if ($mysql_link->connect_errno) {
     exit;
 }
 
+$mysql_link->query("set names 'utf8';");
+
 
 return processRequest();
 // Continue reading in processRequest();
+
+
+
+
+
+
 
 
 function getRequestParameter($parameter) {
@@ -127,7 +135,6 @@ function getPageFromDatabase($token,$page) {
 	// check token
 	getConfigFromDatabase($token);
 
-	$mysql_link->query("set names 'utf8';");
 	$pageQuerySql = "SELECT * FROM `demo_website` WHERE `token` = '".$token."' and `site` = '".$page."'";
 	$pageQueryResult = $mysql_link->query($pageQuerySql);
 
@@ -144,9 +151,9 @@ function getPageFromDatabase($token,$page) {
 
 function savePageToDatabase($token, $page, $content) {
 	global $mysql_link;
-	$mysql_link->query("set names 'utf8';");
+	$userIP = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 
-	$updateSqlQuery ="INSERT INTO `omnichanneldemo`.`demo_website` (`token`, `site`, `content`, `create_dttm`, `modify_dttm`, `modify_by`) VALUES ('".$token."', '".$page."', '".$mysql_link->real_escape_string($content)."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '')  ON DUPLICATE KEY UPDATE `content`=VALUES(`content`)";
+	$updateSqlQuery ="INSERT INTO `omnichanneldemo`.`demo_website` (`token`, `site`, `content`, `create_dttm`, `modify_dttm`, `modify_by`) VALUES ('".$token."', '".$page."', '".$mysql_link->real_escape_string($content)."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."') ON DUPLICATE KEY UPDATE `content`='".$mysql_link->real_escape_string($content)."', `modify_by` = '".$userIP."' , modify_dttm = CURRENT_TIMESTAMP ";
 
 	return $mysql_link->query($updateSqlQuery);
 } 
@@ -189,7 +196,6 @@ function uploadWebsiteToDatabase($token, $page, $url, $options) {
 	
 	$htmlOutput = outputDOMHtml($htmlDom, $tidyOutput);
 	
-
 	savePageToDatabase($token, $page, $htmlOutput);
 
 	var_dump($parsedUrl);
@@ -210,6 +216,7 @@ function displayEditor($token, $page) {
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title><?php echo "Editor: " . $page ." Page of ". $config->general->demoName; ?></title>
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
   <style type="text/css" media="screen">
     body {
         overflow: hidden;
@@ -220,7 +227,7 @@ function displayEditor($token, $page) {
         margin: 0;
         position: absolute;
         top: 0px;
-        bottom: 40px;
+        bottom: 65px;
         left: 0;
         right: 0;
         font-size: 16px;
@@ -237,8 +244,8 @@ function displayEditor($token, $page) {
 <body>
 
 <div id="control_buttons">
-	<input type="button" value="Undo"/>
-	<input type="button" value="Save" onclick="saveContent();"/>
+	<input type="button" class="btn" value="Undo"/>
+	<input type="button" class="btn btn-lg btn-primary" value="Save" onclick="saveContent();"/>
 </div>
 
 <div>
@@ -295,6 +302,7 @@ function addBaseToDOM($domDocument, $baseUrl) {
 	$heads = $domDocument->getElementsByTagName('head');
 	if($heads->length > 0) {
 		$baseElement = $domDocument->createElement('base','');
+		$baseElement->setAttribute("id", "ocdBaseTag");
 		$baseElement->setAttribute("href", $baseUrl);
 		$heads->item(0)->insertBefore($baseElement, $heads->item(0)->firstChild);
 	}
@@ -307,10 +315,13 @@ function addJsToDOM($domDocument, $jsFolderUrl) {
 	$bodys = $domDocument->getElementsByTagName('body');
 	if($bodys->length > 0) {
 		$jsElement1 = $domDocument->createElement('script','');
+		$jsElement1->setAttribute("id", "ocdJQueryTag");
 		$jsElement1->setAttribute("src", $jsFolderUrl . "js/ext/jquery-1.11.3.min.js");
 		$jsElement2 = $domDocument->createElement('script','');
+		$jsElement2->setAttribute("id", "ocdApiTag");
 		$jsElement2->setAttribute("src", $jsFolderUrl . "js/api.js");
 		$jsElement3 = $domDocument->createElement('script','');
+		$jsElement3->setAttribute("id", "ocdWebsiteTag");
 		$jsElement3->setAttribute("src", $jsFolderUrl . "js/website.js");
 		$bodys->item(0)->appendChild($jsElement1);
 		$bodys->item(0)->appendChild($jsElement2);

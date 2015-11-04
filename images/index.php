@@ -69,7 +69,7 @@ function processUpload() {
 	
 	// TODO update
 	$image_desc = getRequestParameter("imageDesc");
-	$upload_user = "gerkna";
+	$upload_user = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 
 	$image = addslashes(file_get_contents($_FILES['image']['tmp_name'])); //SQL Injection defence!
 	$image_name = addslashes($_FILES['image']['name']);

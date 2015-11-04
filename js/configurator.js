@@ -627,6 +627,7 @@ function onClickUploadImageField(event) {
 
     // the selector is stored in a hidden field to be used when we upload the picture
     $("#formUploadImage").children("input[name='uploadTriggeredBy']").val(fieldSelector);
+    $("#formUploadImage").children("input[name='imageDesc']").val("OmniChannelDemo Token:" + readToken() + " Field:" + fieldSelector);
     // show the modal window
     $('#popupUploadImage').modal('show');
 }
@@ -650,8 +651,7 @@ function onUploadImageSubmit(elem, e) {
                 // hide modal window
                 $('#popupUploadImage').modal('hide');
             } else {
-                alert("An error while uploading image happened... See console for more details.");
-                console.log(result.message);
+                alert(result.message);
             }
         },
         cache: false,

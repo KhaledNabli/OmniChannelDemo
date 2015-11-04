@@ -28,6 +28,8 @@ if ($mysql_link->connect_errno) {
     exit;
 }
 
+$mysql_link->query("set names 'utf8';");
+
 
 
 
@@ -56,26 +58,33 @@ function processRequest() {
 	$action = getRequestParameter("action");
 	$token = getRequestParameter("token");
 
+	
+
 	if ($action == 'getAllDemos') {
 		$maxItems = getRequestParameter("maxItems");
 		$userEmail = getRequestParameter("userEmail");
+		logUsage($action, "", $maxItems, $userEmail);
 		echo json_encode(getAllConfigsFromDatabase($userEmail, $maxItems));
 	}
 
 	else if($action == 'resetDemo') {
 		resetDemo($token);
+		logUsage($action, "", $token, "");
 	}
 
 	else if($action == 'saveConfig') {
 		$config = getRequestParameter("config");
-	
-		echo json_encode(saveConfig(json_decode($config)));
+		$savedConfig = saveConfig(json_decode($config));
+		logUsage($action, "", $savedConfig->token, "");
+		echo json_encode($savedConfig);
+
 	}
 	else if($action == 'getOffers') {
 		$customer = getRequestParameter("customer");
 		$channel = getRequestParameter("channel");
 		$list_size = getRequestParameter("maxOffers");
 		$do_not_track = getRequestParameter("DoNotTrack");
+		logUsage($action, "", $token, $channel);
 		echo json_encode(getOffers($token, $customer, $channel, $list_size, $do_not_track));
 	
 	}
@@ -85,16 +94,18 @@ function processRequest() {
 		$responseCd = getRequestParameter("response");
 		$channelCd = getRequestParameter("channel");
 		$details = getRequestParameter("details");
-
+		logUsage($action, "", $token, $channelCd);
 		echo json_encode(respondToOffer($token, $customer, $offerCd, $responseCd, $channelCd, $details));
 
 	}
 	else if($action == 'getHistory') {
 		$customer = getRequestParameter("customer");
+		logUsage($action, "", $token, $customer);
 		echo json_encode(getCustomerHistory($token, $customer));
 	}
 
 	else if($action == 'getConfig') {
+		logUsage($action, "", $token, "");
 		echo json_encode(getConfig($token));
 	} 
 	else {
@@ -195,7 +206,7 @@ function saveConfig($config) {
 	$configDesc = $config->general->demoDescription;
 	$userIP = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 	$config->message = "";
-
+	$configString = $mysql_link->real_escape_string(json_encode($config));
 
 	if(!empty($token)) {
 		// check if token is valid.
@@ -205,7 +216,7 @@ function saveConfig($config) {
 
 		if($tokenValid) {
 			// update existing configuration
-			$updateConfigSql = "UPDATE `omnichanneldemo`.`demo_config` SET  `config_name` = '".$configName."',  `config_desc` = '".$configDesc."', `config_json` = '".json_encode($config)."', `email_to` = '".$userEmail."', `modify_by` = '".$userIP."' WHERE `demo_config`.`token` = '" . $token . "';";
+			$updateConfigSql = "UPDATE `omnichanneldemo`.`demo_config` SET  `config_name` = '".$configName."',  `config_desc` = '".$configDesc."', `config_json` = '".$configString."', `email_to` = '".$userEmail."', `modify_by` = '".$userIP."', `modify_dttm` = CURRENT_TIMESTAMP WHERE `demo_config`.`token` = '" . $token . "' ;";
 			$mysql_link->query($updateConfigSql);
 			$config->message = "Update existing config";
 		}
@@ -216,7 +227,7 @@ function saveConfig($config) {
 		$token = generateRandomToken();
 		$config->token = $token;
 
-		$createConfigSql = "INSERT INTO `omnichanneldemo`.`demo_config` (`id`, `token`, `config_name`, `config_desc`, `config_json`, `create_dttm`, `modify_dttm`, `modify_by`, `email_to`) VALUES (NULL, '".$token."', '".$configName."', '".$configDesc."', '".json_encode($config)."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."', '".$userEmail."');";
+		$createConfigSql = "INSERT INTO `omnichanneldemo`.`demo_config` (`id`, `token`, `config_name`, `config_desc`, `config_json`, `create_dttm`, `modify_dttm`, `modify_by`, `email_to`) VALUES (NULL, '".$token."', '".$configName."', '".$configDesc."', '".$configString."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."', '".$userEmail."');";
 		$createConfigResult = $mysql_link->query($createConfigSql);
 		$config->message = "Insert new config";
 	}
@@ -521,9 +532,8 @@ function logUsage($eventType, $userPayload, $detail1, $detail2) {
 	$userSystem =  "Computer: " .  ($userHost != null ?  $userHost : "Unknown" ) . ". Browser: " . htmlspecialchars($_SERVER["HTTP_USER_AGENT"]) ;
 
 	$sqlInsertQuery = "INSERT INTO omnichanneldemo.demo_events (id, session,event_dttm, event_type, user_ip, user_system, user_scenario, detail1, detail2) VALUES (NULL, \"". session_id() ."\" ,CURRENT_TIMESTAMP, \"" . $eventType . "\", \"".$userIp."\",\"".$userSystem."\", \"". addslashes(json_encode($userPayload)) ."\", \"".$detail1."\",  \"".$detail2."\");";
-	$mysql_query->query($link,$sqlInsertQuery);
+	$mysql_link->query($sqlInsertQuery);
 	return true;
 }
-
 
 ?>
