@@ -33,6 +33,10 @@ function getHistoryForCustomer(token, customer) {
 				});
 }
 
+function getExistingDemos() {
+	return callApi({action: 'getAllDemos'});
+}
+
 
 function getConfigurationByToken(token) {
 	return callApi({action: 'getConfig', 
