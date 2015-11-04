@@ -27,8 +27,8 @@ function loadConfiguration(token) {
 
 
 function onLoadTokenBtn(element) {
-	//var token = $('#tokenLoad').val();
-    var token = $('#selectToken').val().split(' | ')[0];
+	var token = $('#selectToken').val();
+    //var token = $('#selectToken').val().split(' | ')[0];
     if(token != "") {
         saveToken(token);
         loadConfiguration(token);
@@ -67,8 +67,6 @@ function createChannelLinks(token) {
 *
 */
 function initConfigurator() {
-
-    initTokenSearch();
 
 	// console.log("configScenario: " + configScenario);
 
@@ -338,7 +336,6 @@ function onSaveConfigurationBtn() {
 
         // setup labels in configurator gui
         initLabels();
-        initTokenSearch();
     } // endif 
 	
     return false;
@@ -687,62 +684,16 @@ function onClickPreviewImage(event) {
 }
 
 
-function initTokenSearch() {
 
-    var tokens = [];
+
+function onLoadExistingDemoBtn() {
 
     getExistingDemos().done(function (config) {
         for (i = 0; i < config.length; i++) { 
-            tokens.unshift('' + config[i].token + ' | ' + config[i].config_name + ' | ' + config[i].email_to + '<hr> ');
+            $('#selectToken').append('<option value="' + config[i].token + '">' + config[i].token + ' | ' + config[i].config_name + ' | ' + config[i].config_desc + ' </option>') ;
         }
     });
 
-    var substringMatcher = function(strs) {
-      return function findMatches(q, cb) {
-        var matches, substringRegex;
+    $("#selectToken").select2();
 
-        // an array that will be populated with substring matches
-        matches = [];
-
-        // regex used to determine if a string contains the substring `q`
-        substrRegex = new RegExp(q, 'i');
-
-        // iterate through the pool of strings and for any string that
-        // contains the substring `q`, add it to the `matches` array
-        $.each(strs, function(i, str) {
-          if (substrRegex.test(str)) {
-            matches.push(str);
-          }
-        });
-
-        cb(matches);
-      };
-    };
-    
-    //drop all twitter-typeahead spans
-    $( ".twitter-typeahead" ).remove();
-
-    //recreate typeahead
-    $('#divTokenSearch').html(""
-        +"<div id='divTokenTypeahead'>"
-        +"<input id='selectToken' class='typeahead' type='text' placeholder='search existing demo' >"
-        +"</div>");
-
-    //initialize typeahead
-    $('#divTokenTypeahead .typeahead').typeahead({
-          hint: true,
-          highlight: true,
-          minLength: 1
-        },
-        {
-          name: 'tokens',
-          limit: 6,
-          source: substringMatcher(tokens),
-          templates: {
-            suggestion: function (data) {
-                return '<p>' + data + '</p>';
-            }
-          }
-        });
-    
 }
