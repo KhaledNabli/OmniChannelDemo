@@ -2,7 +2,7 @@
 // may be renamed later to advisorScenario
 var configScenario = {};
 configScenario.currentChannel = "Advisor";
-configScenario.maxOffers = 4;
+//configScenario.maxOffers = 4;
 configScenario.selectedCustomer = "";
 configScenario.currentOffers = [];
 configScenario.currentHistoy = [];
@@ -24,7 +24,7 @@ function onAdvisorReady() {
 	getConfigurationByToken(token).done(function (config) {
 		configScenario = config;
 		configScenario.currentChannel = "Advisor";
-		configScenario.maxOffers = 4;
+		//configScenario.maxOffers = 4;
 		updateAdvisorUI();
 	});
 }
@@ -37,9 +37,15 @@ function onSelectCustomerBtn(element) {
 	configScenario.selectedCustomer = getCustomerByLogin(customerLogin, configScenario.customers);
 
 	$('#nav_custDetails').addClass("active");
-	$('#nav_overview').removeClass("active");
 	$('#tab_custDetails').addClass("active");
+
+	$('#nav_overview').removeClass("active");	
 	$('#tab_overview').removeClass("active");
+
+	$('#nav_nba').removeClass("active");
+	$('#tab_nba').removeClass("active");
+	$('#nav_history').removeClass("active");
+	$('#tab_history').removeClass("active");
 	
 	$('#customerName').val(configScenario.selectedCustomer.firstName + " " + configScenario.selectedCustomer.lastName);
 	$('#mobileNumber').val(configScenario.selectedCustomer.mobileNumber);
@@ -188,7 +194,7 @@ function loadOffers() {
 	var token = readToken();
 	var customer = configScenario.selectedCustomer.customerLogin;
 	var channel = configScenario.currentChannel;
-	var maxOffers = configScenario.maxOffers;
+	var maxOffers = configScenario.advisorApp.maxOffersAdvisor;
 	return getOffersForCustomer(token, customer, channel, maxOffers, true).done(function (offers) {
 			console.log("Offers Loaded..."); 
 			console.log(offers);

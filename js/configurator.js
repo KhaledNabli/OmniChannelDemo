@@ -703,7 +703,7 @@ function onClickPreviewImage(event) {
 
 
 function onLoadExistingDemoBtn() {
-
+    $('#selectToken').html('');
     getExistingDemos().done(function (config) {
         for (i = 0; i < config.length; i++) { 
             $('#selectToken').append('<option value="' + config[i].token + '">' + config[i].token + ' | ' + config[i].config_name + ' | ' + config[i].config_desc + ' </option>') ;
