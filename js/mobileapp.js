@@ -35,8 +35,10 @@ function updateMobileAppUI() {
 	$('#titleMobileApp').html("Mobile App");
 	$('#tokenLoad').val(configScenario.token);
 	$('#homeBackground').attr('src', configScenario.mobileApp.homescreen_image);
-	$('#titleMobileApp').html('Mobile App');
-	$('#submitBtn').html(configScenario.mobileApp.login_button_text);	
+	$('#titleMobileApp').html(configScenario.mobileApp.title_mobile_app);
+	$('#submitBtn').html(configScenario.mobileApp.login_button_text);		
+	$('#appleTouchIcon').attr('href', configScenario.mobileApp.appIcon_image);
+	$('#shortcutIcon').attr('href', configScenario.mobileApp.appIcon_image);
 	$("body").css("overflow", "hidden");
 }
 
@@ -153,8 +155,7 @@ function loadOffers() {
 	var channel = configScenario.currentChannel;
 	var maxOffers = configScenario.mobileApp.maxOffersMobile;
 	return getOffersForCustomer(token, customer, channel, maxOffers, true).done(function (offers) {
-			console.log("Offers Loaded..."); 
-			console.log(offers);
+			//console.log("Offers Loaded..."); 
 			// store result in currentOffers - but transform response
 			configScenario.currentOffers = offers.map(function (offerItem) {
 				var offer = getOfferByCode(offerItem.offer, configScenario.nba);
@@ -172,7 +173,6 @@ function displayOffers() {
 	$('#nba_table').html('');
 
 	var countNBO = offerList.length;
-  	console.log("[displayOffers] countNBO= " + countNBO);
   	$('#titleMobileApp').html(countNBO + ' Top Offers');
   	
   	var htmlOfferList = '<ul data-role="listview" id="offerList">';
@@ -180,10 +180,10 @@ function displayOffers() {
   		var offer = offerList[i];
    		
   		if ( offer.offerName != "Default Offer" && offer.offerName != null ) {
-			console.log("[displayOffers] offerCode=" + offer.offerCode + " offerName=" + offer.offerName);
+			//console.log("[displayOffers] offerCode=" + offer.offerCode + " offerName=" + offer.offerName);
   				
   			htmlOfferList += "<li><a onclick=\"showOfferDetails('" + offer.offerCode + "');\" >"
-	   			+"<img src=\"" + offer.offerImg + "\" height=\"100\" >"
+	   			+"<img src=\"" + offer.offerImg + "\" height=\"100\" class='nbaItemImage'>"
 	   			+"<h2>" + offer.offerName + "</h2><p></p></a></li>";	
 	   	} else {
 			countNBO = countNBO-1;
@@ -242,7 +242,6 @@ function onResponseBtnClick(element, response) {
 	var offerCode = $('#offerDetailsOfferCode').val();
 	var details = "";
 
-	console.log("onResponseBtnClick exeucted");
 	respondToOffer(token, customer, offerCode, response, channel, details)
 	  .done(function(){
 		slidePage('#offerDetails', 'right', 'hide');
@@ -265,7 +264,7 @@ function onGeoResponseBtnClick(element, response) {
 	var offerCode = 'geo_offer';
 	var details = "";
 
-	console.log("onGeoResponseBtnClick exeucted" + token +" "+ customer +" "+ offerCode +" "+ response +" "+ channel );
+	//console.log("onGeoResponseBtnClick exeucted" + token +" "+ customer +" "+ offerCode +" "+ response +" "+ channel );
 	respondToOffer(token, customer, offerCode, response, channel, details)
 	  .done(function(){
 	  	// do nothing

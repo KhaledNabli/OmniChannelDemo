@@ -63,6 +63,9 @@ function createChannelLinks(token) {
         $('#mobileLink').html(baseUrl + 'MobileApp/#' + encodedToken);
         $('#mobileLink').attr('href', baseUrl + 'MobileApp/#' + encodedToken);
 
+        $('#mobileLink2').html(baseUrl + 'MobileApp/#' + encodedToken);
+        $('#mobileLink2').attr('href', baseUrl + 'MobileApp/#' + encodedToken);
+
         $('#websiteLink').html(baseUrl + 'Website/?token=' + encodedToken);
         $('#websiteLink').attr('href', baseUrl + 'Website/?token=' + encodedToken);
     }   

@@ -4,15 +4,15 @@
 	<title>Mobile App</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	<link rel="apple-touch-icon" href="../images/mobile_icon.png" />
+	<link id="appleTouchIcon" rel="apple-touch-icon" href="../images/mobile_icon.png" />
 	<meta name="apple-mobile-web-app-capable" content="yes" /><!-- hide top bar in mobile safari-->
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<link rel="shortcut icon" href="../images/mobile_icon.png">
+	<link id="shortcutIcon" rel="shortcut icon" href="../images/mobile_icon.png">
 
 	<link rel="stylesheet" href="../css/jquery.mobile-1.4.5.min.css" />
-
 	<link rel="stylesheet" href="../css/themes/theme-classic.css" />
 	<link rel="stylesheet" href="../css/mobileapp.css" />
+	
 
 </head>
 <body>
@@ -83,7 +83,7 @@
 	<div id="offerDetails" role="main" class="ui-content" style="display:none">
 		<h3 style="text-align: center"><span id="offerDetailsLabel"></span></h3>
 		<p style="text-align: center">
-			<img id="offerDetailsImage" src="" height="200" align="middle">
+			<img id="offerDetailsImage" src="" width="100%" align="middle">
 			<br><br>
 			<span id="offerDetailsDescription" ></span>
 		</p>
@@ -100,9 +100,9 @@
 	<div id="mapPage" role="main" class="ui-content"  style="display:none" >
 		<div id="mapPageInner" style="height: 300px;" ></div>
 		<div role="main" class="ui-content">
-			<a id="getPositionBtn" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left ui-icon-check"
+			<a id="getPositionBtn" onclick="onGeoResponseBtnClick(this,'open popup');" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left ui-icon-check"
 				href="#popupLogin" data-rel="popup" data-position-to="window" data-transition="pop"
-				 >Current Position</a>
+				 >Send Location</a>
 			
 			<br><b>Latitude: </b><span id="mapLatPosition"> </span>
 			<br><b>Longtitude: </b><span id="mapLngPosition"> </span>
