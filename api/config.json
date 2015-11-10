@@ -2,9 +2,9 @@
 	"token":"",	
 	"general": {
 		"raceServerName": "racesx00000.demo.sas.com",
-		"demoName": "Omni-Channel Demo",
-		"demoDescription": "This is the omni channel demo",
-		"userEmail": "mathias.bouten@sas.com",
+		"demoName": "",
+		"demoDescription": "",
+		"userEmail": "",
 		"rtdmBackend": false,
 		"sendSms": false
 	},
@@ -15,9 +15,9 @@
 		"maxOffersAdvisor": 3
 	},
 	"web": {
-		"startPageUrl": "aW5kZXguaHRtbA==",
-		"loginPageUrl": "bG9naW4uaHRtbA==",
-		"landingPageUrl": "bGFuZGluZ3BhZ2UuaHRtbA==",
+		"startPageUrl": "",
+		"loginPageUrl": "",
+		"landingPageUrl": "",
 		"startLinkSelector": "",
 		"loginLinkSelector": "",
 		"loginLinkHtml": "",
@@ -68,7 +68,7 @@
 			"pictureUrl": "",
 			"firstName": "Mathias", 
 			"lastName": "Bouten",
-			"mobileNumber": "+491735755021",
+			"mobileNumber": "",
 			"lifeStageSegment": "Small-Family",
 			"age": "35",
 			"email": "mathias.bouten@sas.com",
@@ -96,7 +96,7 @@
 			"pictureUrl": "",
 			"firstName": "Khaled", 
 			"lastName": "Nabli",
-			"mobileNumber": "+<countryCode and mobile>",
+			"mobileNumber": "",
 			"lifeStageSegment": "Small-Family",
 			"age": "29",
 			"email": "khaled.nabli@sas.com",

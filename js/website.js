@@ -18,22 +18,23 @@ $(document).ready(function () {
 		websiteConfig = config;
 		websiteConfig.web = base64_decodeProperties(config.web);
 		websiteConfig.web.nbaPlaceHolderSelectors = [];
+		
 		if(websiteConfig.web.nbaPlaceHolderSelector1) {
 			websiteConfig.web.nbaPlaceHolderSelectors.push(websiteConfig.web.nbaPlaceHolderSelector1);
 		}
+
 		if(websiteConfig.web.nbaPlaceHolderSelector2) {
 			websiteConfig.web.nbaPlaceHolderSelectors.push(websiteConfig.web.nbaPlaceHolderSelector2);
 		}
+
 		if(websiteConfig.web.nbaPlaceHolderSelector3) {
 			websiteConfig.web.nbaPlaceHolderSelectors.push(websiteConfig.web.nbaPlaceHolderSelector3);
 		}
+
 		if(websiteConfig.web.nbaPlaceHolderSelector4) {
 			websiteConfig.web.nbaPlaceHolderSelectors.push(websiteConfig.web.nbaPlaceHolderSelector4);
 		}
 
-
-
-		console.log(websiteConfig);
 		prepareWebsite();
 	});
 
@@ -44,35 +45,44 @@ $(document).ready(function () {
 function prepareWebsite() {
 	console.log("Prepare Website for Omni-Channel Demo");
 
-	var startPageURL = getBaseURL() + ".?page=start&token=" + encodeURI(readTokenFromURL());
-	var loginPageURL = getBaseURL() + ".?page=login&token=" + encodeURI(readTokenFromURL());
-	var landingPageURL = getBaseURL() + ".?page=landing&token=" + encodeURI(readTokenFromURL());
+	// remove validators
+	$(websiteConfig.web.loginUserInputSelector).unbind();
+	$(websiteConfig.web.loginBtnInputSelector).unbind();
+	$(websiteConfig.web.loginFormSelector).unbind();
+
+	// remove listeners
+	$(websiteConfig.web.loginUserInputSelector).off();
+	$(websiteConfig.web.loginBtnInputSelector).off();
+	$(websiteConfig.web.loginFormSelector).off();
+
+
+	var startPageURL = getBaseURL() + ".?page=start&token=" + encodeURIComponent(readTokenFromURL());
+	var loginPageURL = getBaseURL() + ".?page=login&token=" + encodeURIComponent(readTokenFromURL());
+	var landingPageURL = getBaseURL() + ".?page=landing&token=" + encodeURIComponent(readTokenFromURL());
 	// manipulate link to start page
-	if(websiteConfig.web.startLinkSelector != "") {
+	if(websiteConfig.web.startLinkSelector != "" && $(websiteConfig.web.startLinkSelector)) {
 		pointElementToLink(websiteConfig.web.startLinkSelector, startPageURL);
 	}
-	if(websiteConfig.web.loginLinkSelector != "") {
+	if(websiteConfig.web.loginLinkSelector != "" && $(websiteConfig.web.loginLinkSelector)) {
 		pointElementToLink(websiteConfig.web.loginLinkSelector, loginPageURL);
 	}
-	if(websiteConfig.web.loginLinkHtml.trim() != "" && websiteConfig.web.loginLinkSelector.trim() != "") {
+	if(websiteConfig.web.loginLinkHtml.trim() != "" 
+		&& websiteConfig.web.loginLinkSelector.trim() != "" 
+		&& $(websiteConfig.web.loginLinkSelector)) {
+
 		$(websiteConfig.web.loginLinkSelector).html(websiteConfig.web.loginLinkHtml);
 	}
 	
 	// manipulate form action to landing.html
 	if(websiteConfig.web.loginFormSelector != "") {
 		$(websiteConfig.web.loginFormSelector).attr("action", landingPageURL);
-		$(websiteConfig.web.loginFormSelector).attr("onsubmit", "processLoginBtnClick();");
-		$(websiteConfig.web.loginFormSelector).on('submit', function () { processLoginBtnClick() });
+		$(websiteConfig.web.loginFormSelector).attr("onsubmit", "processLoginBtnClick(this);");
+		//$(websiteConfig.web.loginFormSelector).on('submit', function () { processLoginBtnClick(this) });
 		//console.log("Form Action set to: ?page=login" );
 	}
-	// remove validators
-	$(websiteConfig.web.loginUserInputSelector).unbind();
-	$(websiteConfig.web.loginBtnInputSelector).unbind();
-	$(websiteConfig.web.loginFormSelector).unbind();
-
 	// manipulate login btn onclick event;
 	if(websiteConfig.web.loginBtnInputSelector != "") {
-		$(websiteConfig.web.loginBtnInputSelector).on('click', function () { processLoginBtnClick() });
+		$(websiteConfig.web.loginBtnInputSelector).on('click', function () { processLoginBtnClick(this) });
 	}
 
 	// Build Offers 
@@ -95,9 +105,10 @@ function pointElementToLink(selector, link) {
 
 	// if it is an button
 	else if(tagType == "BUTTON") {
+		$(selector).attr("type", "button");
 		$(selector).attr("onclick", "window.location.href='"+link+"'");
 	} 
-
+/*
 	// if it is something else
 	else {
 		// find next link
@@ -106,10 +117,8 @@ function pointElementToLink(selector, link) {
 		if(closestElement) {
 			console.log(" We found an approporiate element for you: " + closestElement.getPath() );
 		}
-		
-
 	}
-
+*/
 }
 
 function getCurrentPage() {
@@ -134,17 +143,37 @@ function getBaseURL() {
 * 
 *
 */
-function processLoginBtnClick() {
+function processLoginBtnClick(elem) {
 	console.log("Processing Login Proccess");
 	var userid = $(websiteConfig.web.loginUserInputSelector).val();
+
 	if(userid == undefined || userid == "") {
 		console.log("Could not get user id. Please check the selector for input field");
 		alert("Please enter a valid user identity");
 		event.preventDefault();
+		return;
 	}
 
-	console.log("Storing User ID: " + userid + " into local storage");
+	var customerObj = getCustomerByLogin(userid, websiteConfig.customers);
+	console.log(customerObj);
+
+	if(customerObj.customerLogin != userid) {
+		console.log("Could not find user for this login: " + userid);
+		alert("Please enter a valid user login");
+		event.preventDefault();
+		return;
+	}
+
+
+	console.log("Storing CustomerLogin: " + userid + " into local storage");
 	window.localStorage.omnichanneldemoWebsiteUser = userid;
+
+	// if there is no form - then forward directly
+	if(websiteConfig.web.loginFormSelector == "") {
+		var landingPageURL = getBaseURL() + ".?page=landing&token=" + encodeURIComponent(readTokenFromURL());
+		window.location.href = landingPageURL;
+	}
+	
 	return;
 }
 
@@ -162,10 +191,36 @@ function refreshOffers(doNotTrack) {
 	var customerLogin = window.localStorage.omnichanneldemoWebsiteUser;
 	var maxOffers = websiteConfig.web.nbaPlaceHolderSelectors.length;
 	// request offers from API
-	getOffersForCustomer(token, customerLogin, "Website", maxOffers, doNotTrack).done(function (offers) {
-		websiteConfig.currentOffers = offers;
-		displayOffers(offers);
+	return getOffersForCustomer(token, customerLogin, "Website", maxOffers, doNotTrack).done(function (offers) {
+		console.log("getOffersForCustomer is done.");
+		if(checkIfOffersHasChanged(websiteConfig.currentOffers, offers)) {
+			websiteConfig.currentOffers = offers;
+			displayOffers(offers);	
+		} else {
+			console.log("getOffersForCustomer is returning the same offers - i will do nothing");
+		}
+
+		// hide all More Info Areas
+		$(".ocdMoreInfoArea").hide();
 	});
+}
+
+function checkIfOffersHasChanged(oldOfferList, newOfferList) {
+	if(oldOfferList == undefined || newOfferList == undefined) {
+		return true;
+	}
+
+	if(oldOfferList.length == undefined || newOfferList.length == undefined || newOfferList.length != oldOfferList.length) {
+		return true;
+	}
+
+	for($i = 0; $i < oldOfferList.length; $i++) {
+		if(oldOfferList[$i].offer != newOfferList[$i].offer) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 
@@ -217,8 +272,6 @@ function displayOffers(offers) {
 		} else {
 			$(websiteConfig.web.nbaPlaceHolderSelectors[i]).remove();
 		}
-
-		
 	}
 }
 
@@ -244,8 +297,13 @@ function renderHtmlTemplate(htmlTemplate, templateContent) {
 
 function trackResponse(customer, offerCd, responseCd) {
 	var token = readTokenFromURL();
-	respondToOffer(token, customer, offerCd, responseCd, "Website", "").done(function () {
-		refreshOffers(true);
+	
+	return respondToOffer(token, customer, offerCd, responseCd, "Website", "").done(function () {
+		console.log("respondToOffer is done.");
+		refreshOffers(true).done(function() {
+			console.log("refreshOffers is done.");
+			$(".ocdMoreInfoArea." + offerCd).show();
+		});
 	});
 }
 
@@ -256,7 +314,6 @@ function replaceAll(find, replace, str) {
 function renderTrackingElement(customer, offerCd, responseCd) {
 	return " onClick=\"trackResponse('" + customer + "', '" + offerCd + "', '" + responseCd + "');\"";
 }
-
 
 jQuery.fn.getPath = function () {
     if (this.length != 1) {

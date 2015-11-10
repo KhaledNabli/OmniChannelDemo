@@ -33,12 +33,10 @@ function loadConfiguration(token) {
 
 function onLoadTokenBtn(element) {
 	var token = $('#selectToken').val();
-    //var token = $('#selectToken').val().split(' | ')[0];
     if(token != "") {
         saveToken(token);
         loadConfiguration(token);
     }
-
 	$('#popupLoadToken').modal('hide');
 }
 
@@ -51,24 +49,36 @@ function onUndoConfigurationBtn(element) {
     }
 }
 
-function createChannelLinks(token) {
-    var baseUrl = window.location.href.split("OmniChannelDemo")[0];
+function updateTokenDemoLinks() {
+    var token = configScenario.token;
+    var baseUrl = window.location.href.toLowerCase().split("omnichanneldemo")[0];
     baseUrl = baseUrl + 'OmniChannelDemo/';
 
     if(token != '') {
+        $('#token').html(configScenario.token);
+
         var encodedToken = encodeURIComponent(token);
-        $('#advisorLink').html(baseUrl + 'AdvisorApp/#' + encodedToken);
-        $('#advisorLink').attr('href', baseUrl + 'AdvisorApp/#' + encodedToken);
+        $('a.link2advisorapp').html(baseUrl + 'AdvisorApp/#' + encodedToken);
+        $('a.link2advisorapp').attr('href', baseUrl + 'AdvisorApp/#' + encodedToken);
 
-        $('#mobileLink').html(baseUrl + 'MobileApp/#' + encodedToken);
-        $('#mobileLink').attr('href', baseUrl + 'MobileApp/#' + encodedToken);
+        $('a.link2mobileapp').html(baseUrl + 'MobileApp/#' + encodedToken);
+        $('a.link2mobileapp').attr('href', baseUrl + 'MobileApp/#' + encodedToken);
 
-        $('#mobileLink2').html(baseUrl + 'MobileApp/#' + encodedToken);
-        $('#mobileLink2').attr('href', baseUrl + 'MobileApp/#' + encodedToken);
+        $('a.link2website').html(baseUrl + 'Website/?token=' + encodedToken);
+        $('a.link2website').attr('href', baseUrl + 'Website/?token=' + encodedToken);
+    }
+    else {
+        $('#token').html("please save your demo");
 
-        $('#websiteLink').html(baseUrl + 'Website/?token=' + encodedToken);
-        $('#websiteLink').attr('href', baseUrl + 'Website/?token=' + encodedToken);
-    }   
+        $('a.link2advisorapp').html("Please save your configuration to get the link to Advisor App");
+        $('a.link2advisorapp').attr('href', "#");
+
+        $('a.link2mobileapp').html("Please save your configuration to get the link to Mobile App");
+        $('a.link2mobileapp').attr('href', "#");
+
+        $('a.link2website').html("Please save your configuration to get the link to Website");
+        $('a.link2website').attr('href', "#");
+    }
 }
 /**
 *	Init configuration ui
@@ -78,7 +88,7 @@ function initConfigurator() {
 
 	// console.log("configScenario: " + configScenario);
 
-    createChannelLinks(configScenario.token);
+    updateTokenDemoLinks();
 
     // setup labels in configurator gui
     initLabels();
@@ -89,13 +99,6 @@ function initConfigurator() {
 	$("#scoreLabel1").html(configScenario.customers[0].firstName);
 	$("#scoreLabel2").html(configScenario.customers[1].firstName);
 
-	//$('#token').val(configScenario.token);
-	if (!configScenario.token) {
-		$("#tokenDiv").hide();
-	} else {
-		$('#token').html(configScenario.token);
-		$("#tokenDiv").show();		
-	}
 
 	if (checkIfTrue(configScenario.general.rtdmBackend)) {
 		//console.log("true: " + configScenario.general.rtdmBackend);
@@ -223,19 +226,7 @@ function initLabels() {
 
 
 function onResetConfigurationBtn() {
-	window.localStorage.omnichanneltoken = "";
 	loadConfiguration("");
-	$("#token").html('not yet saved');
-
-    $('#advisorLink').html('Please save your configuration!');
-    $('#advisorLink').attr('href', '#');
-
-    $('#mobileLink').html('Please save your configuration!');
-    $('#mobileLink').attr('href', '#');
-
-    $('#websiteLink').html('Please save your configuration!');
-    $('#websiteLink').attr('href', '#');
-	//$("#tokenDiv").hide();
 }
 
 
@@ -301,7 +292,21 @@ function onSaveConfigurationBtn() {
 	configScenario.general.sendSms 			    = getCheckbox('sendSms');
 	configScenario.general.rtdmBackend			= getCheckbox('rtdmBackend');
 
-    //console.log (" save config: " + JSON.stringify(configScenario));
+    // add validity checks: required fields:
+    if(configScenario.general.demoName.length < 10) {
+        alert("Please enter a name for your demo");
+        return;
+    }
+    if(configScenario.general.demoDescription.length < 10) {
+        alert("Please enter a description for your demo");
+        return;
+    }
+    if(configScenario.general.userEmail.length < 10) {
+        alert("Please enter your email adress");
+        return;
+    }
+
+
 
     // check if getting NBA records was successful
     if (configScenario.nba != false) {
@@ -311,7 +316,7 @@ function onSaveConfigurationBtn() {
 
         	if(configScenario.token != undefined && configScenario.token != "") {
                 saveToken(config.token);
-                createChannelLinks(config.token);
+                updateTokenDemoLinks();
                 $('#token').html(configScenario.token);
             } else {
 
@@ -583,6 +588,7 @@ function onUploadWebsiteCommitBtn(element) {
     var token = window.localStorage.omnichanneltoken;
     var url = $('#uploadUrlInput').val();;
     var options = $("input[name='uploadOptions[]']:checked").map(function(index, item) {return $(item).val();}).toArray();
+    $("#" + page + "PageUrl").val("loading...");
     $('#popupUploadWebsite').modal('hide');
 
 
@@ -591,9 +597,7 @@ function onUploadWebsiteCommitBtn(element) {
         type: 'POST',
         data: {action : "upload", token : token, url : url, page : page, uploadOptions: JSON.stringify(options)},
     }).done(function (result) {
-        if(result == "") result = "upload successfull";
-        $('#websiteInfo-'+page).html(result);
-        //console.log("setting #websiteInfo-"+ page + " : " + result);
+        $("#" + page + "PageUrl").val(url);
     });
 }
 
@@ -706,13 +710,20 @@ function onClickPreviewImage(event) {
 
 
 function onLoadExistingDemoBtn() {
-    $('#selectToken').html('');
-    getExistingDemos().done(function (config) {
-        for (i = 0; i < config.length; i++) { 
-            $('#selectToken').append('<option value="' + config[i].token + '">' + config[i].token + ' | ' + config[i].config_name + ' | ' + config[i].config_desc + ' </option>') ;
-        }
+    //$('#selectToken').html('');
+    var existingDemosList = [];
+    return getExistingDemos().done(function (existingDemos) {
+
+        existingDemosList = existingDemos.map(function (item) {
+            var id = item.token;
+            var text =  item.config_name + " (Token: "+ item.token + " )";
+            return {id: id, text: text};
+        });
+
+        $("#selectToken").select2({
+            data: existingDemosList
+        });
+
+        console.log(existingDemosList);
     });
-
-    $("#selectToken").select2();
-
 }

@@ -1,86 +1,70 @@
 <!-- Start Tab: Global -->
 <div role="tabpanel" class="tab-pane active" id="tab_general">
 <div class="container">
+
+<div class="jumbotron bg-info">
+    <div class="row">
+        <div class="col-sm-2 col-sm-offset-1">
+            <p>Advisor App</p>
+        </div>
+        <div class="col-sm-9">
+            <a class="link2advisorapp" target="_blank">Please save your configuration to get the link to your demo</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2 col-sm-offset-1">
+            <p>Mobile App</p>
+        </div>
+        <div class="col-sm-9">
+            <a class="link2mobileapp" target="_blank">Please save your configuration to get the link to your demo</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2 col-sm-offset-1">
+            <p>Website</p>
+        </div>
+        <div class="col-sm-9">
+            <a class="link2website" target="_blank">Please save your configuration to get the link to your demo</a>
+        </div>
+    </div>
+</div>
+
 <form class="form-horizontal" role="form">
     <div class="form-group"></div>                        
     
     <div class="form-group">
-        <label for="demoName" class="col-sm-3 control-label">Demo Name</label>
+        <label for="demoName" class="col-sm-3 control-label">Name</label>
         <div class="col-sm-6">
-            <input type="text" class="form-control" id="demoName" placeholder="">
+            <input type="text" class="form-control" id="demoName" placeholder="Enter the name of your demo here - so it is easy to find and share" required>
         </div>
     </div>
 
     <div class="form-group">
-        <label for="demoDescription" class="col-sm-3 control-label">Demo Description</label>
+        <label for="demoDescription" class="col-sm-3 control-label">Description</label>
         <div class="col-sm-6">
-            <input type="text" class="form-control" id="demoDescription" placeholder="">
+            <textarea class="form-control" id="demoDescription" placeholder="Enter the description of your demo here - so it is easy to find and share" required ></textarea>
         </div>
     </div>
 
     <div class="form-group">
-        <label for="userEmail" class="col-sm-3 control-label">User Email</label>
+        <label for="userEmail" class="col-sm-3 control-label">Your Email</label>
         <div class="col-sm-6">
-            <input type="text" class="form-control" id="userEmail" placeholder="">
+            <input type="email" class="form-control" id="userEmail" placeholder="Enter your email adress here" required>
         </div>
     </div>
 
-    <div class="form-group"></div>
 
-    <!--<div class="form-group">
-        <label for="rtdmBackend" class="col-sm-3 control-label">Use RTDM as Backend</label>
-        <div class="col-sm-1">
-            <input id="rtdmBackend" type="checkbox" onclick="rtdmCheckboxOnChange(this);">
-        </div>
-        <div style="display: none" id="raceServer_form_group">
-            <label for="raceServerName" class="col-sm-1 control-label">Race Server Name</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="raceServerName" placeholder="racesx00000.demo.sas.com">
-            </div>
-        </div>
-    </div>-->
 
     <div class="form-group">
-        <label for="sendSms" class="col-sm-3 control-label">Send SMS to Customer's Mobile</label>
-        <div class="col-sm-1">
-            <input id="sendSms" type="checkbox">
+        <div class="col-sm-offset-3 col-sm-6">
+          <div class="checkbox">
+            <label>
+              <input id="sendSms" type="checkbox"> Send SMS
+              <span id="helpBlock" class="help-block">SMS will be sent when an offer is accepted.</span>
+            </label>
+          </div>
         </div>
-
-        <p class="text-primary ">Currently SMS will be sent only when an offer is accepted!</p>
-    </div>
-
-    <div class="form-group"></div>
-
-    <div class="row"> 
-        <br />
-    </div>
-    
-    <div class="row">
-        <div class="col-sm-2 col-sm-offset-1 col-xs-12"><p class="text-right"><b>Advisor App</b></p></div>
-        <div class="col-sm-6 col-xs-12" style="table-layout: fixed; word-wrap: break-word;">
-            <a class="col-xs-12" href="#" target="_blank" id="advisorLink">Please save your configuration!</a>
-        </div>
-        <div class="col-sm-12 col-xs-12"><br /></div>
-
-        <div class="col-sm-2 col-sm-offset-1 col-xs-12"><p class="text-right"><b>Mobile App</b></p></div>
-        <div class="col-sm-6 col-xs-12" style="table-layout: fixed; word-wrap: break-word;">
-            <a class="col-xs-12" href="#" target="_blank" id="mobileLink">Please save your configuration!</a>
-            <br />
-        </div>
-        <div class="col-sm-12 col-xs-12"><br /></div>
-
-        <div class="col-sm-2 col-sm-offset-1 col-xs-12"><p class="text-right"><b>Website</b></p></div>
-        <div class="col-sm-6 col-xs-12" style="table-layout: fixed; word-wrap: break-word;">
-            <a class="col-xs-12" href="#" target="_blank" id="websiteLink">Please save your configuration!</a>
-        </div>
-
-        <!-- this has been added because otherwise the website link is not displayed any more on a small device (mobile phone) -->
-        <div class="col-sm-12 col-xs-12"><br /><br /><br /></div>
-
-    </div>
-
-    <div class="row"> 
-        <br />
     </div>
 
 </form>

@@ -36,8 +36,17 @@ function updateMobileAppUI() {
 	$('#tokenLoad').val(configScenario.token);
 	$('#homeBackground').attr('src', configScenario.mobileApp.homescreen_image);
 	$('#titleMobileApp').html(configScenario.mobileApp.title_mobile_app);
-	$('#submitBtn').html(configScenario.mobileApp.login_button_text);		
-	$('#appleTouchIcon').attr('href', configScenario.mobileApp.appIcon_image);
+	$('#submitBtn').html(configScenario.mobileApp.login_button_text);
+
+	if(configScenario.mobileApp.appIcon_image != "") {
+		$('#appleTouchIcon').attr('href', configScenario.mobileApp.appIcon_image);
+		$('#shortcutIcon').attr('href', configScenario.mobileApp.appIcon_image);
+	} else {
+		$('#appleTouchIcon').attr('href', "images/configurator_icon.png");
+		$('#shortcutIcon').attr('href', "images/configurator_icon.png");
+
+	}
+	
 	$('#shortcutIcon').attr('href', configScenario.mobileApp.appIcon_image);
 	$("body").css("overflow", "hidden");
 }

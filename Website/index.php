@@ -80,8 +80,10 @@ function processRequest() {
 
 	} else if ($action == "save") {
 		// overwrite existing page
+		$options = getRequestParameter("options");
 		$content = getRequestParameter("content");
-		savePageToDatabase($token, $page, $content);
+		echo $options;
+		savePageToDatabase($token, $page, $content, $options);
 		
 
 	} else if ($action == "upload") {
@@ -149,12 +151,22 @@ function getPageFromDatabase($token,$page) {
 	return $content;
 }
 
-function savePageToDatabase($token, $page, $content) {
+function savePageToDatabase($token, $page, $content, $insertJsBase) {
 	global $mysql_link;
 	$userIP = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 
-	$updateSqlQuery ="INSERT INTO `omnichanneldemo`.`demo_website` (`token`, `site`, `content`, `create_dttm`, `modify_dttm`, `modify_by`) VALUES ('".$token."', '".$page."', '".$mysql_link->real_escape_string($content)."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."') ON DUPLICATE KEY UPDATE `content`='".$mysql_link->real_escape_string($content)."', `modify_by` = '".$userIP."' , modify_dttm = CURRENT_TIMESTAMP ";
+	if($insertJsBase == "true") {
+		$htmlContent = $content;
+		$htmlDom = parseHtmlContent($htmlContent);
 
+		$jsFolderUrl = "http://". $_SERVER['SERVER_NAME'] ."/OmniChannelDemo/";
+		$baseRefUrl = "http://#addOriginalUrlHere";
+		$htmlDom = addBaseToDOM($htmlDom, $baseRefUrl);
+		$htmlDom = addJsToDOM($htmlDom, $jsFolderUrl);
+		$content = outputDOMHtml($htmlDom, true);
+	}
+	
+	$updateSqlQuery ="INSERT INTO `omnichanneldemo`.`demo_website` (`token`, `site`, `content`, `create_dttm`, `modify_dttm`, `modify_by`) VALUES ('".$token."', '".$page."', '".$mysql_link->real_escape_string($content)."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."') ON DUPLICATE KEY UPDATE `content`='".$mysql_link->real_escape_string($content)."', `modify_by` = '".$userIP."' , modify_dttm = CURRENT_TIMESTAMP ";
 	return $mysql_link->query($updateSqlQuery);
 } 
 
@@ -177,6 +189,7 @@ function uploadWebsiteToDatabase($token, $page, $url, $options) {
 	$fixLinks 	= in_array("fix_relative_links", $options);
 	$tidyOutput = in_array("tidy_output", $options);
 	$insertJS 	= in_array("insert_js", $options);
+	$removeExtJs = in_array("remove_ext_js", $options);
 	$parsedUrl = parse_url($url);
 	// TODO
 	$jsFolderUrl = "http://". $_SERVER['SERVER_NAME'] ."/OmniChannelDemo/";
@@ -184,6 +197,9 @@ function uploadWebsiteToDatabase($token, $page, $url, $options) {
 
 
 	
+	if($removeExtJs) {
+		$htmlDom = removeExternalJsFromDOM($htmlDom);
+	}
 	if($fixLinks) {
 		$htmlDom = removeRelativeRefs($htmlDom, $baseRefUrl);
 	}
@@ -196,9 +212,10 @@ function uploadWebsiteToDatabase($token, $page, $url, $options) {
 	
 	$htmlOutput = outputDOMHtml($htmlDom, $tidyOutput);
 	
-	savePageToDatabase($token, $page, $htmlOutput);
+	savePageToDatabase($token, $page, $htmlOutput, false);
 
-	var_dump($parsedUrl);
+	echo json_encode(array("token" => $token, "page" => $page, "url" => $parsedUrl, "insertBase" => $insertBase, "fixLinks" => $fixLinks,
+		 "tidyOutput" => $tidyOutput, "insertJS" => $insertJS, "removeExtJs" => $removeExtJs));
 }
 
 
@@ -221,6 +238,7 @@ function displayEditor($token, $page) {
     body {
         overflow: hidden;
         background: #333;
+        color: #fff;
     }
 
     #editor {
@@ -231,6 +249,10 @@ function displayEditor($token, $page) {
         left: 0;
         right: 0;
         font-size: 16px;
+    }
+    
+    .ace_search_field {
+    	color: black;
     }
 
     #control_buttons {
@@ -244,7 +266,10 @@ function displayEditor($token, $page) {
 <body>
 
 <div id="control_buttons">
-	<input type="button" class="btn" value="Undo"/>
+	<lable>
+		<input id="optionsCheckbox" type="checkbox" value="insert_js_base"/> Insert JS and Base Tag
+	</lable>
+	
 	<input type="button" class="btn btn-lg btn-primary" value="Save" onclick="saveContent();"/>
 </div>
 
@@ -268,12 +293,16 @@ function displayEditor($token, $page) {
     	var token = "<?php echo $token; ?>";
     	var page = "<?php echo $page; ?>";
     	var content = editor.getValue();
+    	var options = ($('input#optionsCheckbox').is(':checked'));
+
     	return $.ajax("./", {
 	        type: 'POST',
-	        data: {action: "save",token: token, page: page, content: content}
+	        data: {action: "save",token: token, page: page, content: content, options: options}
 	    } ).done(function() {
 	    	alert("Website Saved successfully.");
+	    	location.reload();
 	    });;
+
     }
 
 </script>
@@ -289,6 +318,13 @@ function displayEditor($token, $page) {
 function parseHtmlContent($source) {
 	$domDocument = new DOMDocument();
 	@$domDocument->loadHTML('<?xml encoding="utf-8" ?>' . $source);
+	
+	foreach ($domDocument->childNodes as $item) {
+		if ($item->nodeType == XML_PI_NODE) {
+			$domDocument->removeChild($item);
+		}
+	}
+	    
 	return $domDocument;
 }
 
@@ -301,10 +337,30 @@ function removeRelativeRefs($domDocument, $baseUrl) {
 function addBaseToDOM($domDocument, $baseUrl) {
 	$heads = $domDocument->getElementsByTagName('head');
 	if($heads->length > 0) {
-		$baseElement = $domDocument->createElement('base','');
-		$baseElement->setAttribute("id", "ocdBaseTag");
-		$baseElement->setAttribute("href", $baseUrl);
-		$heads->item(0)->insertBefore($baseElement, $heads->item(0)->firstChild);
+		if(!$domDocument->getElementById("ocdBaseTag")) 
+		{
+			$baseElement = $domDocument->createElement('base','');
+			$baseElement->setAttribute("id", "ocdBaseTag");
+			$baseElement->setAttribute("href", $baseUrl);
+			$heads->item(0)->insertBefore($baseElement, $heads->item(0)->firstChild);
+		}
+	}
+
+	return $domDocument;
+}
+
+function removeExternalJsFromDOM($domDocument) {
+	$scripts = $domDocument->getElementsByTagName('script');
+
+	$domElemsToRemove = array(); 
+
+	for($i = 0; $i < $scripts->length; $i++) {
+		$scriptNode = $scripts->item($i);
+		$domElemsToRemove[] = $scriptNode;
+	}
+
+	foreach($domElemsToRemove as $domElemToRemove) {
+		$domElemToRemove->parentNode->removeChild($domElemToRemove);
 	}
 
 	return $domDocument;
@@ -314,18 +370,29 @@ function addJsToDOM($domDocument, $jsFolderUrl) {
 
 	$bodys = $domDocument->getElementsByTagName('body');
 	if($bodys->length > 0) {
-		$jsElement1 = $domDocument->createElement('script','');
-		$jsElement1->setAttribute("id", "ocdJQueryTag");
-		$jsElement1->setAttribute("src", $jsFolderUrl . "js/ext/jquery-1.11.3.min.js");
-		$jsElement2 = $domDocument->createElement('script','');
-		$jsElement2->setAttribute("id", "ocdApiTag");
-		$jsElement2->setAttribute("src", $jsFolderUrl . "js/api.js");
-		$jsElement3 = $domDocument->createElement('script','');
-		$jsElement3->setAttribute("id", "ocdWebsiteTag");
-		$jsElement3->setAttribute("src", $jsFolderUrl . "js/website.js");
-		$bodys->item(0)->appendChild($jsElement1);
-		$bodys->item(0)->appendChild($jsElement2);
-		$bodys->item(0)->appendChild($jsElement3);
+		// if ocdJQueryTag is not there 
+
+		if(!$domDocument->getElementById("ocdJQueryTag")) {
+			$jsElement1 = $domDocument->createElement('script','');
+			$jsElement1->setAttribute("id", "ocdJQueryTag");
+			$jsElement1->setAttribute("src", $jsFolderUrl . "js/ext/jquery-1.11.3.min.js");
+			$bodys->item(0)->appendChild($jsElement1);
+		}
+
+		if(!$domDocument->getElementById("ocdApiTag")) {
+			$jsElement2 = $domDocument->createElement('script','');
+			$jsElement2->setAttribute("id", "ocdApiTag");
+			$jsElement2->setAttribute("src", $jsFolderUrl . "js/api.js");
+			$bodys->item(0)->appendChild($jsElement2);
+		}
+
+		if(!$domDocument->getElementById("ocdWebsiteTag")) {
+			$jsElement3 = $domDocument->createElement('script','');
+			$jsElement3->setAttribute("id", "ocdWebsiteTag");
+			$jsElement3->setAttribute("src", $jsFolderUrl . "js/website.js");
+			$bodys->item(0)->appendChild($jsElement3);
+		}
+		
 	}
 	return $domDocument;
 }
@@ -335,6 +402,9 @@ function outputDOMHtml($domDocument, $tidyOutput = false) {
 	if($tidyOutput) {
 		$domDocument->preserveWhiteSpace = false;
 		$domDocument->formatOutput = true;
+	} else {
+		$domDocument->preserveWhiteSpace = true;
+		$domDocument->formatOutput = false;
 	}
 	return $domDocument->saveHTML();
 }
