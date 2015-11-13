@@ -268,12 +268,29 @@ function onGeoResponseBtnClick(element, response) {
 	//read the offerCode from the hidden value
 	var token = readToken();
 	var customer = $('#inputCustomerLogin').val();
-	//var customer = configScenario.selectedCustomer.customerLogin;
 	var channel = 'Geolocation';
 	var offerCode = 'geo_offer';
 	var details = "";
 
-	//console.log("onGeoResponseBtnClick exeucted" + token +" "+ customer +" "+ offerCode +" "+ response +" "+ channel );
+	respondToOffer(token, customer, offerCode, response, channel, details)
+	  .done(function(){
+	  	// do nothing
+	  });
+
+	$('#popupGeoOffer').popup('close');
+}
+
+function onGetPositionBtnClick(element) {
+	changeHeaderNavButton('navIconLeft','ui-icon-bars','$("#leftPanel").panel("open");');
+
+	//read the offerCode from the hidden value
+	var token = readToken();
+	var customer = $('#inputCustomerLogin').val();
+	var channel = 'Geolocation';
+	var offerCode = 'geo_offer';
+	var details = "";
+	var response = 'open popup';
+
 	respondToOffer(token, customer, offerCode, response, channel, details)
 	  .done(function(){
 	  	// do nothing

@@ -1,0 +1,9 @@
+<script id="ocdJQueryTag" src="http://gersasci61.ger.sas.com/OmniChannelDemo/js/ext/jquery-1.11.3.min.js"></script>
+<script id="ocdApiTag" src="http://gersasci61.ger.sas.com/OmniChannelDemo/js/api.js"></script>
+<script id="ocdWebsiteTag" src="http://gersasci61.ger.sas.com/OmniChannelDemo/js/website.js"></script>
+
+
+Copy Website HTML
+>>> create this as bookmark in your browser <<<
+
+javascript:var host = "gersasci61.ger.sas.com";var baseElem = document.createElement("base");baseElem.setAttribute("href", window.location.href); baseElem.setAttribute("id", "ocdBaseTag");var jsElem1 = document.createElement("script");jsElem1.setAttribute("id", "ocdJQueryTag");jsElem1.setAttribute("src", "http://"+host+"/OmniChannelDemo/js/ext/jquery-1.11.3.min.js");var jsElem2 = document.createElement("script");jsElem2.setAttribute("id", "ocdApiTag");jsElem2.setAttribute("src", "http://"+host+"/OmniChannelDemo/js/api.js");var jsElem3 = document.createElement("script");jsElem3.setAttribute("id", "ocdWebsiteTag");jsElem3.setAttribute("src", "http://"+host+"/OmniChannelDemo/js/website.js");document.head.insertBefore(baseElem,document.head.firstChild);document.body.appendChild(jsElem1);document.body.appendChild(jsElem2);document.body.appendChild(jsElem3);var nW = window.open("", "HTML Content"); var ta = nW.document.createElement("textarea");ta.setAttribute("style", "margin: 0px;height: 100%;width: 100%;");ta.value = document.body.parentElement.outerHTML;nW.document.body.appendChild(ta);

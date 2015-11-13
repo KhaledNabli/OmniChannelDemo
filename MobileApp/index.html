@@ -83,7 +83,7 @@
 	<div id="offerDetails" role="main" class="ui-content" style="display:none">
 		<h3 style="text-align: center"><span id="offerDetailsLabel"></span></h3>
 		<p style="text-align: center">
-			<img id="offerDetailsImage" src="" width="100%" align="middle">
+			<img id="offerDetailsImage" src="" style="max-height:230px" align="middle">
 			<br><br>
 			<span id="offerDetailsDescription" ></span>
 		</p>
@@ -100,8 +100,8 @@
 	<div id="mapPage" role="main" class="ui-content"  style="display:none" >
 		<div id="mapPageInner" style="height: 300px;" ></div>
 		<div role="main" class="ui-content">
-			<a id="getPositionBtn" onclick="onGeoResponseBtnClick(this,'open popup');" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left ui-icon-check"
-				href="#popupLogin" data-rel="popup" data-position-to="window" data-transition="pop"
+			<a id="getPositionBtn" onclick="onGetPositionBtnClick(this);" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left ui-icon-check"
+				href="#popupGeoOffer" data-rel="popup" data-position-to="window" data-transition="pop"
 				 >Send Location</a>
 			
 			<br><b>Latitude: </b><span id="mapLatPosition"> </span>
@@ -117,15 +117,15 @@
             	</div>
         	</div>	-->	
 
-			<div data-role="popup" id="popupLogin" data-theme="b" class="ui-corner-all">
+			<div data-role="popup" id="popupGeoOffer" data-theme="b" class="ui-corner-all">
 				<form>
 					<div style="padding:10px 20px;">
 						<h3 style="text-align: center" id="titleGeoOffer">New Geo Offer</h3>
 						<img id="imgGeoOffer" src="" width="100%">
 						<p style="text-align: center">
-							<a id="acceptButton" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-check" data-rel="back"
+							<a id="acceptButton" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-check" 
 								onclick="onGeoResponseBtnClick(this,'accept');" >Accept</a>
-							<a id="rejectButton" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-forbidden" data-rel="back"
+							<a id="rejectButton" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-forbidden"
 								onclick="onGeoResponseBtnClick(this,'reject');" >Reject</a>
 						</p>
 				</div>
