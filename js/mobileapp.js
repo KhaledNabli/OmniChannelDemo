@@ -88,8 +88,9 @@ function onNavMapBtn(element) {
 
 	var defaultLatLng = new google.maps.LatLng(
 		configScenario.mobileApp.geo_latitude, configScenario.mobileApp.geo_longtitude);
+	drawMap(defaultLatLng);
 
-	if ( navigator.geolocation ) {
+	/*if ( navigator.geolocation ) {
 		function success(pos) {
 			// Location found
 			drawMap(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
@@ -101,7 +102,7 @@ function onNavMapBtn(element) {
 		navigator.geolocation.getCurrentPosition(success, fail, {maximumAge: 500000, enableHighAccuracy:true, timeout: 6000});
 	} else {
 		drawMap(defaultLatLng);// No geolocation support, show default map
-	}
+	}*/
 }
 
 function onNavHomeBtn(element) {
