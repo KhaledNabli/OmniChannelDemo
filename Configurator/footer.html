@@ -2,14 +2,16 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-4">
-        <h6>CI Simulator v0.7 <br /><small>last update 10.11.2015</small></h6>
+        <h6>CI Simulator v0.75 <br /><small>last update 15.11.2015</small></h6>
       </div>
       <div class="col-sm-8 text-right">
-        <button type="button" class="btn btn-info" data-toggle="modal" onclick="onLoadExistingDemoBtn();" data-target="#popupLoadToken">Load Existing Demo</button>
-        <button type="button" class="btn btn-danger" data-toggle="modal" onclick="onResetConfigurationBtn();">Reset</button>
-
-        <button id="undoButton" class="btn btn-warning" onclick="onUndoConfigurationBtn();"> Undo All Changes </button>
-        <button id="saveButton" class="btn btn-primary" onclick="onSaveConfigurationBtn();"> Save Demo </button>
+       
+        
+        <button class="btn btn-sm" onclick="onRestartDemoBtn();"> Restart Demo </button>
+        <button class="btn btn-sm" onclick="onUndoConfigurationBtn();"> Undo Changes </button>
+        <button class="btn" onclick="onResetConfigurationBtn();"> Create New Demo</button>
+        <button class="btn" onclick="onLoadExistingDemoBtn();">Load Existing Demo</button>
+        <button class="btn btn-primary" onclick="onSaveConfigurationBtn();"> Save Demo </button>
       </div>
 
     </div>

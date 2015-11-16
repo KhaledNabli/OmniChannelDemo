@@ -77,8 +77,17 @@ function processRequest() {
 		$savedConfig = saveConfig(json_decode($config));
 		logUsage($action, "", $savedConfig->token, "");
 		echo json_encode($savedConfig);
-
 	}
+	else if($action == 'copyConfig') {
+		// copy token config to a new token
+		// copy website...
+		$config = getRequestParameter("config");
+		$savedConfig = copyConfig(json_decode($config));
+		logUsage($action, "", $savedConfig->token, "");
+		echo json_encode($savedConfig);
+	}
+
+
 	else if($action == 'getOffers') {
 		$customer = getRequestParameter("customer");
 		$channel = getRequestParameter("channel");
@@ -156,7 +165,7 @@ function getConfig($token) {
 
 		if(!empty($token)) {
 			$config->token = "";
-			$config->error = "Token invalid: providing default config settings.";
+			$config->message = "Token invalid: providing default config settings.";
 		}
 	}
  
@@ -198,22 +207,24 @@ function saveConfig($config) {
 	if($config == null || empty($config)) return array("error" => "no configuration to save");
 	global $mysql_link;
 
-
 	$token = $config->token;
-	$tokenValid = false;
-	$userEmail = $config->general->userEmail;
-	$configName = $config->general->demoName;
-	$configDesc = $config->general->demoDescription;
+	$tokenValid = false; // true when token is valid
+	$copyConfig = false; // true when config is marked as readOnly
+
+	$userEmail = 	$config->general->userEmail;
+	$configName = 	$config->general->demoName;
+	$configDesc = 	$config->general->demoDescription;
 	$userIP = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 	$config->message = "";
 
 	if(!empty($token)) {
 		// check if token is valid.
 		$configFromDB = getConfigFromDatabase($token);
-		if($configFromDB != null && $configFromDB->readOnly != 1) $tokenValid = true;
+		if($configFromDB != null) $tokenValid = true;
 
+		$copyConfig = @$configFromDB->readOnly != null;
 
-		if($tokenValid) {
+		if($tokenValid && !$copyConfig) {
 			// update existing configuration
 			$configString = $mysql_link->real_escape_string(json_encode($config));
 			$updateConfigSql = "UPDATE `omnichanneldemo`.`demo_config` SET  `config_name` = '".$configName."',  `config_desc` = '".$configDesc."', `config_json` = '".$configString."', `email_to` = '".$userEmail."', `modify_by` = '".$userIP."', `modify_dttm` = CURRENT_TIMESTAMP WHERE `demo_config`.`token` = '" . $token . "' ;";
@@ -222,7 +233,7 @@ function saveConfig($config) {
 		}
 	}
 
-	if(empty($token) || !$tokenValid) {
+	if(empty($token) || !$tokenValid || $copyConfig) {
 		// save new configuration
 		$token = generateRandomToken();
 		$config->token = $token;
@@ -230,12 +241,40 @@ function saveConfig($config) {
 
 		$createConfigSql = "INSERT INTO `omnichanneldemo`.`demo_config` (`id`, `token`, `config_name`, `config_desc`, `config_json`, `create_dttm`, `modify_dttm`, `modify_by`, `email_to`) VALUES (NULL, '".$token."', '".$configName."', '".$configDesc."', '".$configString."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."', '".$userEmail."');";
 		$createConfigResult = $mysql_link->query($createConfigSql);
-		$config->message = "Insert new config";
+
+		if($copyConfig) {
+			$copyWebsiteSql = "INSERT INTO demo_website SELECT '". $token ."', site, content, NOW(), NOW(), '". $userIP ."' FROM demo_website WHERE token = 'RHQoVvLc';";
+			$mysql_link->query($copyWebsiteSql);
+			$config->message = $config->message . ", uploading new website";
+		}
 	}
+
 
 	resetDemo($token);
 	return $config;
 }
+
+
+function copyConfig($token) {
+	$configFromDB = getConfigFromDatabase($token);
+	if($configFromDB != null) {
+		$newToken = generateRandomToken();
+		$configFromDB->token = $newToken;
+
+		$userEmail = $configFromDB->general->userEmail;
+		$configName = $configFromDB->general->demoName;
+		$configDesc = "Copy of token " . $token . "\n" . $configFromDB->general->demoDescription;
+		$userIP = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+
+		$createConfigSql = "INSERT INTO `omnichanneldemo`.`demo_config` (`id`, `token`, `config_name`, `config_desc`, `config_json`, `create_dttm`, `modify_dttm`, `modify_by`, `email_to`) VALUES (NULL, '".$newToken."', '".$configName."', '".$configDesc."', '".$configString."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."', '".$userEmail."');";
+		$createConfigResult = $mysql_link->query($createConfigSql);
+
+		$copyWebsiteSql = "INSERT INTO demo_website SELECT '". $newToken ."', site, content, NOW(), NOW(), '". $userIP ."' FROM demo_website WHERE token = 'RHQoVvLc';";
+		$mysql_link->query($copyWebsiteSql);
+	}
+
+}
+
 
 
 function getAllConfigsFromDatabase($email, $limit) {

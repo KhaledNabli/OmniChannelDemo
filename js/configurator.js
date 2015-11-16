@@ -1,5 +1,5 @@
 
-var configScenario = "";
+var configScenario = {};
 
 function startConfigurator() {
 	var tokenFromURL = readTokenFromURL(); // look after # if token is present
@@ -18,16 +18,19 @@ function startConfigurator() {
 
 function loadConfiguration(token) {
     console.log("load config for token: " + token);
-	getConfigurationByToken(token).done(function (config) {
-    	configScenario = config;
+	getConfigurationByToken(token).done(function (config) { onLoadConfigurationDone(config);  });
+}
 
-        if(token != "" && config.token == token) {
-            // if token is valid, then save it for later usage
-            saveToken(config.token);
-        }
+function onLoadConfigurationDone(config) {
+    configScenario = config;
+    base64_decodeProperties(configScenario.web);
 
-    	initConfigurator();
-    });
+    if(token != "" && config.token == token) {
+        // if token is valid, then save it for later usage
+        saveToken(config.token);
+    }
+
+    initConfigurator();
 }
 
 
@@ -55,6 +58,7 @@ function updateTokenDemoLinks() {
     baseUrl = baseUrl + 'OmniChannelDemo/';
 
     if(token != '') {
+        
         $('#token').html(configScenario.token);
 
         var encodedToken = encodeURIComponent(token);
@@ -79,7 +83,17 @@ function updateTokenDemoLinks() {
         $('a.link2website').html("Please save your configuration to get the link to Website");
         $('a.link2website').attr('href', "#");
     }
+
+    // set navigation items to point to #token in url
+    $(".dropdown-menu > li > a").attr("href", "#" + configScenario.token);
+    // set url hash to token
+    location.hash = configScenario.token;
 }
+
+
+
+
+
 /**
 *	Init configuration ui
 *
@@ -100,63 +114,13 @@ function initConfigurator() {
 	$("#scoreLabel2").html(configScenario.customers[1].firstName);
 
 
-	if (checkIfTrue(configScenario.general.rtdmBackend)) {
-		//console.log("true: " + configScenario.general.rtdmBackend);
-	    $("#raceServer_form_group").show();
-	} else {
-		//console.log("false: " + configScenario.general.rtdmBackend);
-		$("#raceServer_form_group").hide();
-	}
-
-	for (var property in configScenario.general) {
-		if (configScenario.general.hasOwnProperty(property)) {
-            if (property)
-                $('#' + property).val(configScenario.general[property]);
-        }       
-    }
-
-    for (var property in configScenario.customers[0]) {
-		if (configScenario.customers[0].hasOwnProperty(property)) {
-            if (property)
-                $('#c1' + property).val(configScenario.customers[0][property]);
-        }       
-    }
-
-    for (var property in configScenario.customers[1]) {
-		if (configScenario.customers[1].hasOwnProperty(property)) {
-            if (property)
-                $('#c2' + property).val(configScenario.customers[1][property]);
-        }       
-    }
-
-    for (var property in configScenario.labels) {
-		if (configScenario.labels.hasOwnProperty(property)) {
-            if (property)
-                $('#' + property).val(configScenario.labels[property]);
-        }       
-    }
-
-    for (var property in configScenario.mobileApp) {
-		if (configScenario.mobileApp.hasOwnProperty(property)) {
-            if (property)
-                $('#' + property).val(configScenario.mobileApp[property]);
-        }       
-    }
-
-    for (var property in configScenario.advisorApp) {
-		if (configScenario.advisorApp.hasOwnProperty(property)) {
-            if (property)
-                $('#' + property).val(configScenario.advisorApp[property]);
-        }       
-    }
-
-    for (var property in configScenario.web) {
-		if (configScenario.web.hasOwnProperty(property)) {
-            if (property)
-                $('#' + property).val(base64_decode(configScenario.web[property]));
-        }       
-    }
-
+    displayObjectElements(configScenario.general, "#");
+    displayObjectElements(configScenario.customers[0], "#c1");
+    displayObjectElements(configScenario.customers[1], "#c2");
+    displayObjectElements(configScenario.labels, "#");
+    displayObjectElements(configScenario.mobileApp, "#");
+    displayObjectElements(configScenario.advisorApp, "#");
+    displayObjectElements(configScenario.web, "#");
 
 	clearHistoryRecords('c1');
     if(configScenario.customers[0].actionHistory) {
@@ -183,19 +147,18 @@ function initConfigurator() {
     clearNbaRecords();
     if(configScenario.nba) {
     	for(var i = 0; i < configScenario.nba.length; i++) {
-        	addNbaRecord(configScenario.nba[i]["offerCode"], 
-        	configScenario.nba[i]["offerName"], 
-        	configScenario.nba[i]["offerDesc"],
-        	configScenario.nba[i]["offerImg"],
-        	configScenario.nba[i]["offerSms"],
-        	configScenario.nba[i]["maxContacts"],
-        	configScenario.nba[i]["customer1Score"], 
-        	configScenario.nba[i]["customer2Score"], 
-            configScenario.nba[i]["changeScoreByInterest"],
-            configScenario.customers[0].firstName, 
-            configScenario.customers[1].firstName
-            );
-    	}
+            addNbaRecord(   configScenario.nba[i]["offerCode"], 
+                            configScenario.nba[i]["offerName"], 
+                        	configScenario.nba[i]["offerDesc"],
+                        	configScenario.nba[i]["offerImg"],
+                        	configScenario.nba[i]["offerSms"],
+                        	configScenario.nba[i]["maxContacts"],
+                        	configScenario.nba[i]["customer1Score"], 
+                        	configScenario.nba[i]["customer2Score"], 
+                            configScenario.nba[i]["changeScoreByInterest"],
+                            configScenario.customers[0].firstName, 
+                            configScenario.customers[1].firstName);
+        }
     }
 
 
@@ -203,7 +166,7 @@ function initConfigurator() {
     var editor = ace.edit("nbaHtmlTemplateEditor");
     editor.setTheme("ace/theme/eclipse");
     editor.getSession().setMode("ace/mode/html");
-    editor.setValue(base64_decode(configScenario.web.nbaHtmlTemplate));
+    editor.setValue(configScenario.web.nbaHtmlTemplate);
 
     $(".upload-image").off();
     $(".upload-image").on("dblclick", onClickUploadImageField);
@@ -230,60 +193,23 @@ function onResetConfigurationBtn() {
 }
 
 
+
+
+
 function onSaveConfigurationBtn() {
 
 	/*** for-loop to get all fromFields from configurator.html ***/
-	for (var property in configScenario.general) {
-        if (configScenario.general.hasOwnProperty(property)) {
-            if (property)
-               configScenario.general[property] = $('#' + property).val();
-        }
-    }
-
-    for (var property in configScenario.customers[0]) {
-		if (configScenario.customers[0].hasOwnProperty(property)) {
-            if (property)
-                configScenario.customers[0][property] = $('#c1' + property).val();
-        }       
-    }
-
-    for (var property in configScenario.customers[1]) {
-		if (configScenario.customers[1].hasOwnProperty(property)) {
-            if (property)
-                configScenario.customers[1][property] = $('#c2' + property).val();
-        }       
-    }
-
-    for (var property in configScenario.labels) {
-		if (configScenario.labels.hasOwnProperty(property)) {
-            if (property)
-                configScenario.labels[property] = $('#' + property).val();
-        }       
-    }
-
-    for (var property in configScenario.mobileApp) {
-		if (configScenario.mobileApp.hasOwnProperty(property)) {
-            if (property)
-                configScenario.mobileApp[property] = $('#' + property).val();
-        }       
-    }
-
-    for (var property in configScenario.advisorApp) {
-		if (configScenario.advisorApp.hasOwnProperty(property)) {
-            if (property)
-                configScenario.advisorApp[property] = $('#' + property).val();
-        }       
-    }
-
-    for (var property in configScenario.web) {
-		if (configScenario.web.hasOwnProperty(property)) {
-            if (property)
-                configScenario.web[property] = base64_encode($('#' + property).val());
-        }       
-    }
-
+    readObjectElements(configScenario.general, "#");
+    readObjectElements(configScenario.customers[0], "#c1");
+    readObjectElements(configScenario.customers[1], "#c2");
+    readObjectElements(configScenario.labels, "#");
+    readObjectElements(configScenario.mobileApp, "#");
+    readObjectElements(configScenario.advisorApp, "#");
+    
     var editor = ace.edit("nbaHtmlTemplateEditor");
-    configScenario.web.nbaHtmlTemplate = base64_encode(editor.getValue());
+    readObjectElements(configScenario.web, "#");
+    configScenario.web.nbaHtmlTemplate = editor.getValue();
+    base64_encodeProperties(configScenario.web);
 
     /* save grids */
     configScenario.nba 				 			= getNbaRecords();
@@ -293,69 +219,29 @@ function onSaveConfigurationBtn() {
 	configScenario.general.rtdmBackend			= getCheckbox('rtdmBackend');
 
     // add validity checks: required fields:
-    if(configScenario.general.demoName.length < 10) {
-        alert("Please enter a name for your demo");
+    if(configScenario.general.demoName.length < 5) {
+        alert("Please enter a name for your demo. The current name is too short.");
         return;
     }
-    if(configScenario.general.demoDescription.length < 10) {
-        alert("Please enter a description for your demo");
+    if(configScenario.general.demoDescription.length < 5) {
+        alert("Please enter a description for your demo. The current description is too short.");
         return;
     }
-    if(configScenario.general.userEmail.length < 10) {
-        alert("Please enter your email adress");
+    if(configScenario.general.userEmail.length < 5) {
+        alert("Please enter your email adress. The current adress is too short.");
+        return;
+    }
+    if (configScenario.nba == false) {
+        // TODO: display an error.
+        alert("Please enter your offers.");
         return;
     }
 
 
-
-    // check if getting NBA records was successful
-    if (configScenario.nba != false) {
-        // save configuration - call api
-        saveConfiguration(JSON.stringify(configScenario)).done(function (config) {
-        	configScenario = config;
-
-        	if(configScenario.token != undefined && configScenario.token != "") {
-                saveToken(config.token);
-                updateTokenDemoLinks();
-                $('#token').html(configScenario.token);
-            } else {
-
-            }
-
-        	$("#tokenDiv").show();
-        });
-
-        /* rebuild the offers table after saving, because images could have been changed */
-        clearNbaRecords();
-        if(configScenario.nba) {
-            for(var i = 0; i < configScenario.nba.length; i++) {
-                addNbaRecord(configScenario.nba[i]["offerCode"], 
-                configScenario.nba[i]["offerName"], 
-                configScenario.nba[i]["offerDesc"],
-                configScenario.nba[i]["offerImg"],
-                configScenario.nba[i]["offerSms"],
-                configScenario.nba[i]["maxContacts"],
-                configScenario.nba[i]["customer1Score"], 
-                configScenario.nba[i]["customer2Score"], 
-                configScenario.nba[i]["changeScoreByInterest"],
-                configScenario.customers[0].firstName, 
-                configScenario.customers[1].firstName 
-                );
-            }
-        }
-
-        // after saving and rebuilding the offers table, we need to listen again on the double click event
-        $(".upload-image").off();
-        $(".upload-image").on("dblclick", onClickUploadImageField);
-        $(".image-preview").off();
-        $(".image-preview").on("click", onClickPreviewImage);
-
-        // setup labels in configurator gui
-        initLabels();
-    } // endif 
+    saveConfiguration(JSON.stringify(configScenario)).done(function (config) { onLoadConfigurationDone(config); });
 	
-    return false;
-} /* end saveConfiguration */
+    return;
+}
 
 
 /** Next Best Action Functions **/
@@ -378,18 +264,7 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
     if (!c1name) c1name = configScenario.customers[0].firstName;
     if (!c2name) c2name = configScenario.customers[1].firstName; 
 
-	/*$('#configuratorNbaTbody').append(
-        "<tr><td><div style='padding: 7px 0px'><input name='offerCode' type='text' size=\"4\" value='"+code+"' class='form-control input-md'/></div> </td>"
-        +"<td><textarea name='offerName' rows=\"3\" placeholder='Offer Name' class='form-control input-md'>"+name+"</textarea></td>" 
-        +"<td><textarea name='offerDesc' rows=\"3\" type='text' placeholder='Description' class='form-control input-md'>"+desc+"</textarea></td>"
-        +"<td><textarea name='offerImg' rows=\"3\" type='text' placeholder='Image' class='form-control input-md'>"+img+"</textarea></td>"
-        +"<td><textarea name='offerSms' rows=\"3\" type='text' placeholder='SMS' class='form-control input-md'>"+sms+"</textarea></td>"
-        +"<td><div style='padding: 7px 0px'><input name='maxContacts' type='text' placeholder='' size=\"4\" value='"+maxContacts+"' class='form-control input-md'/></div></td>"
-        +"<td><div style='padding: 7px 0px'><input name='customer1Score' type='text' placeholder='' size=\"4\" value='"+c1score+"' class='form-control input-md'/></div></td>"
-        +"<td><div style='padding: 7px 0px'><input name='customer2Score' type='text' placeholder='' size=\"4\" value='"+c2score+"' class='form-control input-md'/></div></td>"
-        +"<td><div style='padding: 7px 0px'><input name='changeScoreByInterest' type='text' placeholder='' size=\"4\" value='"+adjustscore+"' class='form-control input-md'/></div></td>"
-        +"<td><a onclick='dropRecord(this);' class='pull-right btn btn-danger btn-block'>Delete</a></td></tr>"      
-    );*/
+
     var existingRecords = $('#configuratorNbaTbody').html();
 
     $('#configuratorNbaTbody').html("<tr>"
@@ -434,7 +309,7 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
         +"<div class='form-group'>"
         +"  <label class='col-lg-1 col-sm-2 control-label'>Image</label>"
         +"  <div class='col-lg-11 col-sm-12'>"
-        +"    <input name='offerImg' value='"+img+"' type='url' placeholder='*** Please save demo first and double click here to upload image ***' class='form-control upload-image' >"
+        +"    <input name='offerImg' value='"+img+"' type='url' placeholder='double click here to upload image' class='form-control upload-image' >"
         +"  </div>"
         +"</div>"
         +"</td>"
@@ -588,10 +463,9 @@ function onUploadWebsiteCommitBtn(element) {
     var token = window.localStorage.omnichanneltoken;
     var url = $('#uploadUrlInput').val();;
     var options = $("input[name='uploadOptions[]']:checked").map(function(index, item) {return $(item).val();}).toArray();
+    
     $("#" + page + "PageUrl").val("loading...");
     $('#popupUploadWebsite').modal('hide');
-
-
 
     return $.ajax("./Website/", {
         type: 'POST',
@@ -631,7 +505,7 @@ function onViewWebsiteBtn(page) {
 
 
 function onClickUploadImageField(event) {
-    var currentToken = readToken();
+    var currentToken = configScenario.token;
 
     if(currentToken == "") {
         alert("Please save your configuration before uploading images.");
@@ -651,7 +525,7 @@ function onClickUploadImageField(event) {
 
     // the selector is stored in a hidden field to be used when we upload the picture
     $("#formUploadImage").children("input[name='uploadTriggeredBy']").val(fieldSelector);
-    $("#formUploadImage").children("input[name='imageDesc']").val("OmniChannelDemo Token:" + readToken() + " Field:" + fieldSelector);
+    $("#formUploadImage").children("input[name='imageDesc']").val("OCD T:" + readToken() + " : F:" + fieldSelector);
     // show the modal window
     $('#popupUploadImage').modal('show');
 }
@@ -710,10 +584,8 @@ function onClickPreviewImage(event) {
 
 
 function onLoadExistingDemoBtn() {
-    //$('#selectToken').html('');
     var existingDemosList = [];
     return getExistingDemos().done(function (existingDemos) {
-
         existingDemosList = existingDemos.map(function (item) {
             var id = item.token;
             var text =  item.config_name + " (Token: "+ item.token + " )";
@@ -724,6 +596,46 @@ function onLoadExistingDemoBtn() {
             data: existingDemosList
         });
 
-        console.log(existingDemosList);
+        $('#popupLoadToken').modal('show');
     });
 }
+
+
+function onRestartDemoBtn() {
+    return resetDemo(configScenario.token);
+}
+
+/**
+*   Display elements of object in DOM.
+*   Properties: Object or Array
+*   selectorPrefix: Prefix for CSS selector.
+*/
+function displayObjectElements(properties, selectorPrefix) {
+    for (var property in properties) {
+        $(selectorPrefix + property).val(properties[property]);
+    }
+}
+
+/**
+*   Read elements from DOM and save in Object.
+*   Properties: Object or Array
+*   selectorPrefix: Prefix for CSS selector.
+*/
+function readObjectElements(properties, selectorPrefix) {
+    for (var property in properties) {
+        // if element doesnt exist, do not override value.
+        var selectedElements = $(selectorPrefix + property);
+
+        if( selectedElements.length == 1) {
+             properties[property] = selectedElements.val();
+
+        } else if ( selectedElements.length > 1 ) {
+            console.log("Warning: readObjectElements is pointing to an selector: " + selectorPrefix + property + ", which is not unique. Counting: " + selectedElements.length);
+
+        } else {
+            console.log("Note: readObjectElements is pointing to an selector: " + selectorPrefix + property + ", which does not exist.");
+
+        }
+    }
+}
+

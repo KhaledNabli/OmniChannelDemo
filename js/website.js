@@ -8,7 +8,7 @@
 
 var websiteConfig = {};
 
-$(document).ready(function () {
+jQuery(document).ready(function () {
 	console.log("-- Demo libs loaded secussfully--");
 	var token = readTokenFromURL();
 	
@@ -43,46 +43,45 @@ $(document).ready(function () {
 
 
 function prepareWebsite() {
-	console.log("Prepare Website for Omni-Channel Demo");
+	console.log("-- Prepare Website for Omni-Channel Demo");
 
 	// remove validators
-	$(websiteConfig.web.loginUserInputSelector).unbind();
-	$(websiteConfig.web.loginBtnInputSelector).unbind();
-	$(websiteConfig.web.loginFormSelector).unbind();
+	jQuery(websiteConfig.web.loginUserInputSelector).unbind();
+	jQuery(websiteConfig.web.loginBtnInputSelector).unbind();
+	jQuery(websiteConfig.web.loginFormSelector).unbind();
 
 	// remove listeners
-	$(websiteConfig.web.loginUserInputSelector).off();
-	$(websiteConfig.web.loginBtnInputSelector).off();
-	$(websiteConfig.web.loginFormSelector).off();
+	jQuery(websiteConfig.web.loginUserInputSelector).off();
+	jQuery(websiteConfig.web.loginBtnInputSelector).off();
+	jQuery(websiteConfig.web.loginFormSelector).off();
 
 
 	var startPageURL = getBaseURL() + ".?page=start&token=" + encodeURIComponent(readTokenFromURL());
 	var loginPageURL = getBaseURL() + ".?page=login&token=" + encodeURIComponent(readTokenFromURL());
 	var landingPageURL = getBaseURL() + ".?page=landing&token=" + encodeURIComponent(readTokenFromURL());
 	// manipulate link to start page
-	if(websiteConfig.web.startLinkSelector != "" && $(websiteConfig.web.startLinkSelector)) {
+	if(websiteConfig.web.startLinkSelector != "" && jQuery(websiteConfig.web.startLinkSelector)) {
 		pointElementToLink(websiteConfig.web.startLinkSelector, startPageURL);
 	}
-	if(websiteConfig.web.loginLinkSelector != "" && $(websiteConfig.web.loginLinkSelector)) {
+	if(websiteConfig.web.loginLinkSelector != "" && jQuery(websiteConfig.web.loginLinkSelector)) {
 		pointElementToLink(websiteConfig.web.loginLinkSelector, loginPageURL);
 	}
 	if(websiteConfig.web.loginLinkHtml.trim() != "" 
 		&& websiteConfig.web.loginLinkSelector.trim() != "" 
-		&& $(websiteConfig.web.loginLinkSelector)) {
+		&& jQuery(websiteConfig.web.loginLinkSelector)) {
 
-		$(websiteConfig.web.loginLinkSelector).html(websiteConfig.web.loginLinkHtml);
+		jQuery(websiteConfig.web.loginLinkSelector).html(websiteConfig.web.loginLinkHtml);
 	}
 	
 	// manipulate form action to landing.html
 	if(websiteConfig.web.loginFormSelector != "") {
-		$(websiteConfig.web.loginFormSelector).attr("action", landingPageURL);
-		$(websiteConfig.web.loginFormSelector).attr("onsubmit", "processLoginBtnClick(this);");
-		//$(websiteConfig.web.loginFormSelector).on('submit', function () { processLoginBtnClick(this) });
-		//console.log("Form Action set to: ?page=login" );
+		jQuery(websiteConfig.web.loginFormSelector).attr("action", landingPageURL);
+		jQuery(websiteConfig.web.loginFormSelector).attr("onsubmit", "processLoginBtnClick(this);");
 	}
 	// manipulate login btn onclick event;
 	if(websiteConfig.web.loginBtnInputSelector != "") {
-		$(websiteConfig.web.loginBtnInputSelector).on('click', function () { processLoginBtnClick(this) });
+		jQuery(websiteConfig.web.loginBtnInputSelector).attr("href", "");
+		jQuery(websiteConfig.web.loginBtnInputSelector).on('click', function () { processLoginBtnClick(this) });
 	}
 
 	// Build Offers 
@@ -91,47 +90,32 @@ function prepareWebsite() {
 	}
 }
 
+
 function pointElementToLink(selector, link) {
-	var tagType = $(selector).prop("tagName");
-	console.log("set link of " + tagType + " to " + link);
+	var tagType = jQuery(selector).prop("tagName");
+	console.log("set link of " + selector + " to " + link);
 
 	// if it is an ancher
 	if(tagType == "A") {
-		$(selector).attr('href', link);
-		$(selector).on('click', function () {
-			window.location.href = link;
-		});
+		jQuery(selector).attr('href', link);
+
 	}
 
 	// if it is an button
 	else if(tagType == "BUTTON") {
-		$(selector).attr("type", "button");
-		$(selector).attr("onclick", "window.location.href='"+link+"'");
-	} 
-/*
-	// if it is something else
-	else {
-		// find next link
-		var closestElement = $(selector).closest("a");
-		console.log("Alert: Selector (" + selector + ") needs to point to a <a> or <button> element!. Currently it is pointing to an element: " + tagType + ".");
-		if(closestElement) {
-			console.log(" We found an approporiate element for you: " + closestElement.getPath() );
-		}
+		jQuery(selector).attr("type", "button");
 	}
-*/
+
+
+	jQuery(selector).attr('onclick', "");
+	jQuery(selector).on('click', function () {
+		window.location.href = link;
+	});
 }
+
 
 function getCurrentPage() {
 	return getQueryVariable("page");
-}
-
-
-function getCurrentFileName() {
-	if(document.location.href.match(/[^\/]+$/) != null) {
-		return document.location.href.match(/[^\/]+$/)[0];
-	}
-
-	return indexPageUrl;
 }
 
 
@@ -145,11 +129,11 @@ function getBaseURL() {
 */
 function processLoginBtnClick(elem) {
 	console.log("Processing Login Proccess");
-	var userid = $(websiteConfig.web.loginUserInputSelector).val();
+	var userid = jQuery(websiteConfig.web.loginUserInputSelector).val();
 
 	if(userid == undefined || userid == "") {
-		console.log("Could not get user id. Please check the selector for input field");
-		alert("Please enter a valid user identity");
+		console.log("Could not get customer login. Please check the selector for input field");
+		alert("Please enter a valid customer login");
 		event.preventDefault();
 		return;
 	}
@@ -166,7 +150,7 @@ function processLoginBtnClick(elem) {
 
 
 	console.log("Storing CustomerLogin: " + userid + " into local storage");
-	window.localStorage.omnichanneldemoWebsiteUser = userid;
+	window.sessionStorage.ocdWebsiteLogin = userid;
 
 	// if there is no form - then forward directly
 	if(websiteConfig.web.loginFormSelector == "") {
@@ -183,25 +167,38 @@ function processLoginBtnClick(elem) {
 */
 function buildOfferPage() {
 	console.log("Build Offer Page");
+	var placeHolderContent = [];
+	var customerLogin = window.sessionStorage.ocdWebsiteLogin;
+	var customerdetails = getCustomerByLogin(customerLogin, websiteConfig.customers);
+	placeHolderContent.push({"name": "Token", 			"value": readTokenFromURL()});
+	placeHolderContent.push({"name": "CustomerLogin", 	"value": customerLogin});
+	placeHolderContent.push({"name": "Firstname",		"value": customerdetails.firstName });
+	placeHolderContent.push({"name": "Lastname",		"value": customerdetails.lastName });
+	placeHolderContent.push({"name": "CustomerPicture",	"value": customerdetails.pictureUrl });
+	placeHolderContent.push({"name": "CustomerSegment",	"value": customerdetails.lifeStageSegment });
+	renderHtmlPlacehoder(placeHolderContent);
 	refreshOffers(false);
 }
 
 function refreshOffers(doNotTrack) {
 	var token = readTokenFromURL();
-	var customerLogin = window.localStorage.omnichanneldemoWebsiteUser;
+	var customerLogin = window.sessionStorage.ocdWebsiteLogin;
+	if(customerLogin == "" || customerLogin == undefined) {
+		alert("Could not find the customer id in local storage. Please use the login page first.");
+		return;
+	}
 	var maxOffers = websiteConfig.web.nbaPlaceHolderSelectors.length;
 	// request offers from API
 	return getOffersForCustomer(token, customerLogin, "Website", maxOffers, doNotTrack).done(function (offers) {
-		console.log("getOffersForCustomer is done.");
 		if(checkIfOffersHasChanged(websiteConfig.currentOffers, offers)) {
 			websiteConfig.currentOffers = offers;
 			displayOffers(offers);	
 		} else {
-			console.log("getOffersForCustomer is returning the same offers - i will do nothing");
+			console.log("getOffersForCustomer as before is returning the same offers - i will do nothing");
 		}
 
 		// hide all More Info Areas
-		$(".ocdMoreInfoArea").hide();
+		jQuery(".ocdMoreInfoArea").hide();
 	});
 }
 
@@ -214,8 +211,8 @@ function checkIfOffersHasChanged(oldOfferList, newOfferList) {
 		return true;
 	}
 
-	for($i = 0; $i < oldOfferList.length; $i++) {
-		if(oldOfferList[$i].offer != newOfferList[$i].offer) {
+	for(jQueryi = 0; jQueryi < oldOfferList.length; jQueryi++) {
+		if(oldOfferList[jQueryi].offer != newOfferList[jQueryi].offer) {
 			return true;
 		}
 	}
@@ -228,8 +225,7 @@ function displayOffers(offers) {
 	var countOffers = offers.length;
 	var countPlaceholder = websiteConfig.web.nbaPlaceHolderSelectors.length;
 
-	for ( var i = 0; i < countPlaceholder; i ++ ) {
-
+	for ( var i = 0; i < Math.max(countPlaceholder, countOffers); i ++ ) {
 		if(i < countOffers) {
 			var templateContent = [];
 			var templateVariable = {};
@@ -249,28 +245,44 @@ function displayOffers(offers) {
 				token: "Wh5JRj88"
 			*/
 
-			templateContent.push({"name": "Token", 	"value": 	readToken()});
-			templateContent.push({"name": "CustomerLogin", 	"value": 	offerObj.customer});
-			templateContent.push({"name": "OfferIndex", 	"value": 	offerObj.index});
-			templateContent.push({"name": "OfferCode", 		"value": 	offerObj.offer });
-			templateContent.push({"name": "OfferName", 		"value": 	offerObj.offerdetails.offerName });
-			templateContent.push({"name": "OfferDesc", 		"value": 	offerObj.offerdetails.offerDesc });
-			templateContent.push({"name": "OfferImage", 	"value": 	offerObj.offerdetails.offerImg });
+			templateContent.push({"name": "Token", 			"value": readTokenFromURL()});
+			templateContent.push({"name": "CustomerLogin", 	"value": offerObj.customer});
+			templateContent.push({"name": "OfferIndex", 	"value": offerObj.index});
+			templateContent.push({"name": "OfferCode", 		"value": offerObj.offer });
+			templateContent.push({"name": "OfferName", 		"value": offerObj.offerdetails.offerName });
+			templateContent.push({"name": "OfferDesc", 		"value": offerObj.offerdetails.offerDesc });
+			templateContent.push({"name": "OfferImage", 	"value": offerObj.offerdetails.offerImg });
+			templateContent.push({"name": "Firstname",		"value": offerObj.customerdetails.customerFirstname });
+			templateContent.push({"name": "Lastname",		"value": offerObj.customerdetails.customerLastname });
+			templateContent.push({"name": "CustomerPicture","value": offerObj.customerdetails.pictureUrl });
+			templateContent.push({"name": "CustomerSegment","value": offerObj.customerdetails.lifeStageSegment });
+			templateContent.push({"name": "TrackAsAccept", 	"value": renderTrackingElement(offerObj.offer, "accept")});
+			templateContent.push({"name": "TrackAsReject", 	"value": renderTrackingElement(offerObj.offer, "reject")});
+			templateContent.push({"name": "TrackAsInterest","value": renderTrackingElement(offerObj.offer, "show interest")});
 
-
-			templateContent.push({"name": "CustomerId", 	"value": 	offerObj.customer });
-			templateContent.push({"name": "Firstname",		"value": 	offerObj.customerdetails.customerFirstname });
-			templateContent.push({"name": "Lastname",		"value": 	offerObj.customerdetails.customerLastname });
-			templateContent.push({"name": "CustomerPicture","value": 	offerObj.customerdetails.pictureUrl });
-			templateContent.push({"name": "CustomerSegment","value": 	offerObj.customerdetails.lifeStageSegment });
-			templateContent.push({"name": "TrackAsAccept", 	"value": 	renderTrackingElement(offerObj.customer, offerObj.offer, "accept")});
-			templateContent.push({"name": "TrackAsReject", 	"value": 	renderTrackingElement(offerObj.customer, offerObj.offer, "reject")});
-			templateContent.push({"name": "TrackAsInterest","value": 	renderTrackingElement(offerObj.customer, offerObj.offer, "show interest")});
+			// this content is to be displayed in equivaled classes:
+			var placeHolderContent = [];
+			placeHolderContent.push({"name": "OfferIndex"	+ (i+1), 	"value": offerObj.index});
+			placeHolderContent.push({"name": "OfferCode"	+ (i+1), 	"value": offerObj.offer });
+			placeHolderContent.push({"name": "OfferName"	+ (i+1), 	"value": offerObj.offerdetails.offerName });
+			placeHolderContent.push({"name": "OfferDesc"	+ (i+1), 	"value": offerObj.offerdetails.offerDesc });
+			placeHolderContent.push({"name": "OfferImage"	+ (i+1), 	"value": offerObj.offerdetails.offerImg });
+			placeHolderContent.push({"name": "TrackAsAccept"+ (i+1), 	"value": "", "trackResponse": "accept", "offerCd": offerObj.offer });
+			placeHolderContent.push({"name": "TrackAsReject"+ (i+1), 	"value": "", "trackResponse": "reject", "offerCd": offerObj.offer });
+			placeHolderContent.push({"name": "TrackAsInterest"+ (i+1),	"value": "", "trackResponse": "show interest", "offerCd": offerObj.offer });
 		
-			var renderedHtml = renderHtmlTemplate(websiteConfig.web.nbaHtmlTemplate, templateContent);
-			$(websiteConfig.web.nbaPlaceHolderSelectors[i]).html(renderedHtml);
+			renderHtmlTemplate(websiteConfig.web.nbaHtmlTemplate, templateContent, websiteConfig.web.nbaPlaceHolderSelectors[i]);
+			renderHtmlPlacehoder(placeHolderContent);
 		} else {
-			$(websiteConfig.web.nbaPlaceHolderSelectors[i]).remove();
+
+			jQuery(websiteConfig.web.nbaPlaceHolderSelectors[i]).remove();
+			var placeHolderContent = [];
+			placeHolderContent.push({"name": "OfferIndex"	+ (i+1), "value": "" });
+			placeHolderContent.push({"name": "OfferCode"	+ (i+1), "value": "" });
+			placeHolderContent.push({"name": "OfferName"	+ (i+1), "value": "" });
+			placeHolderContent.push({"name": "OfferDesc"	+ (i+1), "value": "" });
+			placeHolderContent.push({"name": "OfferImage"	+ (i+1), "value": "" });
+			renderHtmlPlacehoder(placeHolderContent);
 		}
 	}
 }
@@ -280,7 +292,7 @@ function displayOffers(offers) {
 * 
 *	templateContent = ["offerCd": "TR001", "offerNm", "My Personal Offer"]
 */
-function renderHtmlTemplate(htmlTemplate, templateContent) {
+function renderHtmlTemplate(htmlTemplate, templateContent, templatePlaceholder) {
 	// for each value, search an replace in htmlTemplate like
 	// value: offerCd -> template %UPCASE(offerCd)% -> %OFFERCD%
 	var renderedHtml = templateContent.reduce(function(previousValue, currentValue, index, array) {
@@ -289,54 +301,78 @@ function renderHtmlTemplate(htmlTemplate, templateContent) {
 		return replaceAll(find, replaceWith, previousValue);
 	}, htmlTemplate);
 
-	//console.log("Finishing renderHtmlTemplate");
-	//console.log(renderedHtml);
+	// remove all click events from placeholder
+	jQuery(templatePlaceholder).off();
+	var tagType = jQuery(templatePlaceholder).prop("tagName");
+	if(tagType == "A") {
+		jQuery(selector).attr('href', '');
+	}
+
+	jQuery(templatePlaceholder).html(renderedHtml);
 	return renderedHtml;
 }
 
 
-function trackResponse(customer, offerCd, responseCd) {
+/**
+* 
+*	templateContent = ["offerCd": "TR001", "offerNm", "My Personal Offer"]
+*/
+function renderHtmlPlacehoder(placeHolderContent) {
+	// for each value, search for class == .ocdToken and update innerHtml
+	return placeHolderContent.map(function(item) {
+		var selector = ".ocd" + item.name;
+		if(!jQuery(selector)) {
+			return;
+		}
+
+		jQuery(selector).off();
+
+		// add click event handler
+		if(item.trackResponse != undefined && item.trackResponse != "") {
+			jQuery(selector).attr("onClick", "trackResponse('" + item.offerCd + "', '" + item.trackResponse + "');");
+			return;
+		}
+
+		var tagType = jQuery(selector).prop("tagName");
+
+		// set value
+		if(tagType == "IMG") {
+
+			if(item.value != "") {
+				jQuery(selector).attr("src", item.value);
+			} else {
+				jQuery(selector).remove();
+			}
+
+		} else if (tagType == "INPUT") { 
+			jQuery(selector).val(item.value);
+		} else {
+			jQuery(selector).html(item.value);
+		}
+
+		
+		
+		return jQuery(selector);
+	});
+}
+
+
+function trackResponse(offerCd, responseCd) {
 	var token = readTokenFromURL();
+	var customer = window.sessionStorage.ocdWebsiteLogin;
 	
 	return respondToOffer(token, customer, offerCd, responseCd, "Website", "").done(function () {
-		console.log("respondToOffer is done.");
 		refreshOffers(true).done(function() {
-			console.log("refreshOffers is done.");
-			$(".ocdMoreInfoArea." + offerCd).show();
+			jQuery(".ocdMoreInfoArea." + offerCd).show();
 		});
 	});
+}
+
+function renderTrackingElement(offerCd, responseCd) {
+	return " onClick=\"trackResponse('" + offerCd + "', '" + responseCd + "');\"";
 }
 
 function replaceAll(find, replace, str) {
 	return str.replace(new RegExp(find, 'g'), replace);
 }
 
-function renderTrackingElement(customer, offerCd, responseCd) {
-	return " onClick=\"trackResponse('" + customer + "', '" + offerCd + "', '" + responseCd + "');\"";
-}
-
-jQuery.fn.getPath = function () {
-    if (this.length != 1) {
-    	console.log('jQuery.fn.getPath Requires one element.');
-    	return;//throw 'Requires one element.';
-    } 
-
-    var path, node = this;
-    while (node.length) {
-        var realNode = node[0], name = realNode.localName;
-        if (!name) break;
-        name = name.toLowerCase();
-
-        var parent = node.parent();
-
-        var siblings = parent.children(name);
-        if (siblings.length > 1) { 
-            name += ':nth-child(' + siblings.index(realNode) + ')';
-        }
-
-        path = name + (path ? ' > ' + path : '');
-        node = parent;
-    }
-
-    return path;
-};

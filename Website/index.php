@@ -82,10 +82,7 @@ function processRequest() {
 		// overwrite existing page
 		$options = getRequestParameter("options");
 		$content = getRequestParameter("content");
-		echo $options;
 		savePageToDatabase($token, $page, $content, $options);
-		
-
 	} else if ($action == "upload") {
 		$url = getRequestParameter("url");
 		$raw_options = getRequestParameter("uploadOptions");
@@ -93,9 +90,7 @@ function processRequest() {
 		if(!empty($raw_options)) {
 			$options = json_decode($raw_options);
 		}
-		
 		uploadWebsiteToDatabase($token, $page, $url, $options);
-		
 	}
 }
 
@@ -167,7 +162,11 @@ function savePageToDatabase($token, $page, $content, $insertJsBase) {
 	}
 	
 	$updateSqlQuery ="INSERT INTO `omnichanneldemo`.`demo_website` (`token`, `site`, `content`, `create_dttm`, `modify_dttm`, `modify_by`) VALUES ('".$token."', '".$page."', '".$mysql_link->real_escape_string($content)."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."') ON DUPLICATE KEY UPDATE `content`='".$mysql_link->real_escape_string($content)."', `modify_by` = '".$userIP."' , modify_dttm = CURRENT_TIMESTAMP ";
-	return $mysql_link->query($updateSqlQuery);
+	$updateResult = $mysql_link->query($updateSqlQuery);
+	if(!$updateResult) {
+		echo $mysql_link->error;
+	}
+	return $updateResult;
 } 
 
 
@@ -286,6 +285,7 @@ function displayEditor($token, $page) {
 <script src="../js/ext/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
 <script>
     var editor = ace.edit("editor");
+    var reloadPageAfterSaving = true;
     editor.setTheme("ace/theme/monokai");
     editor.session.setMode("ace/mode/html");
 
@@ -298,9 +298,12 @@ function displayEditor($token, $page) {
     	return $.ajax("./", {
 	        type: 'POST',
 	        data: {action: "save",token: token, page: page, content: content, options: options}
-	    } ).done(function() {
+	    } ).done(function(result) {
+	    	console.log(result);
 	    	alert("Website Saved successfully.");
-	    	location.reload();
+	    	if(reloadPageAfterSaving) {
+	    		location.reload();
+	    	}
 	    });;
 
     }
