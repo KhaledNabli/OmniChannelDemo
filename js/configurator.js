@@ -2,23 +2,23 @@
 var configScenario = {};
 
 function startConfigurator() {
-	var tokenFromURL = readTokenFromURL(); // look after # if token is present
-    var tokenFromLS = readToken(); // look if token is present in localStorage
-    var token = "";
+var tokenFromURL = readTokenFromURL(); // look after # if token is present
+var tokenFromLS = readToken(); // look if token is present in localStorage
+var token = "";
 
 
-    if(tokenFromURL != undefined && tokenFromURL != "undefined" && tokenFromURL != "") {
-        token = tokenFromURL;
-    } else if (tokenFromLS != undefined && tokenFromLS != "undefined" && tokenFromLS != "") {
-        token = tokenFromLS;
-    }
+if(tokenFromURL != undefined && tokenFromURL != "undefined" && tokenFromURL != "") {
+    token = tokenFromURL;
+} else if (tokenFromLS != undefined && tokenFromLS != "undefined" && tokenFromLS != "") {
+    token = tokenFromLS;
+}
 
-	loadConfiguration(token);
+loadConfiguration(token);
 }
 
 function loadConfiguration(token) {
     console.log("load config for token: " + token);
-	getConfigurationByToken(token).done(function (config) { onLoadConfigurationDone(config);  });
+    getConfigurationByToken(token).done(function (config) { onLoadConfigurationDone(config);  });
 }
 
 function onLoadConfigurationDone(config) {
@@ -35,12 +35,12 @@ function onLoadConfigurationDone(config) {
 
 
 function onLoadTokenBtn(element) {
-	var token = $('#selectToken').val();
+    var token = $('#selectToken').val();
     if(token != "") {
         saveToken(token);
         loadConfiguration(token);
     }
-	$('#popupLoadToken').modal('hide');
+    $('#popupLoadToken').modal('hide');
 }
 
 function onUndoConfigurationBtn(element) {
@@ -58,7 +58,7 @@ function updateTokenDemoLinks() {
     baseUrl = baseUrl + 'OmniChannelDemo/';
 
     if(token != '') {
-        
+
         $('#token').html(configScenario.token);
 
         var encodedToken = encodeURIComponent(token);
@@ -100,18 +100,18 @@ function updateTokenDemoLinks() {
 */
 function initConfigurator() {
 
-	// console.log("configScenario: " + configScenario);
+    // console.log("configScenario: " + configScenario);
 
     updateTokenDemoLinks();
 
     // setup labels in configurator gui
     initLabels();
 
-	$("#sendSms").prop("checked", checkIfTrue(configScenario.general.sendSms));
-	$("#rtdmBackend").prop("checked", checkIfTrue(configScenario.general.rtdmBackend));
+    $("#sendSms").prop("checked", checkIfTrue(configScenario.general.sendSms));
+    $("#rtdmBackend").prop("checked", checkIfTrue(configScenario.general.rtdmBackend));
 
-	$("#scoreLabel1").html(configScenario.customers[0].firstName);
-	$("#scoreLabel2").html(configScenario.customers[1].firstName);
+    $("#scoreLabel1").html(configScenario.customers[0].firstName);
+    $("#scoreLabel2").html(configScenario.customers[1].firstName);
 
 
     displayObjectElements(configScenario.general, "#");
@@ -122,42 +122,42 @@ function initConfigurator() {
     displayObjectElements(configScenario.advisorApp, "#");
     displayObjectElements(configScenario.web, "#");
 
-	clearHistoryRecords('c1');
+    clearHistoryRecords('c1');
     if(configScenario.customers[0].actionHistory) {
-    	for(var i = 0; i < configScenario.customers[0].actionHistory.length; i++) {
-        	addHistoryRecord('c1',    
+        for(var i = 0; i < configScenario.customers[0].actionHistory.length; i++) {
+            addHistoryRecord('c1',    
                 configScenario.customers[0].actionHistory[i]["historyDate"],     		
                 configScenario.customers[0].actionHistory[i]["historyAction"], 
-        		configScenario.customers[0].actionHistory[i]["historyChannel"],
-        		configScenario.customers[0].actionHistory[i]["historyResponse"] );
-    	}
+                configScenario.customers[0].actionHistory[i]["historyChannel"],
+                configScenario.customers[0].actionHistory[i]["historyResponse"] );
+        }
     }
 
     clearHistoryRecords('c2');
     if(configScenario.customers[1].actionHistory) {
-    	for(var i = 0; i < configScenario.customers[1].actionHistory.length; i++) {
-        	addHistoryRecord('c2',
-        		configScenario.customers[1].actionHistory[i]["historyDate"], 
-        		configScenario.customers[1].actionHistory[i]["historyAction"], 
-        		configScenario.customers[1].actionHistory[i]["historyChannel"],
-        		configScenario.customers[1].actionHistory[i]["historyResponse"] );
-    	}
+        for(var i = 0; i < configScenario.customers[1].actionHistory.length; i++) {
+            addHistoryRecord('c2',
+                configScenario.customers[1].actionHistory[i]["historyDate"], 
+                configScenario.customers[1].actionHistory[i]["historyAction"], 
+                configScenario.customers[1].actionHistory[i]["historyChannel"],
+                configScenario.customers[1].actionHistory[i]["historyResponse"] );
+        }
     }
 
     clearNbaRecords();
     if(configScenario.nba) {
-    	for(var i = 0; i < configScenario.nba.length; i++) {
-            addNbaRecord(   configScenario.nba[i]["offerCode"], 
-                            configScenario.nba[i]["offerName"], 
-                        	configScenario.nba[i]["offerDesc"],
-                        	configScenario.nba[i]["offerImg"],
-                        	configScenario.nba[i]["offerSms"],
-                        	configScenario.nba[i]["maxContacts"],
-                        	configScenario.nba[i]["customer1Score"], 
-                        	configScenario.nba[i]["customer2Score"], 
-                            configScenario.nba[i]["changeScoreByInterest"],
-                            configScenario.customers[0].firstName, 
-                            configScenario.customers[1].firstName);
+        for(var i = 0; i < configScenario.nba.length; i++) {
+            addNbaRecord(configScenario.nba[i]["offerCode"], 
+                configScenario.nba[i]["offerName"], 
+                configScenario.nba[i]["offerDesc"],
+                configScenario.nba[i]["offerImg"],
+                configScenario.nba[i]["offerSms"],
+                configScenario.nba[i]["maxContacts"],
+                configScenario.nba[i]["customer1Score"], 
+                configScenario.nba[i]["customer2Score"], 
+                configScenario.nba[i]["changeScoreByInterest"],
+                configScenario.customers[0].firstName, 
+                configScenario.customers[1].firstName);
         }
     }
 
@@ -189,7 +189,7 @@ function initLabels() {
 
 
 function onResetConfigurationBtn() {
-	loadConfiguration("");
+    loadConfiguration("");
 }
 
 
@@ -198,14 +198,14 @@ function onResetConfigurationBtn() {
 
 function onSaveConfigurationBtn() {
 
-	/*** for-loop to get all fromFields from configurator.html ***/
+    /*** for-loop to get all fromFields from configurator.html ***/
     readObjectElements(configScenario.general, "#");
     readObjectElements(configScenario.customers[0], "#c1");
     readObjectElements(configScenario.customers[1], "#c2");
     readObjectElements(configScenario.labels, "#");
     readObjectElements(configScenario.mobileApp, "#");
     readObjectElements(configScenario.advisorApp, "#");
-    
+
     var editor = ace.edit("nbaHtmlTemplateEditor");
     readObjectElements(configScenario.web, "#");
     configScenario.web.nbaHtmlTemplate = editor.getValue();
@@ -213,10 +213,10 @@ function onSaveConfigurationBtn() {
 
     /* save grids */
     configScenario.nba 				 			= getNbaRecords();
-	configScenario.customers[0].actionHistory   = getHistoryRecords('c1');
-	configScenario.customers[1].actionHistory 	= getHistoryRecords('c2');
-	configScenario.general.sendSms 			    = getCheckbox('sendSms');
-	configScenario.general.rtdmBackend			= getCheckbox('rtdmBackend');
+    configScenario.customers[0].actionHistory   = getHistoryRecords('c1');
+    configScenario.customers[1].actionHistory 	= getHistoryRecords('c2');
+    configScenario.general.sendSms 			    = getCheckbox('sendSms');
+    configScenario.general.rtdmBackend			= getCheckbox('rtdmBackend');
 
     // add validity checks: required fields:
     if(configScenario.general.demoName.length < 5) {
@@ -239,7 +239,7 @@ function onSaveConfigurationBtn() {
 
 
     saveConfiguration(JSON.stringify(configScenario)).done(function (config) { onLoadConfigurationDone(config); });
-	
+
     return;
 }
 
@@ -247,19 +247,18 @@ function onSaveConfigurationBtn() {
 /** Next Best Action Functions **/
 /******************************/
 function clearNbaRecords() {
-	$('#configuratorNbaTbody').html("");
+    $('#configuratorNbaTbody').html("");
 }
 
 function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjustscore, c1name, c2name) {
-	//console.log("maxContacts: " + maxContacts);
-	if (!code) code = "";
-	if (!name) name = "";
-	if (!desc) desc = "";
-	if (!img) img = "";
-	if (!sms) sms = "";
-	if (!maxContacts) maxContacts = "";
-	if (!c1score) c1score = "";
-	if (!c2score) c2score = "";   
+    if (!code) code = "";
+    if (!name) name = "";
+    if (!desc) desc = "";
+    if (!img) img = "";
+    if (!sms) sms = "";
+    if (!maxContacts) maxContacts = "";
+    if (!c1score) c1score = "";
+    if (!c2score) c2score = "";   
     if (!adjustscore) adjustscore = "";
     if (!c1name) c1name = configScenario.customers[0].firstName;
     if (!c2name) c2name = configScenario.customers[1].firstName; 
@@ -275,7 +274,7 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
         +"    <input name='offerCode' value='"+code+"' type='text' class='form-control'>"
         +"  </div>"
         +"</div>"
-        
+
         +"<div class='form-group'>"
         +"  <label class='col-lg-3 col-sm-3 control-label'>Name</label>"
         +"  <div class='col-lg-9 col-sm-12'>"
@@ -298,7 +297,7 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
         +"    <input name='offerDesc' value='"+desc+"' type='text' class='form-control'>"
         +"  </div>"
         +"</div>"
-        
+
         +"<div class='form-group'>"
         +"  <label class='col-lg-1 col-sm-2 control-label'>SMS</label>"
         +"  <div class='col-lg-11 col-sm-12'>"
@@ -325,7 +324,7 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
         +"    <input name='customer1Score' value='"+c1score+"' type='text' class='form-control'>"
         +"  </div>"
         +"</div>"
-        
+
         +"<div class='form-group'>"
         +"  <label class='col-lg-6 col-sm-12 control-label'>"+c2name+"</label>"
         +"  <div class='col-lg-4 col-sm-12'>"
@@ -344,7 +343,7 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
         +"<td><a onclick='dropRecord(this);' class='pull-right btn btn-danger btn-block'>"
         +"    Delete</a>"
         +"</td></tr>"      
-    ); 
+        ); 
 
     $('#configuratorNbaTbody').append(existingRecords);
     $(".upload-image").off();
@@ -356,100 +355,97 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
 }
 
 function getNbaRecords() {
-	var aNbaRecords = [];
+    var aNbaRecords = [];
 
-	$('#configuratorNbaTbody tr').each(function() {
-		var code 		= $(this).find("input[name='offerCode']").val();
-		/*var name        = $(this).find("textarea[name='offerName']").val();     
-        var desc        = $(this).find("textarea[name='offerDesc']").val();
-        var img         = $(this).find("textarea[name='offerImg']").val();
-        var sms         = $(this).find("textarea[name='offerSms']").val();*/
+    $('#configuratorNbaTbody tr').each(function() {
+        var code 		= $(this).find("input[name='offerCode']").val();
         var name 		= $(this).find("input[name='offerName']").val();		
-		var desc 		= $(this).find("input[name='offerDesc']").val();
-		var img 		= $(this).find("input[name='offerImg']").val();
-		var sms 		= $(this).find("input[name='offerSms']").val();
-		var contacts 	= $(this).find("input[name='maxContacts']").val();
-		var c1score 	= $(this).find("input[name='customer1Score']").val();
-		var c2score 	= $(this).find("input[name='customer2Score']").val();
-        var adjustscore     = $(this).find("input[name='changeScoreByInterest']").val();	
+        var desc 		= $(this).find("input[name='offerDesc']").val();
+        var img 		= $(this).find("input[name='offerImg']").val();
+        var sms 		= $(this).find("input[name='offerSms']").val();
+        var contacts 	= $(this).find("input[name='maxContacts']").val();
+        var c1score 	= $(this).find("input[name='customer1Score']").val();
+        var c2score 	= $(this).find("input[name='customer2Score']").val();
+        var adjustscore     = $(this).find("input[name='changeScoreByInterest']").val();
+
         if (code == "" || name == "") {
             alert('You forgot to enter an offer code or name!');
             return false;
         } else {
-		    aNbaRecords.unshift({offerCode: code, offerName: name, offerDesc: desc, offerImg: img, offerSms: sms, maxContacts: contacts, customer1Score: c1score, customer2Score: c2score, changeScoreByInterest: adjustscore});
-	    }
+            aNbaRecords.unshift({offerCode: code, offerName: name, offerDesc: desc, offerImg: img, offerSms: sms, maxContacts: contacts, customer1Score: c1score, customer2Score: c2score, changeScoreByInterest: adjustscore});
+        }
     });
-	return aNbaRecords;
+
+    return aNbaRecords;
 }
 
 function dropRecord(object) {
-	var tr = $(object).closest('tr');
+    var tr = $(object).closest('tr');
     tr.remove();
-
 }
 
 /** Action History Functions **/
 /******************************/
 function clearHistoryRecords(prefix) {
-	$('#'+prefix+'configuratorActionHistoryTbody').html("");
+    $('#'+prefix+'configuratorActionHistoryTbody').html("");
 }
 
 function addHistoryRecord(prefix,date,action,channel,response) {
-	if (!date) date = "";
-	if (!action) action = "";
-	if (!channel) channel = "";
-	if (!response) response = "";
-	
-	$('#'+prefix+'configuratorActionHistoryTbody').append("<tr>"
-		+"<td><div style='padding: 7px 0px'><input name='historyDate' type='date' size=\"4\" placeholder='Date' value='"+date+"' class='form-control input-md'></div></td>"
-      	+"<td><textarea name='historyAction' placeholder='Description' class='form-control input-md'>"+action+"</textarea></td>" 
-      	+"<td><textarea name='historyChannel' type='text' placeholder='Action' class='form-control input-md'>"+channel+"</textarea></td>"
-      	+"<td><textarea name='historyResponse' type='text' placeholder='Action' class='form-control input-md'>"+response+"</textarea></td>"
-      	+"<td><a onclick='dropRecord(this);' class='pull-right btn btn-danger btn-block'>Delete</a></td></tr>"		
-	); 
+    if (!date) date = "";
+    if (!action) action = "";
+    if (!channel) channel = "";
+    if (!response) response = "";
+
+    $('#'+prefix+'configuratorActionHistoryTbody').append("<tr>"
+        +"<td><div style='padding: 7px 0px'><input name='historyDate' type='date' size=\"4\" placeholder='Date' value='"+date+"' class='form-control input-md'></div></td>"
+        +"<td><textarea name='historyAction' placeholder='Description' class='form-control input-md'>"+action+"</textarea></td>" 
+        +"<td><textarea name='historyChannel' type='text' placeholder='Action' class='form-control input-md'>"+channel+"</textarea></td>"
+        +"<td><textarea name='historyResponse' type='text' placeholder='Action' class='form-control input-md'>"+response+"</textarea></td>"
+        +"<td><a onclick='dropRecord(this);' class='pull-right btn btn-danger btn-block'>Delete</a></td></tr>"		
+        ); 
     return false; 
 }
 
 function getHistoryRecords(prefix) {
-	var aHistoryRecords = [];
+    var aHistoryRecords = [];
 
-	$('#'+prefix+'configuratorActionHistoryTbody tr').each(function() {
-		var action 		= $(this).find("textarea[name='historyAction']").val();
-		var date 		= $(this).find("input[name='historyDate']").val();
-		var response 	= $(this).find("textarea[name='historyResponse']").val();
-		var channel 	= $(this).find("textarea[name='historyChannel']").val();
-		aHistoryRecords.push({historyAction: action, historyDate: date, historyResponse: response, historyChannel: channel});
-	});
-	return aHistoryRecords;
+    $('#'+prefix+'configuratorActionHistoryTbody tr').each(function() {
+        var action 		= $(this).find("textarea[name='historyAction']").val();
+        var date 		= $(this).find("input[name='historyDate']").val();
+        var response 	= $(this).find("textarea[name='historyResponse']").val();
+        var channel 	= $(this).find("textarea[name='historyChannel']").val();
+        aHistoryRecords.push({historyAction: action, historyDate: date, historyResponse: response, historyChannel: channel});
+    });
+    return aHistoryRecords;
 }
 
 function rtdmCheckboxOnChange(element){
-	if (element.checked) {
-		$("#raceServer_form_group").show();
-	} else {
-		$("#raceServer_form_group").hide();
-	}
+    if (element.checked) {
+        $("#raceServer_form_group").show();
+    } else {
+        $("#raceServer_form_group").hide();
+    }
 }
 
 function smsCheckboxOnChange(element){
-	if (element.checked) {	
-	} else {
-	}
+    if (element.checked) {	
+    } else {
+    }
 }
 
 function getCheckbox(elementId) {
-	if ($("#"+elementId).prop("checked")) {
-		return true;
-	} else {
-		return false;
-	}
+    if ($("#"+elementId).prop("checked")) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function checkIfTrue(value) {
-	if ( value == true || value == "true" ) {
-		return true;
-	} 
-	return false;
+    if ( value == true || value == "true" ) {
+        return true;
+    } 
+    return false;
 }
 
 
@@ -463,7 +459,7 @@ function onUploadWebsiteCommitBtn(element) {
     var token = window.localStorage.omnichanneltoken;
     var url = $('#uploadUrlInput').val();;
     var options = $("input[name='uploadOptions[]']:checked").map(function(index, item) {return $(item).val();}).toArray();
-    
+
     $("#" + page + "PageUrl").val("loading...");
     $('#popupUploadWebsite').modal('hide');
 
@@ -513,7 +509,7 @@ function onClickUploadImageField(event) {
     }
     // we apply a trick here:
     // we register all elements with the class = "upload-image" to call this function on click
-    
+
     // find the element id who was clicked and store the id and css-selector
     var elem = event.currentTarget;
     // if element do not have an id assigned - then assign temporary id
@@ -530,6 +526,8 @@ function onClickUploadImageField(event) {
     $('#popupUploadImage').modal('show');
 }
 
+
+
 function onUploadImageSubmit(elem, e) {
     // upload picture with ajax method
     var formData = new FormData($(elem)[0]);
@@ -539,6 +537,9 @@ function onUploadImageSubmit(elem, e) {
         type: "POST",
         data: formData,
         async: false,
+        cache: false,
+        contentType: false,
+        processData: false,
         success: function (result) {
             if(result.status == "success") {
                 // when the picture is uploaded, we need to store the url in the field which initiated the upload
@@ -551,10 +552,7 @@ function onUploadImageSubmit(elem, e) {
             } else {
                 alert(result.message);
             }
-        },
-        cache: false,
-        contentType: false,
-        processData: false
+        }
     });
 
     e.preventDefault();
@@ -627,7 +625,7 @@ function readObjectElements(properties, selectorPrefix) {
         var selectedElements = $(selectorPrefix + property);
 
         if( selectedElements.length == 1) {
-             properties[property] = selectedElements.val();
+            properties[property] = selectedElements.val();
 
         } else if ( selectedElements.length > 1 ) {
             console.log("Warning: readObjectElements is pointing to an selector: " + selectorPrefix + property + ", which is not unique. Counting: " + selectedElements.length);
