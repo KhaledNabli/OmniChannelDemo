@@ -8,7 +8,9 @@ var map;
 * on document ready
 */
 function onMobileAppReady() {
-	var token = getToken();
+	//var token = getToken();
+	token = location.href.split("#")[1];
+	
 	console.log("onMobileAppReady getToken: " + token);
 
 	getConfigurationByToken(token).done(function (config) {
@@ -160,7 +162,7 @@ function loadConfiguration(token) {
 }
 
 function loadOffers() {
-	var token = readToken();
+	var token = configScenario.token;
 	var customer = configScenario.selectedCustomer.customerLogin;
 	var channel = configScenario.currentChannel;
 	var maxOffers = configScenario.mobileApp.maxOffersMobile;
@@ -232,7 +234,7 @@ function showOfferDetails(offerCode) {
 	$('#offerDetailsOfferCode').val(offerCode);
 
 	// track response of offer details click 
-	var token = readToken();
+	var token = configScenario.token;
 	var customer =configScenario.selectedCustomer.customerLogin;
 	var channel = configScenario.currentChannel;
 	var details = "";
@@ -246,7 +248,7 @@ function onResponseBtnClick(element, response) {
 	changeHeaderNavButton('navIconLeft','ui-icon-bars','$("#leftPanel").panel("open");');
 
 	//read the offerCode from the hidden value
-	var token = readToken();
+	var token = configScenario.token;
 	var customer =configScenario.selectedCustomer.customerLogin;
 	var channel = configScenario.currentChannel;
 	var offerCode = $('#offerDetailsOfferCode').val();
@@ -267,7 +269,7 @@ function onGeoResponseBtnClick(element, response) {
 	changeHeaderNavButton('navIconLeft','ui-icon-bars','$("#leftPanel").panel("open");');
 
 	//read the offerCode from the hidden value
-	var token = readToken();
+	var token = configScenario.token;
 	var customer = $('#inputCustomerLogin').val();
 	var channel = 'Geolocation';
 	var offerCode = 'geo_offer';
@@ -285,7 +287,7 @@ function onGetPositionBtnClick(element) {
 	changeHeaderNavButton('navIconLeft','ui-icon-bars','$("#leftPanel").panel("open");');
 
 	//read the offerCode from the hidden value
-	var token = readToken();
+	var token = configScenario.token;
 	var customer = $('#inputCustomerLogin').val();
 	var channel = 'Geolocation';
 	var offerCode = 'geo_offer';

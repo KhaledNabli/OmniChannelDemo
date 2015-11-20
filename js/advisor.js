@@ -14,12 +14,14 @@ configScenario.currentHistoy = [];
 function onAdvisorReady() {
 	var token = "";
 
-    if(readTokenFromURL() != undefined) {
+	token = location.href.split("#")[1];
+
+    /*if(readTokenFromURL() != undefined) {
         token = readTokenFromURL();
         window.localStorage.omnichanneltoken = token;
     } else {
 		token = readToken();
-	}
+	}*/
 
 	getConfigurationByToken(token).done(function (config) {
 		configScenario = config;
@@ -169,7 +171,8 @@ function showOfferDetails(offerCode) {
 
 function onResponseBtnClick(element, response) {
 	//read the offerCode from the hidden value
-	var token = readToken();
+	//var token = readToken();
+	var token = configScenario.token;
 	var customer =configScenario.selectedCustomer.customerLogin;
 	var channel = configScenario.currentChannel;
 	var offerCode = $('#offerDetailsOfferCode').val();
@@ -191,7 +194,8 @@ function onResponseBtnClick(element, response) {
 }
 
 function loadOffers() {
-	var token = readToken();
+	//var token = readToken();
+	var token = configScenario.token;
 	var customer = configScenario.selectedCustomer.customerLogin;
 	var channel = configScenario.currentChannel;
 	var maxOffers = configScenario.advisorApp.maxOffersAdvisor;
@@ -233,7 +237,7 @@ function displayOffers() {
 }
 
 function loadHistory() {
-	var token = readToken();
+	var token = configScenario.token;
 	var customer = configScenario.selectedCustomer.customerLogin;
 	var channel = configScenario.currentChannel;
 	return getHistoryForCustomer(token, customer).done(function (historyList) {
