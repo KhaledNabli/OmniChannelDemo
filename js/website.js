@@ -313,7 +313,6 @@ function displayOffers(offers) {
 			renderHtmlTemplate(websiteConfig.web.nbaHtmlTemplate, templateContent, websiteConfig.web.nbaPlaceHolderSelectors[i]);
 			renderHtmlPlacehoder(placeHolderContent);
 		} else {
-
 			jQuery(websiteConfig.web.nbaPlaceHolderSelectors[i]).remove();
 			var placeHolderContent = [];
 			placeHolderContent.push({"name": "OfferIndex"	+ (i+1), "value": "" });

@@ -1,140 +1,146 @@
  <!-- Start Tab: Mobile App -->
  <div role="tabpanel" class="tab-pane" id="tab_mobile">
     <div class="container">
-    <form class="form-horizontal" role="form">
-        <div class="form-group"></div>
+        <form class="form-horizontal" role="form">
 
-        <div class="row"> 
-            <div class="col-sm-offset-2 col-sm-10"> <h3> Geo Location Settings </h3> </div>
-
-            <div class="col-sm-6"> 
-                
+            <div class="row">
+                <div class="col-sm-offset-2 col-sm-10"> <h3> General Settings </h3> </div>
                 <div class="form-group">
-                    <label for="geo_latitude" class="col-sm-4 control-label">Geo Latitude</label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="geo_latitude" >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="add_to_lat" class="col-sm-4 control-label">Add to Latitude</label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="add_to_lat" >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="geo_longtitude" class="col-sm-4 control-label">Geo Longtitude</label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="geo_longtitude" >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="add_to_long" class="col-sm-4 control-label">Add to Longtitude</label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="add_to_long" >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="geo_zoom" class="col-sm-4 control-label">Geo Zoom</label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="geo_zoom" >
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6">   
-                <div class="form-group">
-                    <label for="title_mobile_app" class="col-sm-4 control-label">Title Mobile App</label>
-                    <div class="col-sm-6">
+                    <label for="title_mobile_app" class="col-sm-2 control-label">Title Mobile App</label>
+                    <div class="col-sm-4">
                         <input type="text" class="form-control" id="title_mobile_app" >
                     </div> 
-                </div>             
-                <div class="form-group">
-                    <label for="title_geo_offer_panel" class="col-sm-4 control-label">Title Geo Offer Panel</label>
-                    <div class="col-sm-6">
+
+                    <label for="title_geo_offer_panel" class="col-sm-2 control-label">Title Geo Offer Panel</label>
+                    <div class="col-sm-4">
                         <input type="text" class="form-control" id="title_geo_offer_panel" >
                     </div> 
                 </div>
                 <div class="form-group">
-                    <label id="labelPinImage" for="map_pin_image" class="col-sm-4 control-label image-preview">
-                         Map Pin Image <span class='glyphicon glyphicon-eye-open'></span></label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control upload-image" id="map_pin_image" >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label id="labelHomeImage" for="homescreen_image" class="col-sm-4 control-label image-preview">Homescreen Image <span class='glyphicon glyphicon-eye-open'></span></label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control upload-image " id="homescreen_image" >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label id="labelAppIconImage" for="appIcon_image" class="col-sm-4 control-label image-preview">App Icon Image <span class='glyphicon glyphicon-eye-open'></span></label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control upload-image " id="appIcon_image" >
-                    </div>
-                </div>
-            </div>
+                    <label id="labelHomeImage" for="homescreen_image" class="col-sm-2 control-label image-preview">Homescreen Image <span class='glyphicon glyphicon-eye-open'></span></label>
+                    <div class="col-sm-4">
+
+                        <div class="input-group">
+                          <input type="text" class="form-control upload-image" id="homescreen_image">
+                          <div class="input-group-addon"><a href="#" onClick="onUploadImageIconClick(this);"><span class='glyphicon glyphicon-cloud-upload'></span></a></div>
+                          <div class="input-group-addon"><a href="#" onClick="onPreviewImageIconClick(this);"><span class='glyphicon glyphicon-eye-open'></span></a></div>
+                      </div>
+
+                  </div>
+
+
+                  <label id="labelAppIconImage" for="appIcon_image" class="col-sm-2 control-label image-preview">App Icon Image <span class='glyphicon glyphicon-eye-open'></span></label>
+                  <div class="col-sm-4">
+                    <div class="input-group">
+                      <input type="text" class="form-control upload-image" id="appIcon_image">
+                      <div class="input-group-addon"><a href="#" onClick="onUploadImageIconClick(this);"><span class='glyphicon glyphicon-cloud-upload'></span></a></div>
+                      <div class="input-group-addon"><a href="#" onClick="onPreviewImageIconClick(this);"><span class='glyphicon glyphicon-eye-open'></span></a></div>
+                  </div>
+
+              </div>
+          </div>
+
+          <div class="form-group">
+            <label id="labelPinImage" for="map_pin_image" class="col-sm-2 control-label image-preview">
+               Map Pin Image <span class='glyphicon glyphicon-eye-open'></span></label>
+               <div class="col-sm-4">
+                <div class="input-group">
+                  <input type="text" class="form-control upload-image" id="map_pin_image">
+                  <div class="input-group-addon"><a href="#" onClick="onUploadImageIconClick(this);"><span class='glyphicon glyphicon-cloud-upload'></span></a></div>
+                  <div class="input-group-addon"><a href="#" onClick="onPreviewImageIconClick(this);"><span class='glyphicon glyphicon-eye-open'></span></a></div>
+              </div>
+
+          </div>
+
+          <label for="maxOffersMobile" class="col-sm-2 control-label">Number of Offers</label>
+          <div class="col-sm-1">
+            <input type="number" class="form-control" id="maxOffersMobile" >
+        </div>
+    </div>
+
+    
+
+
+
+</div>
+
+
+
+<div class="row"> 
+    <div class="col-sm-offset-2 col-sm-10"> <h3> Geo Location Settings </h3> </div>
+
+    <div class="form-group">
+        <label for="geo_latitude" class="col-sm-2 control-label">Geo Latitude</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" id="geo_latitude" >
+        </div>
+        <label for="add_to_lat" class="col-sm-4 control-label">Offset Latitude</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" id="add_to_lat" >
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="geo_longtitude" class="col-sm-2 control-label">Geo Longitude</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" id="geo_longtitude" >
+        </div>
+        <label for="add_to_long" class="col-sm-4 control-label">Offset Longitude</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" id="add_to_long" >
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="geo_zoom" class="col-sm-2 control-label">Geo Zoom</label>
+        <div class="col-sm-1">
+            <input type="text" class="form-control" id="geo_zoom" >
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="row"> 
+    <div class="col-sm-offset-2 col-sm-10"> <h3> Labels and Settings </h3> </div>
+    <div class="form-group">
+        <label for="acceptBtnMobile" class="col-sm-2 control-label">Accept Button </label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="acceptBtnMobile" placeholder="">
+        </div>
+        <label for="rejectBtnMobile" class="col-sm-2 control-label">Reject Button </label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="rejectBtnMobile" placeholder="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="login_button_text" class="col-sm-2 control-label">Login Button Text</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="login_button_text" >
         </div>
 
-        <div class="row"> 
-            <div class="col-sm-offset-2 col-sm-10"> <h3> Labels and Settings </h3> </div>
 
-            <div class="col-sm-6"> 
-                <div class="form-group">
-                    <label for="maxOffersMobile" class="col-sm-4 control-label">Number of Offers</label>
-                    <div class="col-sm-6">
-                        <input type="number" class="form-control" id="maxOffersMobile" >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="login_button_text" class="col-sm-4 control-label">Login Button Text</label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="login_button_text" >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="mobileTheme" class="col-sm-4 control-label">Mobile Theme</label>
-                    <div class="col-sm-6">
-                        <select class="input-large form-control" style="width:100%" id="mobileTheme">
-                          <option value="a">Black </option>
-                          <option value="b">Blue - DEFAULT</option>
-                          <option value="c">Light Grey </option>
-                          <option value="d">Grey </option>
-                          <option value="e">Yellow </option>
-                        </select>
-                    </div> 
-                </div>
-            </div>
+        <label for="mobileTheme" class="col-sm-2 control-label">Mobile Theme</label>
+        <div class="col-sm-4">
+            <select class="input-large form-control" style="width:100%" id="mobileTheme">
+              <option value="a">Black </option>
+              <option value="b">Blue - DEFAULT</option>
+              <option value="c">Light Grey </option>
+              <option value="d">Grey </option>
+              <option value="e">Yellow </option>
+          </select>
+      </div> 
+  </div>
 
-            <div class="col-sm-6"> 
-                <div class="form-group">
-                    <label for="acceptBtnMobile" class="col-sm-4 control-label">Accept Button </label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="acceptBtnMobile" placeholder="">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="rejectBtnMobile" class="col-sm-4 control-label">Reject Button </label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="rejectBtnMobile" placeholder="">
-                    </div>
-                </div>
-            </div>
-        </div>
+  
+</div>
 
-        <div class="form-group"></div>
-        <div class="form-group"></div>
-
-        <div class="row">
-            <div class="col-sm-4 "><p class="text-right"><b>Test Mobile App</b></p></div>
-            <div class="col-sm-6 col-xs-12" style="table-layout: fixed; word-wrap: break-word;">
-                <a  href="#" target="_blank" class="link2mobileapp">Please save your configuration!</a>
-                <br />
-            </div>
-        </div>
-
-        <div class="form-group"></div>
-
-    </form>
-    </div>             
+<div class="row">
+    <div class="col-sm-4 "><p class="text-right"><b>Open Mobile App</b></p></div>
+    <div class="col-sm-6 col-xs-12" style="table-layout: fixed; word-wrap: break-word;">
+        <a  href="#" target="_blank" class="link2mobileapp">Please save your configuration!</a>
+        <br />
+    </div>
+</div>
+</form>
+</div>             
 </div><!-- End Tab: Mobile App -->
