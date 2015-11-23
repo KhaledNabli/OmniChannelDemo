@@ -81,10 +81,9 @@ function processRequest() {
 	else if($action == 'copyConfig') {
 		// copy token config to a new token
 		// copy website...
-		$config = getRequestParameter("config");
-		$savedConfig = copyConfig(json_decode($config));
-		logUsage($action, "", $savedConfig->token, "");
-		echo json_encode($savedConfig);
+		$newToken = copyConfig($token);
+		logUsage($action, "", $newToken, "");
+		echo json_encode($newToken);
 	}
 
 
@@ -235,6 +234,7 @@ function saveConfig($config) {
 
 	if(empty($token) || !$tokenValid || $copyConfig) {
 		// save new configuration
+		$oldToken = $token;
 		$token = generateRandomToken();
 		$config->token = $token;
 		$configString = $mysql_link->real_escape_string(json_encode($config));
@@ -243,7 +243,7 @@ function saveConfig($config) {
 		$createConfigResult = $mysql_link->query($createConfigSql);
 
 		if($copyConfig) {
-			$copyWebsiteSql = "INSERT INTO demo_website SELECT '". $token ."', site, content, NOW(), NOW(), '". $userIP ."' FROM demo_website WHERE token = 'RHQoVvLc';";
+			$copyWebsiteSql = "INSERT INTO demo_website SELECT '". $token ."', site, content, NOW(), NOW(), '". $userIP ."' FROM demo_website WHERE token = '" . $oldToken . "';";
 			$mysql_link->query($copyWebsiteSql);
 			$config->message = $config->message . ", uploading new website";
 		}
@@ -256,7 +256,10 @@ function saveConfig($config) {
 
 
 function copyConfig($token) {
+	global $mysql_link;
+	
 	$configFromDB = getConfigFromDatabase($token);
+	$newToken = "";
 	if($configFromDB != null) {
 		$newToken = generateRandomToken();
 		$configFromDB->token = $newToken;
@@ -265,14 +268,16 @@ function copyConfig($token) {
 		$configName = $configFromDB->general->demoName;
 		$configDesc = "Copy of token " . $token . "\n" . $configFromDB->general->demoDescription;
 		$userIP = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+		$configString = $mysql_link->real_escape_string(json_encode($configFromDB));
 
 		$createConfigSql = "INSERT INTO `omnichanneldemo`.`demo_config` (`id`, `token`, `config_name`, `config_desc`, `config_json`, `create_dttm`, `modify_dttm`, `modify_by`, `email_to`) VALUES (NULL, '".$newToken."', '".$configName."', '".$configDesc."', '".$configString."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."', '".$userEmail."');";
 		$createConfigResult = $mysql_link->query($createConfigSql);
 
-		$copyWebsiteSql = "INSERT INTO demo_website SELECT '". $newToken ."', site, content, NOW(), NOW(), '". $userIP ."' FROM demo_website WHERE token = 'RHQoVvLc';";
+		$copyWebsiteSql = "INSERT INTO demo_website SELECT '". $newToken ."', site, content, NOW(), NOW(), '". $userIP ."' FROM demo_website WHERE token = '".$token."';";
 		$mysql_link->query($copyWebsiteSql);
 	}
 
+	return $newToken;
 }
 
 

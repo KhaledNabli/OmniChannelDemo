@@ -2,34 +2,22 @@
 var configScenario = {};
 
 function startConfigurator() {
-var tokenFromURL = readTokenFromURL(); // look after # if token is present
-var tokenFromLS = readToken(); // look if token is present in localStorage
-var token = "";
-
-
-if(tokenFromURL != undefined && tokenFromURL != "undefined" && tokenFromURL != "") {
-    token = tokenFromURL;
-} else if (tokenFromLS != undefined && tokenFromLS != "undefined" && tokenFromLS != "") {
-    token = tokenFromLS;
-}
-
-loadConfiguration(token);
+    var token = window.location.href.split("#")[1];
+    loadConfiguration(token);
 }
 
 function loadConfiguration(token) {
-    console.log("load config for token: " + token);
+    console.log("Loading Configuration for Token: " + token);
     getConfigurationByToken(token).done(function (config) { onLoadConfigurationDone(config);  });
 }
 
 function onLoadConfigurationDone(config) {
+    console.log("Loading Configuration for Token: " + config.token + " successfull.");
+    if(config.message) {
+        alert(config.message);
+    }
     configScenario = config;
     base64_decodeProperties(configScenario.web);
-
-    if(token != "" && config.token == token) {
-        // if token is valid, then save it for later usage
-        saveToken(config.token);
-    }
-
     initConfigurator();
 }
 
@@ -37,7 +25,6 @@ function onLoadConfigurationDone(config) {
 function onLoadTokenBtn(element) {
     var token = $('#selectToken').val();
     if(token != "") {
-        saveToken(token);
         loadConfiguration(token);
     }
     $('#popupLoadToken').modal('hide');
@@ -47,7 +34,6 @@ function onUndoConfigurationBtn(element) {
     var token = configScenario.token;
     console.log("undo all changes for token: " + token);
     if(token != "") {
-        saveToken(token);
         loadConfiguration(token);
     }
 }
@@ -59,7 +45,8 @@ function updateTokenDemoLinks() {
 
     if(token != '') {
 
-        $('#token').html(configScenario.token);
+        $('.token-display').html("Token: " + configScenario.token);
+        
 
         var encodedToken = encodeURIComponent(token);
         $('a.link2advisorapp').html(baseUrl + 'AdvisorApp/#' + encodedToken);
@@ -72,7 +59,7 @@ function updateTokenDemoLinks() {
         $('a.link2website').attr('href', baseUrl + 'Website/?token=' + encodedToken);
     }
     else {
-        $('#token').html("please save your demo");
+        $('.token-display').html("Please save your demo!");
 
         $('a.link2advisorapp').html("Please save your configuration to get the link to Advisor App");
         $('a.link2advisorapp').attr('href', "#");
@@ -85,7 +72,7 @@ function updateTokenDemoLinks() {
     }
 
     // set navigation items to point to #token in url
-    $(".dropdown-menu > li > a").attr("href", "#" + configScenario.token);
+    $("a[onclick]").attr("href", "#" + configScenario.token);
     // set url hash to token
     location.hash = configScenario.token;
 }
@@ -169,7 +156,8 @@ function initConfigurator() {
     editor.setValue(configScenario.web.nbaHtmlTemplate);
 
     $(".upload-image").off();
-    $(".upload-image").on("dblclick", onClickUploadImageField);
+    $("input.upload-image").on("dblclick", onClickUploadImageField);
+    $("input.upload-image").attr("placeholder", "Double click here to upload an image.");
     $(".image-preview").off();
     $(".image-preview").on("click", onClickPreviewImage);
 
@@ -193,10 +181,7 @@ function onResetConfigurationBtn() {
 }
 
 
-
-
-
-function onSaveConfigurationBtn() {
+function readConfigurationFromUI() {
 
     /*** for-loop to get all fromFields from configurator.html ***/
     readObjectElements(configScenario.general, "#");
@@ -208,15 +193,34 @@ function onSaveConfigurationBtn() {
 
     var editor = ace.edit("nbaHtmlTemplateEditor");
     readObjectElements(configScenario.web, "#");
-    configScenario.web.nbaHtmlTemplate = editor.getValue();
-    base64_encodeProperties(configScenario.web);
+    configScenario.web.nbaHtmlTemplate = editor.getValue();    
 
     /* save grids */
-    configScenario.nba 				 			= getNbaRecords();
+    configScenario.nba                          = getNbaRecords();
     configScenario.customers[0].actionHistory   = getHistoryRecords('c1');
-    configScenario.customers[1].actionHistory 	= getHistoryRecords('c2');
-    configScenario.general.sendSms 			    = getCheckbox('sendSms');
-    configScenario.general.rtdmBackend			= getCheckbox('rtdmBackend');
+    configScenario.customers[1].actionHistory   = getHistoryRecords('c2');
+    configScenario.general.sendSms              = getCheckbox('sendSms');
+    configScenario.general.rtdmBackend          = getCheckbox('rtdmBackend');
+}
+
+function onCopyConfiguration() {
+
+    if(configScenario.token != "") {
+        copyConfigurationToNewToken(configScenario.token).done(function (newToken) { loadConfiguration(newToken) });
+    } else {
+        alert("Here is nothing to copy.");
+    }
+
+}
+
+
+
+
+
+function onSaveConfigurationBtn() {
+
+    readConfigurationFromUI();
+    base64_encodeProperties(configScenario.web);
 
     // add validity checks: required fields:
     if(configScenario.general.demoName.length < 5) {
@@ -244,17 +248,57 @@ function onSaveConfigurationBtn() {
 }
 
 
+function exportConfiguration() {
+    
+    readObjectElements(configScenario.general, "#");
+    readObjectElements(configScenario.customers[0], "#c1");
+    readObjectElements(configScenario.customers[1], "#c2");
+    readObjectElements(configScenario.labels, "#");
+    readObjectElements(configScenario.mobileApp, "#");
+    readObjectElements(configScenario.advisorApp, "#");
+
+    var editor = ace.edit("nbaHtmlTemplateEditor");
+    readObjectElements(configScenario.web, "#");
+    configScenario.web.nbaHtmlTemplate = editor.getValue();
+    base64_encodeProperties(configScenario.web);
+
+    /* save grids */
+    configScenario.nba                          = getNbaRecords();
+    configScenario.customers[0].actionHistory   = getHistoryRecords('c1');
+    configScenario.customers[1].actionHistory   = getHistoryRecords('c2');
+    configScenario.general.sendSms              = getCheckbox('sendSms');
+    configScenario.general.rtdmBackend          = getCheckbox('rtdmBackend');
+
+    return JSON.stringify(configScenario);
+}
+
+
+
 /** Next Best Action Functions **/
 /******************************/
 function clearNbaRecords() {
     $('#configuratorNbaTbody').html("");
 }
 
+function onAddNewOffer() {
+    addNbaRecord();
+}
+
+function onAddNewGeoOffer() {
+    addNbaRecord('geo_offer','Geo Offer','This is the geo offer shown on the mobile app','','Hi %FIRSTNAME%. Come into our shop a present is waiting for you!','0','0','0','0','','');
+}
+
 function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjustscore, c1name, c2name) {
+    var srcTxt = "";
     if (!code) code = "";
     if (!name) name = "";
     if (!desc) desc = "";
-    if (!img) img = "";
+    if (!img) {
+        img = "";
+        srcTxt = "data-src=\"holder.js/150x200?theme=sky&text=No Image.\"";
+    } else {
+        srcTxt = "src=\"" + img + "\"";
+    }
     if (!sms) sms = "";
     if (!maxContacts) maxContacts = "";
     if (!c1score) c1score = "";
@@ -267,6 +311,10 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
     var existingRecords = $('#configuratorNbaTbody').html();
 
     $('#configuratorNbaTbody').html("<tr>"
+        +"<td>"
+        +"  <img "+srcTxt+" class='img-responsive'>"
+        +"</td>"
+
         +"<td>"
         +"<div class='form-group'>"
         +"  <label class='col-lg-3 col-sm-3  control-label'>Code</label>"
@@ -305,17 +353,21 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
         +"  </div>"
         +"</div>"
 
+
+
+
         +"<div class='form-group'>"
         +"  <label class='col-lg-1 col-sm-2 control-label'>Image</label>"
         +"  <div class='col-lg-11 col-sm-12'>"
-        +"    <input name='offerImg' value='"+img+"' type='url' placeholder='double click here to upload image' class='form-control upload-image' >"
+        +"<div class='input-group'>"
+        +"    <input type='text' value='" + img + "'' class='form-control upload-image' name='offerImg' placeholder='double click here to upload image' >"
+        +"    <div class='input-group-addon'><a href='#' onClick='onUploadImageIconClick(this);'><span class='glyphicon glyphicon-cloud-upload'></span></a></div>"
+        +"    <div class='input-group-addon'><a href='#' onClick='onPreviewImageIconClick(this);'><span class='glyphicon glyphicon-eye-open'></span></a></div>"
+        +"</div>"
         +"  </div>"
         +"</div>"
         +"</td>"
 
-        +"<td>"
-        +"  <img alt='*** Upload Image and save demo to see preview ***' src='"+img+"' class='img-responsive' style='margin: 0 auto;padding:1px;border-radius:10px;border:1px solid #021a40;'>"
-        +"</td>"
 
         +"<td>"
         +"<div class='form-group'>"
@@ -350,6 +402,8 @@ function addNbaRecord(code,name,desc,img,sms,maxContacts,c1score,c2score,adjusts
     $(".upload-image").on("dblclick", onClickUploadImageField);
     $(".image-preview").off();
     $(".image-preview").on("click", onClickPreviewImage);
+
+    Holder.run();
 
     return false; 
 }
@@ -451,7 +505,7 @@ function checkIfTrue(value) {
 
 
 function onUploadWebsiteCommitBtn(element) {
-    if(readToken() == "") {
+    if(configScenario.token == "") {
         alert("Please save your configuration first.");
         return;
     }
@@ -472,7 +526,7 @@ function onUploadWebsiteCommitBtn(element) {
 }
 
 function onUploadWebsiteBtn(page) {
-    if(readToken() == "") {
+    if(configScenario.token == "") {
         alert("Please save your configuration first.");
         return;
     }
@@ -482,34 +536,66 @@ function onUploadWebsiteBtn(page) {
 }
 
 function onEditWebsiteBtn(page) {
-    if(readToken() == "") {
+    if(configScenario.token == "") {
         alert("Please save your configuration first.");
         return;
     }
-    var redirectUrl = "./Website/?token=" + encodeURIComponent(readToken()) + "&action=edit&page=" + page;
+    var redirectUrl = "./Website/?token=" + encodeURIComponent(configScenario.token) + "&action=edit&page=" + page;
     window.open(redirectUrl);
 }
 
 function onViewWebsiteBtn(page) {
-    if(readToken() == "") {
+    if(configScenario.token == "") {
         alert("Please save your configuration first.");
         return;
     }
-    var redirectUrl = "./Website/?token=" + encodeURIComponent(readToken()) + "&action=read&page=" + page;
+    var redirectUrl = "./Website/?token=" + encodeURIComponent(configScenario.token) + "&action=read&page=" + page;
     window.open(redirectUrl);
 }
 
 
-function onClickUploadImageField(event) {
-    var currentToken = configScenario.token;
+function onUploadImageIconClick(iconElem) {
+    if(configScenario.token == "") {
+        alert("Please save your configuration before uploading images.");
+        return;
+    }
 
-    if(currentToken == "") {
+    var elem = $(iconElem).parent().parent().find("input")[0];
+    console.log(elem);
+
+    // if element do not have an id assigned - then assign temporary id
+    if(!elem.id || elem.id == "") {
+        elem.id = "tempImageUploadId" + Math.ceil(Math.random()*1000000);
+    }
+    var fieldId = elem.id;
+    var fieldSelector = "#" + fieldId;
+
+    console.log("Fieldselector to update later: " + fieldSelector);
+
+    // the selector is stored in a hidden field to be used when we upload the picture
+    $("#formUploadImage > div > input[name='uploadTriggeredBy']").val(fieldSelector);
+    $("#formUploadImage > div > input[name='imageDesc']").val("T:" + configScenario.token + " : F:" + fieldSelector);
+    // show the modal window
+    $('#popupUploadImage').modal('show');
+}
+
+
+function onPreviewImageIconClick(iconElem) {
+    var elem = $(iconElem).parent().parent().find("input");
+    $('#imgPreviewImage').attr('src', elem.val());
+    $('#modalTitlePreviewImage').text("Image Preview");
+    $('#popupPreviewImage').modal('show');
+}
+
+
+
+function onClickUploadImageField(event) {
+    if(configScenario.token == "") {
         alert("Please save your configuration before uploading images.");
         return;
     }
     // we apply a trick here:
     // we register all elements with the class = "upload-image" to call this function on click
-
     // find the element id who was clicked and store the id and css-selector
     var elem = event.currentTarget;
     // if element do not have an id assigned - then assign temporary id
@@ -519,17 +605,20 @@ function onClickUploadImageField(event) {
     var fieldId = elem.id;
     var fieldSelector = "#" + fieldId;
 
+    console.log("Fieldselector to update later: " + fieldSelector);
+
     // the selector is stored in a hidden field to be used when we upload the picture
-    $("#formUploadImage").children("input[name='uploadTriggeredBy']").val(fieldSelector);
-    $("#formUploadImage").children("input[name='imageDesc']").val("OCD T:" + readToken() + " : F:" + fieldSelector);
+    $("#formUploadImage > div > input[name='uploadTriggeredBy']").val(fieldSelector);
+    $("#formUploadImage > div > input[name='imageDesc']").val("T:" + configScenario.token + " : F:" + fieldSelector);
     // show the modal window
     $('#popupUploadImage').modal('show');
 }
 
 
 
-function onUploadImageSubmit(elem, e) {
+function onUploadImageSubmit(elem,event) {
     // upload picture with ajax method
+
     var formData = new FormData($(elem)[0]);
 
     $.ajax({
@@ -544,8 +633,9 @@ function onUploadImageSubmit(elem, e) {
             if(result.status == "success") {
                 // when the picture is uploaded, we need to store the url in the field which initiated the upload
                 // the field is identified by the selector which is stored in the hidden field (name = uploadTriggeredBy)
-                var fieldToUpdate = $(elem).children("input[name='uploadTriggeredBy']").val();
+                var fieldToUpdate = $("#formUploadImage > div > input[name='uploadTriggeredBy']").val();
                 // update the value of the field with the new url
+                console.log("Field to update: " + fieldToUpdate);
                 $(fieldToUpdate).val(result.imageUrl);
                 // hide modal window
                 $('#popupUploadImage').modal('hide');
@@ -555,7 +645,7 @@ function onUploadImageSubmit(elem, e) {
         }
     });
 
-    e.preventDefault();
+    event.preventDefault();
 }
 
 
@@ -632,7 +722,6 @@ function readObjectElements(properties, selectorPrefix) {
 
         } else {
             console.log("Note: readObjectElements is pointing to an selector: " + selectorPrefix + property + ", which does not exist.");
-
         }
     }
 }

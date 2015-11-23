@@ -1,85 +1,203 @@
 <div role="tabpanel" class="tab-pane" id="tab_customers">
     <div class="container">
         <div class="row">
+            <div class="col-sm-12">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs nav-justified" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#tab_customer1" aria-controls="tab_customer1" role="tab" data-toggle="tab"><span class='glyphicon glyphicon-user'></span> &nbsp; Customer 1</a>
+                    </li>
+                    <li role="presentation" >
+                        <a href="#tab_customer2" aria-controls="tab_customer2" role="tab" data-toggle="tab"><span class='glyphicon glyphicon-user'></span> &nbsp; Customer 2</a>
+                    </li>
+                </ul>
+            </div>
 
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active">
-                    <a href="#tab_customer1" aria-controls="tab_customer1" role="tab" data-toggle="tab">Customer 1</a>
-                </li>
-                <li role="presentation" >
-                    <a href="#tab_customer2" aria-controls="tab_customer2" role="tab" data-toggle="tab">Customer 2</a>
-                </li>
-            </ul>
+            <div>
+                <hr>
 
-            <div class="tab-content">
 
-                <div role="tabpanel" class="tab-pane" id="tab_customer2">
-                    <div class ="form-group"></div>
-                    <form class="form-horizontal" role="form">
 
-                        <div class="form-group">
-                            <label for="c2firstName" class="col-sm-2 control-label">Firstname</label>
+                <div class="row">
+                    <div class="tab-content">
+
+                        <div role="tabpanel" class="tab-pane active" id="tab_customer1">
+                            <div class ="form-group"></div>
+                            <form class="form-horizontal" role="form">                        
+                                <div class="form-group">                            
+                                    <label for="c1customerLogin" class="col-sm-2 control-label">Customer Login</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="c1customerLogin" placeholder="">
+                                    </div>
+                                    <label for="c1email" class="col-sm-2 control-label">Email Adress</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" id="c1email" placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="c1firstName" class="col-sm-2 control-label">Firstname</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="c1firstName" placeholder="">
+                                    </div>
+                                    <label for="c1lastName" class="col-sm-2 control-label">Lastname</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" id="c1lastName" placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">                            
+                                    <label id="c1pictureUrlLabel" for="c1pictureUrl" class="col-sm-2 control-label">Picture </label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                          <input type="text" class="form-control upload-image" id="c1pictureUrl" placeholder="double click here to upload image">
+                                          <div class="input-group-addon"><a href="#" onClick="onUploadImageIconClick(this);"><span class='glyphicon glyphicon-cloud-upload'></span></a></div>
+                                          <div class="input-group-addon"><a href="#" onClick="onPreviewImageIconClick(this);"><span class='glyphicon glyphicon-eye-open'></span></a></div>
+                                      </div>
+                                  </div>
+
+                              </div>
+
+                              <div class="form-group">
+                                <label for="c1lifeStageSegment" class="col-sm-2 control-label">Life Stage Segment</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="c1lifeStageSegment" placeholder="">
+                                </div>
+                                <label for="c1mobileNumber" class="col-sm-2 control-label">Mobile Number</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" id="c1mobileNumber" placeholder="+<country-code><mobile-nr>">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="c1age" class="col-sm-2 control-label">Age</label>
+                                <div class="col-sm-1">
+                                    <input type="text" class="form-control" id="c1age" placeholder="">
+                                </div>
+                                <label id="c1bar1Label" for="c1analyticsBar1Value" class="col-sm-1 control-label">Analytics Bar 1</label>
+                                <div class="col-sm-1">
+                                    <input type="text" class="form-control" id="c1analyticsBar1Value" placeholder="">
+                                </div>
+
+                                <label id="c1bar2Label" for="c1analyticsBar2Value" class="col-sm-1 control-label">Analytics Bar 2</label>
+                                <div class="col-sm-1">
+                                    <input type="text" class="form-control" id="c1analyticsBar2Value" placeholder="">
+                                </div>
+
+                                <label id="c1bar3Label" for="c1analyticsBar3Value" class="col-sm-1 control-label">Analytics Bar 3</label>
+                                <div class="col-sm-1">
+                                    <input type="text" class="form-control" id="c1analyticsBar3Value" placeholder="">
+                                </div>
+
+                                <label id="c1bar4Label" for="c1analyticsBar4Value" class="col-sm-1 control-label">Analytics Bar 4</label>
+                                <div class="col-sm-1">
+                                    <input type="text" class="form-control" id="c1analyticsBar4Value" placeholder="">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                            </div>
+
+                            <!-- ActionHistory  -->
+                            <div class="row"> 
+                                <div class="col-sm-2"></div><div class="col-sm-4"><h3> Action History </h3> </div>
+                            </div>
+
+                            <div class="row"> <!-- ActionHistory Grid Customer 1-->
+                                <div class="col-sm-12">                                                                               
+                                    <table id="c1configuratorActionHistoryTable" class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr >
+                                                <th class="text-center" width="10%">Date</th>
+                                                <th class="text-center" width="30%">Action</th>
+                                                <th class="text-center" width="25%">Channel</th>
+                                                <th class="text-center" width="30%">Response</th>
+                                                <th width="10%">
+                                                    <a id="add_row" onclick="addHistoryRecord('c2');" class="btn pull-right btn-primary btn-block">Add</a>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="c1configuratorActionHistoryTbody">
+                                        </tbody>
+                                    </table>                               
+                                </div>
+                            </div><!-- Ende ActionHistory Grid Customer 1 -->
+
+                            <div class="form-group"></div>
+                        </form>
+                    </div>
+
+
+
+                    <div role="tabpanel" class="tab-pane" id="tab_customer2">
+                        <div class ="form-group"></div>
+                        <form class="form-horizontal" role="form">                        
+                            <div class="form-group">                            
+                                <label for="c2customerLogin" class="col-sm-2 control-label">Customer Login</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="c2customerLogin" placeholder="">
+                                </div>
+                                <label for="c2email" class="col-sm-2 control-label">Email Adress</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" id="c2email" placeholder="">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="c2firstName" class="col-sm-2 control-label">Firstname</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="c2firstName" placeholder="">
+                                </div>
+                                <label for="c2lastName" class="col-sm-2 control-label">Lastname</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" id="c2lastName" placeholder="">
+                                </div>
+                            </div>
+
+                            <div class="form-group">                            
+                                <label id="c2pictureUrlLabel" for="c2pictureUrl" class="col-sm-2 control-label">Picture </label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                      <input type="text" class="form-control upload-image" id="c2pictureUrl" placeholder="double click here to upload image">
+                                      <div class="input-group-addon"><a href="#" onClick="onUploadImageIconClick(this);"><span class='glyphicon glyphicon-cloud-upload'></span></a></div>
+                                      <div class="input-group-addon"><a href="#" onClick="onPreviewImageIconClick(this);"><span class='glyphicon glyphicon-eye-open'></span></a></div>
+                                  </div>
+                              </div>
+
+                          </div>
+
+                          <div class="form-group">
+                            <label for="c2lifeStageSegment" class="col-sm-2 control-label">Life Stage Segment</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="c2firstName" placeholder="">
+                                <input type="text" class="form-control" id="c2lifeStageSegment" placeholder="">
                             </div>
                             <label for="c2mobileNumber" class="col-sm-2 control-label">Mobile Number</label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <input type="text" class="form-control" id="c2mobileNumber" placeholder="+<country-code><mobile-nr>">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="c2lastName" class="col-sm-2 control-label">Lastname</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="c2lastName" placeholder="">
-                            </div>
-                            <label for="c2lifeStageSegment" class="col-sm-2 control-label">Life Stage Segment</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="c2lifeStageSegment" placeholder="">
-                            </div>
-                        </div>
-
-                        <div class="form-group">                            
-                            <label id="c2pictureUrlLabel" for="c2pictureUrl" class="col-sm-2 control-label image-preview">Picture Url <span class='glyphicon glyphicon-eye-open'></span></label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control upload-image" id="c2pictureUrl" placeholder="">
-                            </div>
-                            <label for="c2email" class="col-sm-2 control-label">Email</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="c2email" placeholder="">
-                            </div>
-                        </div>
-
-                        <div class="form-group">                            
-                            <label for="c2customerLogin" class="col-sm-2 control-label">Customer Login</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="c2customerLogin" placeholder="">
-                            </div>
-
                             <label for="c2age" class="col-sm-2 control-label">Age</label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-1">
                                 <input type="text" class="form-control" id="c2age" placeholder="">
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label id="c2bar1Label" for="c2analyticsBar1Value" class="col-sm-2 control-label">Analytics Bar 1</label>
+                            <label id="c2bar1Label" for="c2analyticsBar1Value" class="col-sm-1 control-label">Analytics Bar 1</label>
                             <div class="col-sm-1">
                                 <input type="text" class="form-control" id="c2analyticsBar1Value" placeholder="">
                             </div>
 
-                            <label id="c2bar2Label" for="c2analyticsBar2Value" class="col-sm-2 control-label">Analytics Bar 2</label>
+                            <label id="c2bar2Label" for="c2analyticsBar2Value" class="col-sm-1 control-label">Analytics Bar 2</label>
                             <div class="col-sm-1">
                                 <input type="text" class="form-control" id="c2analyticsBar2Value" placeholder="">
                             </div>
 
-                            <label id="c2bar3Label" for="c2analyticsBar3Value" class="col-sm-2 control-label">Analytics Bar 3</label>
+                            <label id="c2bar3Label" for="c2analyticsBar3Value" class="col-sm-1 control-label">Analytics Bar 3</label>
                             <div class="col-sm-1">
                                 <input type="text" class="form-control" id="c2analyticsBar3Value" placeholder="">
                             </div>
 
-                            <label id="c2bar4Label" for="c2analyticsBar4Value" class="col-sm-2 control-label">Analytics Bar 4</label>
+                            <label id="c2bar4Label" for="c2analyticsBar4Value" class="col-sm-1 control-label">Analytics Bar 4</label>
                             <div class="col-sm-1">
                                 <input type="text" class="form-control" id="c2analyticsBar4Value" placeholder="">
                             </div>
@@ -116,111 +234,6 @@
                         <div class="form-group"></div>
                     </form>
                 </div>
-
-                <div role="tabpanel" class="tab-pane active" id="tab_customer1">
-                    <div class ="form-group"></div>
-                    <form class="form-horizontal" role="form">
-
-                        <div class="form-group">
-                            <label for="c1firstName" class="col-sm-2 control-label">Firstname</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="c1firstName" placeholder="">
-                            </div>
-                            <label for="c1mobileNumber" class="col-sm-2 control-label">Mobile Number</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="c1mobileNumber" placeholder="+<country-code><mobile-nr>">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="c1lastName" class="col-sm-2 control-label">Lastname</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="c1lastName" placeholder="">
-                            </div>
-                            <label for="c1lifeStageSegment" class="col-sm-2 control-label">Life Stage Segment</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="c1lifeStageSegment" placeholder="">
-                            </div>
-                        </div>
-
-                        <div class="form-group">                            
-                            <label id="c1pictureUrlLabel" for="c1pictureUrl" class="col-sm-2 control-label image-preview">Picture Url <span class='glyphicon glyphicon-eye-open'></span></label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control upload-image" id="c1pictureUrl" placeholder="">
-                            </div>
-                            <label for="c1email" class="col-sm-2 control-label">Email</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="c1email" placeholder="">
-                            </div>
-                        </div>
-
-                        <div class="form-group">                            
-                            <label for="c1customerLogin" class="col-sm-2 control-label">Customer Login</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="c1customerLogin" placeholder="">
-                            </div>
-
-                            <label for="c1age" class="col-sm-2 control-label">Age</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="c1age" placeholder="">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label id="c1bar1Label" for="c1analyticsBar1Value" class="col-sm-2 control-label">Analytics Bar 1</label>
-                            <div class="col-sm-1">
-                                <input type="text" class="form-control" id="c1analyticsBar1Value" placeholder="">
-                            </div>
-
-                            <label id="c1bar2Label" for="c1analyticsBar2Value" class="col-sm-2 control-label">Analytics Bar 2</label>
-                            <div class="col-sm-1">
-                                <input type="text" class="form-control" id="c1analyticsBar2Value" placeholder="">
-                            </div>
-
-                            <label id="c1bar3Label" for="c1analyticsBar3Value" class="col-sm-2 control-label">Analytics Bar 3</label>
-                            <div class="col-sm-1">
-                                <input type="text" class="form-control" id="c1analyticsBar3Value" placeholder="">
-                            </div>
-
-                            <label id="c1bar4Label" for="c1analyticsBar4Value" class="col-sm-2 control-label">Analytics Bar 4</label>
-                            <div class="col-sm-1">
-                                <input type="text" class="form-control" id="c1analyticsBar4Value" placeholder="">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                        </div>
-
-                        <!-- ActionHistory  -->
-                        <div class="row"> 
-                            <div class="col-sm-2"></div><div class="col-sm-4"><h3> Action History </h3> </div>
-                        </div>
-
-                        <div class="row"> <!-- ActionHistory Grid Customer 1-->
-                            <div class="col-sm-12">                                                                               
-                                <table id="c1configuratorActionHistoryTable" class="table table-bordered table-hover">
-                                    <thead>
-                                        <tr >
-                                            <th class="text-center" width="10%">Date</th>
-                                            <th class="text-center" width="30%">Action</th>
-                                            <th class="text-center" width="25%">Channel</th>
-                                            <th class="text-center" width="30%">Response</th>
-                                            <th width="10%">
-                                                <a id="add_row" onclick="addHistoryRecord('c1');" class="btn pull-right btn-primary btn-block">Add</a>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="c1configuratorActionHistoryTbody">
-                                    </tbody>
-                                </table>                               
-                            </div>
-                        </div><!-- Ende ActionHistory Grid Customer 1 -->
-
-                        <div class="form-group"></div>
-                    </form>
-                </div>
-
-
             </div>
 
         </div>

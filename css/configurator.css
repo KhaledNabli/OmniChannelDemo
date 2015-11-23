@@ -1,5 +1,10 @@
 body { padding-bottom: 70px; }
 
+.navbar {
+	color: white;
+}
+
+
 .navbar-fixed-bottom {
 	padding: 10px;
 }

@@ -47,6 +47,12 @@ function getConfigurationByToken(token) {
 				});
 }
 
+function copyConfigurationToNewToken(oldToken) {
+	return callApi({action: 'copyConfig', 
+					token: oldToken
+				});
+}
+
 function saveConfiguration($config) {
 	return callApi({action: 'saveConfig', 
 					config: JSON.stringify(configScenario)
@@ -66,7 +72,9 @@ function callApi(parameters) {
 
 
 
+
 function getToken() {
+	alert("Do not use getToken()");
 	var token = "";
 	var tokenFromUrl = readTokenFromURL();
     if(tokenFromUrl != undefined && tokenFromUrl != "") {
@@ -81,6 +89,7 @@ function getToken() {
 
 
 function readTokenFromURL() {
+	alert("Do not use readTokenFromURL()");
 	var tokenFromParameter = getQueryVariable("token");
 	var tokenAfterHash = window.location.href.split('#')[1];
 	return decodeURIComponent(tokenFromParameter ? tokenFromParameter : tokenAfterHash);
@@ -89,6 +98,7 @@ function readTokenFromURL() {
 
 
 function getQueryVariable(variable) {
+  alert("Do not use getQueryVariable()");
   var query = window.location.search.substring(1);
   var vars = query.split("&");
   for (var i=0;i<vars.length;i++) {
@@ -107,13 +117,17 @@ function getBaseURL() {
 
 
 function readToken() {
+	alert("Do not use readToken()");
 	return window.localStorage.omnichanneltoken ? window.localStorage.omnichanneltoken : "";
 }
 
 
 function saveToken(token) {
+	alert("Do not use saveToken()");
 	window.localStorage.omnichanneltoken = token;
 }
+
+
 
 function getOfferNameByCode(offerCode, offerList) {
 	var offerName = "";
