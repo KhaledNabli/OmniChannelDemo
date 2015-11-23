@@ -291,8 +291,8 @@ function displayOffers(offers) {
 			templateContent.push({"name": "OfferName", 		"value": offerObj.offerdetails.offerName });
 			templateContent.push({"name": "OfferDesc", 		"value": offerObj.offerdetails.offerDesc });
 			templateContent.push({"name": "OfferImage", 	"value": offerObj.offerdetails.offerImg });
-			templateContent.push({"name": "Firstname",		"value": offerObj.customerdetails.customerFirstname });
-			templateContent.push({"name": "Lastname",		"value": offerObj.customerdetails.customerLastname });
+			templateContent.push({"name": "Firstname",		"value": offerObj.customerdetails.firstName });
+			templateContent.push({"name": "Lastname",		"value": offerObj.customerdetails.lastName });
 			templateContent.push({"name": "CustomerPicture","value": offerObj.customerdetails.pictureUrl });
 			templateContent.push({"name": "CustomerSegment","value": offerObj.customerdetails.lifeStageSegment });
 			templateContent.push({"name": "TrackAsAccept", 	"value": renderTrackingElement(offerObj.offer, "accept")});

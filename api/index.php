@@ -67,6 +67,11 @@ function processRequest() {
 		echo json_encode(getAllConfigsFromDatabase($userEmail, $maxItems));
 	}
 
+	else if ($action == 'getStandardDemos') {
+		logUsage($action, "", "", "");
+		echo json_encode(getDefaultConfigsFromDatabase());
+	}
+
 	else if($action == 'resetDemo') {
 		resetDemo($token);
 		logUsage($action, "", $token, "");
@@ -306,6 +311,23 @@ function getAllConfigsFromDatabase($email, $limit) {
 
 	return $result;
 }
+
+function getDefaultConfigsFromDatabase() {
+	global $mysql_link;
+	$result = array();
+
+
+	$configQuerySql = "SELECT id, token, config_name, config_desc, read_only, create_dttm, modify_dttm, email_to  FROM `demo_config` WHERE read_only = '1' ORDER BY `modify_dttm` DESC"; 
+	$configQueryResult = $mysql_link->query($configQuerySql);
+	$configQuerySize = @$configQueryResult->num_rows;
+
+	for($i = 0; $i < $configQuerySize; $i++) {
+		$result[$i] = $configQueryResult->fetch_assoc();
+	}
+
+	return $result;
+}
+
 
 
 
