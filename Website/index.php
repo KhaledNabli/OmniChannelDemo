@@ -192,7 +192,7 @@ function uploadWebsiteToDatabase($token, $page, $url, $options) {
 	$parsedUrl = parse_url($url);
 	// TODO
 	$jsFolderUrl = "http://". $_SERVER['SERVER_NAME'] ."/OmniChannelDemo/";
-	$baseRefUrl = $parsedUrl["scheme"] . "://" . $parsedUrl["host"] . $parsedUrl["path"];
+	$baseRefUrl = @$parsedUrl["scheme"] . "://" . @$parsedUrl["host"] . @$parsedUrl["path"];
 
 
 	
@@ -210,11 +210,12 @@ function uploadWebsiteToDatabase($token, $page, $url, $options) {
 	}
 	
 	$htmlOutput = outputDOMHtml($htmlDom, $tidyOutput);
+	$htmlOutputLength =  mb_strlen($htmlOutput);
 	
 	savePageToDatabase($token, $page, $htmlOutput, false);
 
 	echo json_encode(array("token" => $token, "page" => $page, "url" => $parsedUrl, "insertBase" => $insertBase, "fixLinks" => $fixLinks,
-		 "tidyOutput" => $tidyOutput, "insertJS" => $insertJS, "removeExtJs" => $removeExtJs));
+		 "tidyOutput" => $tidyOutput, "insertJS" => $insertJS, "removeExtJs" => $removeExtJs , "htmlOutputLength" => $htmlOutputLength));
 }
 
 
@@ -255,21 +256,27 @@ function displayEditor($token, $page) {
     }
 
     #control_buttons {
-        margin: 0;
+        margin: 0px;
         position: absolute;
         bottom: 10px;
         right: 10px;
     }
+
+    #control_buttons > lable {
+    	padding-right: 20px;
+	}
+
   </style>
 </head>
 <body>
 
 <div id="control_buttons">
 	<lable>
-		<input id="optionsCheckbox" type="checkbox" value="insert_js_base"/> Insert JS and Base Tag
+		<input id="optionsCheckbox" type="checkbox" value="insert_js_base"/> (re) insert required Javascripts and clean up HTML.
 	</lable>
 	
-	<input type="button" class="btn btn-lg btn-primary" value="Save" onclick="saveContent();"/>
+	<input type="button" class="btn btn-lg btn-default" value="Save" onclick="saveContent();"/>
+	<input type="button" class="btn btn-lg btn-primary" value="Save and Close" onclick="saveContent(true);"/>
 </div>
 
 <div>
@@ -289,7 +296,7 @@ function displayEditor($token, $page) {
     editor.setTheme("ace/theme/monokai");
     editor.session.setMode("ace/mode/html");
 
-    function saveContent() {
+    function saveContent(closeWindowAfterSaving) {
     	var token = "<?php echo $token; ?>";
     	var page = "<?php echo $page; ?>";
     	var content = editor.getValue();
@@ -300,8 +307,11 @@ function displayEditor($token, $page) {
 	        data: {action: "save",token: token, page: page, content: content, options: options}
 	    } ).done(function(result) {
 	    	console.log(result);
-	    	alert("Website Saved successfully.");
-	    	if(reloadPageAfterSaving) {
+	    	alert("Website saved successfully.");
+	    	if(closeWindowAfterSaving) {
+	    		window.close();
+	    	}
+	    	else if(reloadPageAfterSaving) {
 	    		location.reload();
 	    	}
 	    });;

@@ -1,186 +1,169 @@
 <!-- Start Tab: Website -->
 <div role="tabpanel" class="tab-pane" id="tab_web">
     <div class="container">
-    <form class="form-horizontal" role="form">
-        <div class="form-group"></div>
+        <form class="form-horizontal" role="form">
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-2"><h3> Demo Website </h3></div>
+                    <div class="form-group">
+                        <label for="startPageUrl" class="col-sm-2 control-label">Start Page</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                              <input id="startPageUrl" type="text" class="form-control" />
+                              <div class="input-group-addon"><a href="#" onClick="onUploadWebsiteBtn('start');"><span class='glyphicon glyphicon-cloud-upload'></span> Upload </a></div>
+                              <div class="input-group-addon"><a href="#" onClick="onEditWebsiteBtn('start');"><span class='glyphicon glyphicon-edit'></span> Edit </a></div>
+                              <div class="input-group-addon"><a href="#" onClick="onViewWebsiteBtn('start');"><span class='glyphicon glyphicon-eye-open'></span> Preview </a></div>
+                          </div>
+                      </div>
+                  </div>
 
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="col-sm-8 col-sm-offset-4"> <h3> Website Content </h3> </div>
-                <div class="form-group">
-                    <label for="startPageUrl" class="col-sm-4 control-label">Start Page</label>
-                    <div class="col-sm-8">
-                        <input id="startPageUrl" type="text" class="form-control" disabled/>
-                        <a href="#" onclick="onUploadWebsiteBtn('start');">
-                            <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Import Content
-                        </a>
-                        | 
-                        <a href="#" onclick="onEditWebsiteBtn('start');">
-                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Content
-                        </a>
-                        | 
-                        <a href="#" onclick="onViewWebsiteBtn('start');">
-                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View Website
-                        </a> 
-                    </div>
-                </div>
+                  <div class="form-group">
+                    <label for="loginPageUrl" class="col-sm-2 control-label">Login Page</label>
+                    <div class="col-sm-10">
+                        <div class="input-group">
+                          <input id="loginPageUrl" type="text" class="form-control" />
+                          <div class="input-group-addon"><a href="#" onClick="onUploadWebsiteBtn('login');"><span class='glyphicon glyphicon-cloud-upload'></span> Upload </a></div>
+                          <div class="input-group-addon"><a href="#" onClick="onEditWebsiteBtn('login');"><span class='glyphicon glyphicon-edit'></span> Edit </a></div>
+                          <div class="input-group-addon"><a href="#" onClick="onViewWebsiteBtn('login');"><span class='glyphicon glyphicon-eye-open'></span> Preview </a></div>
+                      </div>
+                  </div>
+              </div>
 
-                <div class="form-group">
-                    <label for="loginPageUrl" class="col-sm-4 control-label">Login Page</label>
-                    <div class="col-sm-8">
-                        <input id="loginPageUrl" type="text" class="form-control" disabled/>
-                        <a href="#" onclick="onUploadWebsiteBtn('login');">
-                            <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Import Content
-                        </a>
-                        | 
-                        <a href="#" onclick="onEditWebsiteBtn('login');">
-                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Content
-                        </a>
-                        | 
-                        <a href="#" onclick="onViewWebsiteBtn('login');">
-                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View Website
-                        </a>
-                    </div>
-                </div>
+              <div class="form-group">
+                <label for="landingPageUrl" class="col-sm-2 text-right">Landing Page</label>
+                <div class="col-sm-10">
+                    <div class="input-group">
+                      <input id="landingPageUrl" type="text" class="form-control" />
+                      <div class="input-group-addon"><a href="#" onClick="onUploadWebsiteBtn('landing');"><span class='glyphicon glyphicon-cloud-upload'></span> Upload </a></div>
+                      <div class="input-group-addon"><a href="#" onClick="onEditWebsiteBtn('landing');"><span class='glyphicon glyphicon-edit'></span> Edit </a></div>
+                      <div class="input-group-addon"><a href="#" onClick="onViewWebsiteBtn('landing');"><span class='glyphicon glyphicon-eye-open'></span> Preview </a></div>
+                  </div>
+              </div>
+          </div>
+  </div>
 
-                <div class="form-group">
-                    <label class="col-sm-4 text-right">Landing Page</label>
-                    <div class="col-sm-8">
-                        <input id="landingPageUrl" type="text" class="form-control" disabled/>
-                        <a href="#" onclick="onUploadWebsiteBtn('landing');">
-                            <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Import Content
-                        </a>
-                        | 
-                        <a href="#" onclick="onEditWebsiteBtn('landing');">
-                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Content
-                        </a>
-                        | 
-                        <a href="#" onclick="onViewWebsiteBtn('landing');">
-                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View Website
-                        </a> 
-                    </div>
-                </div>
-            </div>
-
-<div class="col-sm-6"> 
-    <div class="col-sm-8 col-sm-offset-4"> <h3> Website Element </h3> </div>
-    <div class="form-group">
-        <label for="startLinkSelector" class="col-sm-4 control-label">Set Link to Start</label>
-        <div class="col-sm-7">
-            <input type="text" class="form-control" id="startLinkSelector" required placeholder="Enter the CSS selector.">
-        </div>
-        <div class="col-sm-1">
-            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-        </div> 
-    </div>
-
-    <div class="form-group">
-        <label for="loginLinkSelector" class="col-sm-4 control-label">Set Link to Login</label>
-        <div class="col-sm-7">
-            <input type="text" class="form-control" id="loginLinkSelector" required placeholder="Enter the CSS selector.">
-        </div>
-        <div class="col-sm-1">
-            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-        </div> 
-    </div>
-
-    <div class="form-group">
-        <label for="loginLinkHtml" class="col-sm-4 control-label">Content of Login Link</label>
-        <div class="col-sm-7">
-            <input type="text" class="form-control" id="loginLinkHtml" placeholder="Enter the Text or HTML.">
-        </div>
-        <div class="col-sm-1">
-            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-        </div> 
-    </div>
-
-    <div class="form-group">
-        <label for="loginUserInputSelector" class="col-sm-4 control-label">Username Input</label>
-        <div class="col-sm-7">
-            <input type="text" class="form-control" id="loginUserInputSelector" required placeholder="Enter the CSS selector." >
-        </div>
-        <div class="col-sm-1">
-            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-        </div> 
-    </div>
-    <div class="form-group">
-        <label for="loginFormSelector" class="col-sm-4 control-label">Login Form</label>
-        <div class="col-sm-7">
-            <input type="text" class="form-control" id="loginFormSelector" required placeholder="Enter the CSS selector." >
-        </div>
-        <div class="col-sm-1">
-            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-        </div> 
-    </div>
-    <div class="form-group">
-        <label for="loginBtnInputSelector" class="col-sm-4 control-label">Login Button</label>
-        <div class="col-sm-7">
-            <input type="text" class="form-control" id="loginBtnInputSelector" required placeholder="Enter the CSS selector." >
-        </div>
-        <div class="col-sm-1">
-            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-        </div> 
-    </div>
-
-</div>
-
-
-
-<div class="row"> 
+  <div class="row">
     <div class="col-sm-2"></div>
-    <div class="col-sm-10"> <h3> Offer Display Settings </h3> </div>
+    <div class="col-sm-10"> <h3> Website Elements </h3> </div>
 
-    <div class="form-group">
-        <label for="nbaPlaceHolderSelector1" class="col-sm-2 control-label">Display Offer 1 at:</label>
-        <div class="col-sm-4">
-            <input type="text" class="form-control" id="nbaPlaceHolderSelector1" required placeholder="Enter the CSS selector." >
-        </div>
-        <label for="nbaPlaceHolderSelector2" class="col-sm-2 control-label">Display Offer 2 at:</label>
-        <div class="col-sm-4">
-            <input type="text" class="form-control" id="nbaPlaceHolderSelector2" required placeholder="Enter the CSS selector." >
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="nbaPlaceHolderSelector3" class="col-sm-2 control-label">Display Offer 3 at:</label>
-        <div class="col-sm-4">
-            <input type="text" class="form-control" id="nbaPlaceHolderSelector3" required placeholder="Enter the CSS selector." >
-        </div>
-        <label for="nbaPlaceHolderSelector4" class="col-sm-2 control-label">Display Offer 4 at:</label>
-        <div class="col-sm-4">
-            <input type="text" class="form-control" id="nbaPlaceHolderSelector4" required placeholder="Enter the CSS selector." >
-        </div>
-    </div>
+        <div class="form-group">
+            <label for="startLinkSelector" class="col-sm-2 control-label">Set Link to Start</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="startLinkSelector" required placeholder="CSS selector to <a> element. (optional)">
+            </div>
 
-    <div class="col-sm-9"> <h3> Offer Display Template </h3> </div>  <div class="col-sm-3"> <h3> Available Variables </h3> </div>
-    <div class="form-group">
-        <div class="col-sm-9">
-            <pre id="nbaHtmlTemplateEditor"></pre>
-        </div>
-        <div class="col-sm-3">
-            <p>
-                %Token%<br />
-                %OfferIndex%<br />
-                %OfferCode%<br />
-                %OfferName%<br />
-                %OfferDesc%<br />
-                %OfferImage%<br />
-                %CustomerLogin%<br />
-                %CustomerId%<br />
-                %Firstname%<br />
-                %Lastname%<br />
-                %CustomerPicture%<br />
-                %CustomerSegment%<br />
-                <br />
-                <i>%TrackAsAccept%<br />
-                    %TrackAsReject%<br />
-                    %TrackAsInterest%</i><br />
-                </p>
+
+            <label for="loginLinkSelector" class="col-sm-2 control-label">Set Link to Login</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="loginLinkSelector" required placeholder="CSS selector to <a>, <input> or <button> element.">
             </div>
         </div>
 
-        <div class="form-group"></div>
+        <div class="form-group">
+            <label for="loginLinkHtml" class="col-sm-2 control-label">Content of Login Link</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="loginLinkHtml" placeholder="Text or HTML snippet.">
+            </div>
+
+
+            <label for="loginUserInputSelector" class="col-sm-2 control-label">Username Input</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="loginUserInputSelector" required placeholder="CSS selector to <input> element." >
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="loginFormSelector" class="col-sm-2 control-label">Login Form</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="loginFormSelector" required placeholder="CSS selector to <form> element. (optional)" >
+            </div>
+
+
+            <label for="loginBtnInputSelector" class="col-sm-2 control-label">Login Button</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="loginBtnInputSelector" required placeholder="CSS selector to <a>, <input> or <button> element." >
+            </div>
+        </div>
+
+
+
     </div>
-</div>
+    <div class="row"> 
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10"> <h3> Offer Display Settings </h3> </div>
+
+        <div class="form-group">
+            <label for="nbaPlaceHolderSelector1" class="col-sm-2 control-label">Display Offer 1 at:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="nbaPlaceHolderSelector1" required placeholder="CSS selector to <div> element. (optional)" >
+            </div>
+            <label for="nbaPlaceHolderSelector2" class="col-sm-2 control-label">Display Offer 2 at:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="nbaPlaceHolderSelector2" required placeholder="CSS selector to <div> element. (optional)" >
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="nbaPlaceHolderSelector3" class="col-sm-2 control-label">Display Offer 3 at:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="nbaPlaceHolderSelector3" required placeholder="CSS selector to <div> element. (optional)" >
+            </div>
+            <label for="nbaPlaceHolderSelector4" class="col-sm-2 control-label">Display Offer 4 at:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="nbaPlaceHolderSelector4" required placeholder="CSS selector to <div> element. (optional)" >
+            </div>
+        </div>
+
+        <div class="col-sm-8"> <h3> Offer Display Template </h3> </div>  
+        <div class="col-sm-2"> <h3> Variables </h3> </div>
+        <div class="col-sm-2"> <h3> HTML Class </h3> </div>
+        <div class="form-group">
+            <div class="col-sm-8">
+                <pre id="nbaHtmlTemplateEditor"></pre>
+            </div>
+            <div class="col-sm-2">
+                <p>
+                    %Token% <br />
+                    %OfferIndex%<br />
+                    %OfferCode%<br />
+                    %OfferName%<br />
+                    %OfferDesc%<br />
+                    %OfferImage%<br />
+                    %CustomerLogin%<br />
+                    %Firstname%<br />
+                    %Lastname%<br />
+                    %CustomerPicture%<br />
+                    %CustomerSegment%<br />
+                    <br />
+                    <i>%TrackAsAccept%<br />
+                        %TrackAsReject%<br />
+                        %TrackAsInterest%</i><br />
+                    </p>
+                </div>
+                <div class="col-sm-2">
+                <p>
+                    ocdToken<br />
+                    ocdOfferIndex[n] n=1...9<br />
+                    ocdOfferCode[n] n=1...9<br />
+                    ocdOfferName[n] n=1...9<br />
+                    ocdOfferDesc[n] n=1...9<br />
+                    ocdOfferImage[n] n=1...9<br />
+                    ocdCustomerLogin<br />
+                    ocdFirstname<br />
+                    ocdLastname<br />
+                    ocdCustomerPicture<br />
+                    ocdCustomerSegment<br />
+                    <br />
+                    <i>
+                    ocdTrackAsAccept[n]<br />
+                    ocdTrackAsReject[n]<br />
+                    ocdTrackAsInterest[n]<br />n=1...9<br />
+                    </i>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group"></div>
+        </div>
+    </div>
 </form>
 </div>                
 </div><!-- End Tab: Website -->

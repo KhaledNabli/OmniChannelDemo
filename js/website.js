@@ -40,6 +40,8 @@ jQuery(document).ready(function () {
 			websiteConfig.web.nbaPlaceHolderSelectors.push(websiteConfig.web.nbaPlaceHolderSelector4);
 		}
 
+		websiteConfig.web.placeholderCount = countPlaceHolders();
+
 		prepareWebsite();
 	});
 
@@ -218,7 +220,7 @@ function refreshOffers(doNotTrack) {
 		alert("Could not find the customer id in local storage. Please use the login page first.");
 		return;
 	}
-	var maxOffers = websiteConfig.web.nbaPlaceHolderSelectors.length;
+	var maxOffers = websiteConfig.web.placeholderCount;
 	// request offers from API
 	return getOffersForCustomer(token, customerLogin, "Website", maxOffers, doNotTrack).done(function (offers) {
 		if(checkIfOffersHasChanged(websiteConfig.currentOffers, offers)) {
@@ -242,8 +244,8 @@ function checkIfOffersHasChanged(oldOfferList, newOfferList) {
 		return true;
 	}
 
-	for(jQueryi = 0; jQueryi < oldOfferList.length; jQueryi++) {
-		if(oldOfferList[jQueryi].offer != newOfferList[jQueryi].offer) {
+	for(var i = 0; i < oldOfferList.length; i++) {
+		if(oldOfferList[i].offer != newOfferList[i].offer) {
 			return true;
 		}
 	}
@@ -252,9 +254,26 @@ function checkIfOffersHasChanged(oldOfferList, newOfferList) {
 }
 
 
+function countPlaceHolders() {
+	if(websiteConfig.web.nbaPlaceHolderSelectors.length > 0) {
+		return websiteConfig.web.nbaPlaceHolderSelectors.length;
+	}
+
+	var foundPlaceHolders = 0;
+	for(var i = 1; i < 10;  i++) {
+		var searchSelector = ".ocdOfferName" + i;
+		if(jQuery(searchSelector).length == 0) {
+			break;
+		}
+		foundPlaceHolders = i;
+	}
+
+	return foundPlaceHolders;
+}
+
 function displayOffers(offers) {
 	var countOffers = offers.length;
-	var countPlaceholder = websiteConfig.web.nbaPlaceHolderSelectors.length;
+	var countPlaceholder = websiteConfig.web.placeholderCount;
 
 	for ( var i = 0; i < Math.max(countPlaceholder, countOffers); i ++ ) {
 		if(i < countOffers) {
@@ -264,17 +283,6 @@ function displayOffers(offers) {
 			offerObj.offerdetails = getOfferByCode(offerObj.offer, websiteConfig.nba);
 			offerObj.customerdetails = getCustomerByLogin(offerObj.customer, websiteConfig.customers);
 			offerObj.index = i+1;
-
-			/*
-				count: null
-				customer: "1234"
-				display_limit: "3"
-				entrytype: null
-				offer: "oc02"
-				responded: "0"
-				score: "66.000"
-				token: "Wh5JRj88"
-			*/
 
 			templateContent.push({"name": "Token", 			"value": websiteConfig.token});
 			templateContent.push({"name": "CustomerLogin", 	"value": offerObj.customer});

@@ -155,7 +155,6 @@ function getConfig($token) {
 
 	if(!empty($token)) {
 		$config = getConfigFromDatabase($token);
-
 	}
 
 	if(empty($config) || $config == null){
@@ -164,7 +163,7 @@ function getConfig($token) {
 
 		if(!empty($token)) {
 			$config->token = "";
-			$config->message = "Token invalid: providing default config settings.";
+			$config->message = "Token is invalid. You got the default configuration.";
 		}
 	}
  
@@ -228,7 +227,7 @@ function saveConfig($config) {
 			$configString = $mysql_link->real_escape_string(json_encode($config));
 			$updateConfigSql = "UPDATE `omnichanneldemo`.`demo_config` SET  `config_name` = '".$configName."',  `config_desc` = '".$configDesc."', `config_json` = '".$configString."', `email_to` = '".$userEmail."', `modify_by` = '".$userIP."', `modify_dttm` = CURRENT_TIMESTAMP WHERE `demo_config`.`token` = '" . $token . "' ;";
 			$mysql_link->query($updateConfigSql);
-			$config->message = "Update existing config";
+			$config->message = "Configuration saved successfully.";
 		}
 	}
 
@@ -241,11 +240,12 @@ function saveConfig($config) {
 
 		$createConfigSql = "INSERT INTO `omnichanneldemo`.`demo_config` (`id`, `token`, `config_name`, `config_desc`, `config_json`, `create_dttm`, `modify_dttm`, `modify_by`, `email_to`) VALUES (NULL, '".$token."', '".$configName."', '".$configDesc."', '".$configString."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."', '".$userEmail."');";
 		$createConfigResult = $mysql_link->query($createConfigSql);
+		$config->message = "Configuration saved successfully - with new Token: " + $token;;
 
 		if($copyConfig) {
 			$copyWebsiteSql = "INSERT INTO demo_website SELECT '". $token ."', site, content, NOW(), NOW(), '". $userIP ."' FROM demo_website WHERE token = '" . $oldToken . "';";
 			$mysql_link->query($copyWebsiteSql);
-			$config->message = $config->message . ", uploading new website";
+			$config->message = $config->message . " & migrating website.";
 		}
 	}
 
@@ -538,7 +538,26 @@ function sendSMS($token, $customerId, $offer) {
 	$mobileName   = $customer->firstName;
 	$mobileSmsText= $offer->offerSms;
 	$offerName    = $offer->offerName;
-	//echo ' smsText: ' .$mobileSmsText;
+/*
+TODO: Add Support:
+%Token%
+%OfferIndex%
+%OfferCode%
+%OfferName%
+%OfferDesc%
+%OfferImage%
+%CustomerLogin%
+%CustomerId%
+%Firstname%
+%Lastname%
+%CustomerPicture%
+%CustomerSegment%
+
+
+*/
+
+
+
 	$newText      = str_replace("%FIRSTNAME%",$mobileName,$mobileSmsText);   // REPLACE name placeholder in SMS text
 	$newText      = str_replace("%OFFERNAME%",$offerName,$newText); // REPLACE offername placeholder in SMS text
 	$newText      = str_replace(" ","+",$newText);  // REPLACE all spaces with a plus symbol

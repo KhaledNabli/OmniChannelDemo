@@ -504,19 +504,21 @@ function checkIfTrue(value) {
 
 
 
-function onUploadWebsiteCommitBtn(element) {
+function onUploadWebsiteCommitBtn(element, event) {
     if(configScenario.token == "") {
         alert("Please save your configuration first.");
         return;
     }
     var page = $('#uploadWebsiteForPage').val();
-    var token = window.localStorage.omnichanneltoken;
+    var token = configScenario.token;
     var url = $('#uploadUrlInput').val();;
     var options = $("input[name='uploadOptions[]']:checked").map(function(index, item) {return $(item).val();}).toArray();
 
     $("#" + page + "PageUrl").val("loading...");
     $('#popupUploadWebsite').modal('hide');
 
+    event.preventDefault();
+    
     return $.ajax("./Website/", {
         type: 'POST',
         data: {action : "upload", token : token, url : url, page : page, uploadOptions: JSON.stringify(options)},
