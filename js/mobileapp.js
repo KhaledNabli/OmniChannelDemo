@@ -8,7 +8,6 @@ var map;
 * on document ready
 */
 function onMobileAppReady() {
-	//var token = getToken();
 	token = location.href.split("#")[1];
 	
 	console.log("onMobileAppReady getToken: " + token);
@@ -33,10 +32,20 @@ function updateMobileAppUI() {
 			+ configScenario.customers[i].firstName + ' ' + configScenario.customers[i].lastName + '</option>') ;
 	}
 
+	$('#mobilePage').addClass('ui-page-theme-' + configScenario.mobileApp.mobileTheme);
+	if (configScenario.mobileApp.mobileTheme != "b") {
+		removeBtnActive();
+	}
+
 	$('#submitBtn').val(configScenario.mobileApp.login_button_text);
 	$('#titleMobileApp').html("Mobile App");
 	$('#tokenLoad').val(configScenario.token);
 	$('#homeBackground').attr('src', configScenario.mobileApp.homescreen_image);
+	/*$(".homeImage").css("background", "url(" + configScenario.mobileApp.homescreen_image + ") no-repeat ");
+	$(".homeImage").css("-webkit-background-size", "cover");
+	$(".homeImage").css("background-size", "cover");
+	$(".homeImage").css("background-size", "100% 100%");*/
+
 	$('#titleMobileApp').html(configScenario.mobileApp.title_mobile_app);
 	$('#submitBtn').html(configScenario.mobileApp.login_button_text);
 
@@ -67,20 +76,16 @@ function onNavLoginBtn(element) {
 	hideAll();
 	$('#loginPage').show();
 	$('#titleMobileApp').html('Login');
-	//$('#homePage').hide();
-	//$('#offerPage').hide();
-	//$('#offerDetails').hide();
-	//$('#mapPage').hide();
 	slidePage('#loginPage', 'right');
+
+	if (configScenario.mobileApp.mobileTheme != "b") {
+		removeBtnActive();
+	}
 }
 
 function onNavMapBtn(element) {
 	hideAll();
 	$('#titleMobileApp').html(configScenario.mobileApp.title_geo_offer_panel);
-	//$('#homePage').hide();
-	//$('#offerPage').hide();
-	//$('#offerDetails').hide();
-	//$('#loginPage').hide();
 	$('#mapPage').show();
 
 	// get Geo Offer Information
@@ -91,6 +96,10 @@ function onNavMapBtn(element) {
 	var defaultLatLng = new google.maps.LatLng(
 		configScenario.mobileApp.geo_latitude, configScenario.mobileApp.geo_longtitude);
 	drawMap(defaultLatLng);
+
+	if (configScenario.mobileApp.mobileTheme != "b") {
+		removeBtnActive();
+	}
 
 	/*if ( navigator.geolocation ) {
 		function success(pos) {
@@ -110,22 +119,22 @@ function onNavMapBtn(element) {
 function onNavHomeBtn(element) {
 	hideAll();
 	$('#titleMobileApp').html('Mobile App');
-	slidePage('#homePage', 'left')
-	//$('#loginPage').hide();
-	//$('#offerPage').hide();
-	//$('#offerDetails').hide();
-	//$('#mapPage').hide();
+	slidePage('#homePage', 'left');
+
+	if (configScenario.mobileApp.mobileTheme != "b") {
+		removeBtnActive();
+	}
 }
 
 function onNavOfferBtn(element) {
 	//$('#titleMobileApp').html(configScenario.mobileApp.title_offer_panel);
 	hideAll();
 	$('#titleMobileApp').html('Offers');
-	//$('#homePage').hide();
-	//$('#loginPage').hide();
-	//$('#offerDetails').hide();
-	//$('#mapPage').hide();
 	slidePage('#offerPage', 'right');
+
+	if (configScenario.mobileApp.mobileTheme != "b") {
+		removeBtnActive();
+	}
 }
 
 function onSelectCustomerBtn(element) {
@@ -352,4 +361,12 @@ function drawMap(latlng) {
 	// display latitude and longtitude (first time)
 	$('#mapLatPosition').html('' + map.getCenter().lat());
 	$('#mapLngPosition').html('' + map.getCenter().lng());
+}
+
+function removeBtnActive() {
+	$('#navHome').removeClass('ui-btn-active');
+	$('#navLogin').removeClass('ui-btn-active');
+	$('#navOffer').removeClass('ui-btn-active');
+	$('#navMap').removeClass('ui-btn-active');
+	
 }

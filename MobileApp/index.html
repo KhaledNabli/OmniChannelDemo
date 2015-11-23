@@ -18,11 +18,11 @@
 <body>
 
 <!-- PAGE -->
-<div id="mobilePage" data-role="page"  class="ui-page-theme-b" id="pageHome">
+<div id="mobilePage" data-role="page" id="pageHome">
 
 
 	<!-- HEADER -->
-	<div data-role="header" data-position="fixed">
+	<div data-role="header" data-position="fixed" class="mobileHeader" >
 		<h1><span id="titleMobileApp">Mobile App</span></h1>
 		<a id="navIconLeft" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false" 
 			onclick='$("#leftPanel").panel("open");'>
@@ -34,7 +34,7 @@
 
 
 	<!-- LEFT PANEL -->
-	<div data-role="panel" id="leftPanel" >
+	<div data-role="panel" id="leftPanel">
 		<div class="ui-panel-inner">
 			<ul data-role="listview">
 			<li data-icon="back"><a href="#" data-rel="close" class="ui-btn ui-btn-icon-right ui-icon-delete">Close</a></li>
@@ -51,6 +51,7 @@
 
 	<!-- HOME PAGE -->
 	<div id="homePage" role="main" class="ui-content">
+		<!--<div class="homeImage"> </div>-->
 		<img id="homeBackground" src="" width="100%" >
 	</div><!-- /HOME PAGE -->
 
@@ -59,7 +60,7 @@
 	<div id="loginPage" role="main" class="ui-content" style="display:none">
 		<p>
 			<label for="inputCustomerLogin">Customer:</label>
-			<input id="inputCustomerLogin" list="dataList_customers" placeholder="Enter your ID" type="text" class="form-control">
+			<input id="inputCustomerLogin" list="dataList_customers" placeholder="Enter Customer Login" type="text" class="form-control">
                         
             <datalist id="dataList_customers">
             </datalist>
@@ -100,7 +101,7 @@
 	<div id="mapPage" role="main" class="ui-content"  style="display:none" >
 		<div id="mapPageInner" style="height: 300px;" ></div>
 		<div role="main" class="ui-content">
-			<a id="getPositionBtn" onclick="onGetPositionBtnClick(this);" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left ui-icon-check"
+			<a id="getPositionBtn" onclick="onGetPositionBtnClick(this);" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left ui-icon-check" 
 				href="#popupGeoOffer" data-rel="popup" data-position-to="window" data-transition="pop"
 				 >Send Location</a>
 			
@@ -117,7 +118,7 @@
             	</div>
         	</div>	-->	
 
-			<div data-role="popup" id="popupGeoOffer" data-theme="b" class="ui-corner-all" data-history="false">
+			<div data-role="popup" id="popupGeoOffer" class="ui-corner-all" data-history="false">
 				<form>
 					<div style="padding:10px 20px;">
 						<h3 style="text-align: center" id="titleGeoOffer">New Geo Offer</h3>
@@ -137,7 +138,7 @@
 
 
 	<!-- FOOTER -->
-	<div data-role="footer" data-position="fixed">
+	<div data-role="footer" data-position="fixed" class="mobileFooter">
 		<div data-role="navbar">
 			<ul>
 				<li><a id="navHome" href="#" onclick="onNavHomeBtn(this);"  data-transition="slide" data-icon="home" class="ui-btn-active">Home</a></li>

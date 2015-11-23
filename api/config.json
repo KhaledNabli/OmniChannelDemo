@@ -46,7 +46,8 @@
 		"title_mobile_app": "Mobile Home",
 		"appIcon_image": "/OmniChannelDemo/images/mobile_icon.png",		
 		"map_pin_image": "/_demo_images/pin.png",
-		"maxOffersMobile": 3
+		"maxOffersMobile": 3,
+		"mobileTheme": "b"
 	},
 	"labels": {
 		"acceptBtnMobile": "Accept",

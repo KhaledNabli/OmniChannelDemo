@@ -2,9 +2,56 @@
 	padding: 0em;
 }
 
+.homeImage {
+	/*background: url(/_demo_images/unicredit/home.jpg) no-repeat center center;*/
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-size:100% 100%;
+  }
+
 #offerDetailsImage {
    padding:1px;
    border-radius: 10px;
    border:1px solid #021a40;
+}
+
+.mobileHeader {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	padding-top: 0;
+}
+
+.mobileFooter {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	padding-bottom: 0;
+}
+
+/*Scrollable Regions Pages*/
+.scrollable header {
+	position: static;	
+}
+.scrollable section {
+	padding-top: 0;
+	height: 364px;
+	overflow: scroll;
+	-webkit-overflow-scrolling: touch;	
+}
+
+/* fixes for header and footer bar icons */
+.ui-header-fixed .ui-btn-left, .ui-header-fixed .ui-btn-right {
+    margin-top: 0px;
 }
 
