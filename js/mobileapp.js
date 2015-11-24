@@ -8,7 +8,9 @@ var map;
 * on document ready
 */
 function onMobileAppReady() {
-	token = location.href.split("#")[1];
+
+	// token could be in form of AP%2BEMcxz (AP+EMcxz) we need to apply decodeURI when ever we read from URL.
+	var token = decodeURIComponent(location.href.split("#")[1]);
 	
 	console.log("onMobileAppReady getToken: " + token);
 

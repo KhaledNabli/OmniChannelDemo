@@ -28,7 +28,7 @@
 		"nbaPlaceHolderSelector2": "",
 		"nbaPlaceHolderSelector3": "",
 		"nbaPlaceHolderSelector4": "",
-		"nbaHtmlTemplate": "PGRpdj4KICAgIDxpbWcgc3JjPSIlT2ZmZXJJbWFnZSUiIGFsdD0iJU9mZmVyTmFtZSUiPgogICAgPGgyPiVPZmZlck5hbWUlPC9oMj4gCiAgICA8cD4lT2ZmZXJEZXNjJTwvcD4KICAgIDxhICVUcmFja0FzSW50ZXJlc3QlID5Nb3JlIEluZm8uLi48L2E+CiAgICA8ZGl2IGNsYXNzPSJvY2RNb3JlSW5mb0FyZWEgJU9mZmVyQ29kZSUiPgogICAgICAgIAogICAgICAgIDxidXR0b24gJVRyYWNrQXNBY2NlcHQlPkFjY2VwdCBPZmZlcjwvYnV0dG9uPgogICAgICAgIDxidXR0b24gJVRyYWNrQXNSZWplY3QlPlJlamVjdCBPZmZlcjwvYnV0dG9uPgogICAgICAgIAogICAgPC9kaXY+CjwvZGl2Pgo="
+		"nbaHtmlTemplate": "PGRpdj4KICAgIDxpbWcgc3JjPSIlT2ZmZXJJbWFnZSUiIGFsdD0iJU9mZmVyTmFtZSUiPgogICAgPGgyPiVPZmZlck5hbWUlPC9oMj4gCiAgICA8cD4lT2ZmZXJEZXNjJTwvcD4KICAgIDxhICVTaG93TW9yZUluZm8lID5Nb3JlIEluZm8uLi48L2E+CiAgICA8ZGl2IGNsYXNzPSJvY2RNb3JlSW5mb0FyZWEgJU9mZmVyQ29kZSUiPgogICAgICAgIDxidXR0b24gY2xhc3M9ImJ1dHRvbi1oZWxsIiAlVHJhY2tBc0FjY2VwdCU+QWNjZXB0IE9mZmVyPC9idXR0b24+CiAgICAgICAgPGJ1dHRvbiBjbGFzcz0iYnV0dG9uLWhlbGwiICVUcmFja0FzUmVqZWN0JT5SZWplY3QgT2ZmZXI8L2J1dHRvbj4KICAgIDwvZGl2Pgo8L2Rpdj4K"
 	},
 	"mobileApp": {
 		"geo_latitude": "50.3585195",
@@ -42,10 +42,10 @@
 		"login_button_text": "Login",
 		"title_offer_panel": "Top Angebote",
 		"title_geo_offer_panel": "Geolocation Angebote",
-		"homescreen_image": "/_demo_images/coba_home.jpg",
+		"homescreen_image": "",
 		"title_mobile_app": "Mobile Home",
-		"appIcon_image": "/OmniChannelDemo/images/mobile_icon.png",		
-		"map_pin_image": "/_demo_images/pin.png",
+		"appIcon_image": "",		
+		"map_pin_image": "",
 		"maxOffersMobile": 3,
 		"mobileTheme": "b"
 	},

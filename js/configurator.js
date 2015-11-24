@@ -18,6 +18,16 @@ function onLoadConfigurationDone(config) {
     }
     configScenario = config;
     base64_decodeProperties(configScenario.web);
+
+
+    if(config.readOnly == "1") {
+        
+        configScenario.general.demoDescription = "Copy of " + config.general.demoName;
+        configScenario.general.demoName = "";
+        configScenario.general.userEmail = "";
+        console.log("This Demo is marked as read-only.");
+    }
+
     initConfigurator();
 }
 

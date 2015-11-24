@@ -245,7 +245,7 @@ function saveConfig($config) {
 
 		$createConfigSql = "INSERT INTO `omnichanneldemo`.`demo_config` (`id`, `token`, `config_name`, `config_desc`, `config_json`, `create_dttm`, `modify_dttm`, `modify_by`, `email_to`) VALUES (NULL, '".$token."', '".$configName."', '".$configDesc."', '".$configString."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."', '".$userEmail."');";
 		$createConfigResult = $mysql_link->query($createConfigSql);
-		$config->message = "Configuration saved successfully - with new Token: " + $token;;
+		$config->message = "Configuration saved successfully - with new Token: " . $token;;
 
 		if($copyConfig) {
 			$copyWebsiteSql = "INSERT INTO demo_website SELECT '". $token ."', site, content, NOW(), NOW(), '". $userIP ."' FROM demo_website WHERE token = '" . $oldToken . "';";

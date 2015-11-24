@@ -135,17 +135,19 @@
                     <br />
                     <i>%TrackAsAccept%<br />
                         %TrackAsReject%<br />
-                        %TrackAsInterest%</i><br />
+                        %TrackAsInterest%<br />
+                        <br />
+                        %ShowMoreInfo%</i><br />
                     </p>
                 </div>
                 <div class="col-sm-2">
                 <p>
                     ocdToken<br />
-                    ocdOfferIndex[n] n=1..9<br />
-                    ocdOfferCode[n] n=1..9<br />
-                    ocdOfferName[n] n=1..9<br />
-                    ocdOfferDesc[n] n=1..9<br />
-                    ocdOfferImage[n] n=1..9<br />
+                    ocdOfferIndex<strong><i>N</i></strong><br />
+                    ocdOfferCode<strong><i>N</i></strong><br />
+                    ocdOfferName<strong><i>N</i></strong><br />
+                    ocdOfferDesc<strong><i>N</i></strong><br />
+                    ocdOfferImage<strong><i>N</i></strong><br />
                     ocdCustomerLogin<br />
                     ocdFirstname<br />
                     ocdLastname<br />
@@ -153,10 +155,15 @@
                     ocdCustomerSegment<br />
                     <br />
                     <i>
-                    ocdTrackAsAccept[n]<br />
-                    ocdTrackAsReject[n]<br />
-                    ocdTrackAsInterest[n]<br />
+                    ocdTrackAsAccept<strong>N</strong><br />
+                    ocdTrackAsReject<strong>N</strong><br />
+                    ocdTrackAsInterest<strong>N</strong><br />
                     </i>
+                    <br />
+                    N=1..9: order of offers<br>
+                    N=1: is the best offer<br>
+                    N=2: is the 2nd best offer<br>
+                    etc...
                     </p>
                 </div>
             </div>

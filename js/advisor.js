@@ -14,7 +14,8 @@ configScenario.currentHistoy = [];
 function onAdvisorReady() {
 	var token = "";
 
-	token = location.href.split("#")[1];
+	// token could be in form of AP%2BEMcxz (AP+EMcxz) we need to apply decodeURI when ever we read from URL.
+	token = decodeURIComponent(location.href.split("#")[1]);
 
     /*if(readTokenFromURL() != undefined) {
         token = readTokenFromURL();

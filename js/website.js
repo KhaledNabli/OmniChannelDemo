@@ -10,7 +10,7 @@ var websiteConfig = {};
 
 jQuery(document).ready(function () {
 	console.log("-- Demo Website is ready to start --");
-	var token = getQueryVariable("token");
+	var token = decodeURIComponent(getQueryVariable("token"));
 
 	if(token == "") {
 		console.log("-- Warning: No Token present in the URL. website.js will do nothing here...");
@@ -76,7 +76,7 @@ function prepareWebsite() {
 	if(websiteConfig.web.loginLinkHtml.trim() != "" 
 		&& websiteConfig.web.loginLinkSelector.trim() != "" 
 		&& jQuery(websiteConfig.web.loginLinkSelector)) {
-		console.log("Debug: Set Link (" + websiteConfig.web.loginLinkSelector + ") innerHtml to: " + websiteConfig.web.loginLinkHtml)
+		console.log("Debug: Set Link of (" + websiteConfig.web.loginLinkSelector + ") innerHtml to: " + websiteConfig.web.loginLinkHtml)
 		jQuery(websiteConfig.web.loginLinkSelector).html(websiteConfig.web.loginLinkHtml);
 	}
 	
@@ -87,9 +87,9 @@ function prepareWebsite() {
 		if (tagType == "FORM") {
 			jQuery(websiteConfig.web.loginFormSelector).attr("action", landingPageURL);
 			jQuery(websiteConfig.web.loginFormSelector).attr("onsubmit", "processLoginBtnClick(this);");
-			console.log("Debug: Set FORM of " + websiteConfig.web.loginFormSelector + " to point to: " + landingPageURL);	
+			console.log("Debug: Set FORM of (" + websiteConfig.web.loginFormSelector + ") to point to: " + landingPageURL);	
 		} else {
-			console.log("Warning: Selector " + websiteConfig.web.loginFormSelector + " is not pointing to a valid <form> element!");	
+			console.log("Warning: Selector (" + websiteConfig.web.loginFormSelector + ") is not pointing to a valid <form> element!");	
 		}
 	}
 
@@ -100,15 +100,15 @@ function prepareWebsite() {
 		if (tagType == "INPUT" || tagType == "BUTTON" || tagType == "A" ) {
 			console.log("Debug: Set " + tagType + " of " + websiteConfig.web.loginBtnInputSelector + " to submit Login Form.");	
 			jQuery(websiteConfig.web.loginBtnInputSelector).attr("href", "");
-			jQuery(websiteConfig.web.loginBtnInputSelector).on('click', function () { processLoginBtnClick(this) });
+			jQuery(websiteConfig.web.loginBtnInputSelector).attr("onclick", "processLoginBtnClick(this,event)");
 		} else {
-			console.log("Warning: Selector " + websiteConfig.web.loginBtnInputSelector + " is not pointing to a valid <a>, <input> or <button> element!");	
+			console.log("Warning: Selector (" + websiteConfig.web.loginBtnInputSelector + ") is not pointing to a valid <a>, <input> or <button> element!");	
 		}
 		
 	}
 
 	// Build Offers 
-	if (getCurrentPage() == "landing") {
+	if (getQueryVariable("page") == "landing") {
 		buildOfferPage();
 	}
 }
@@ -137,10 +137,6 @@ function pointElementToLink(selector, link) {
 }
 
 
-function getCurrentPage() {
-	return getQueryVariable("page");
-}
-
 function getBaseURL() {
 	return window.location.href.split("?")[0];
 }
@@ -160,7 +156,7 @@ function getQueryVariable(variable) {
 * 
 *
 */
-function processLoginBtnClick(elem) {
+function processLoginBtnClick(elem,event) {
 	console.log("Processing Login Proccess");
 	var userid = jQuery(websiteConfig.web.loginUserInputSelector).val();
 
@@ -203,14 +199,18 @@ function buildOfferPage() {
 	var placeHolderContent = [];
 	var customerLogin = window.sessionStorage.ocdWebsiteLogin;
 	var customerdetails = getCustomerByLogin(customerLogin, websiteConfig.customers);
+
+
+
 	placeHolderContent.push({"name": "Token", 			"value": websiteConfig.token});
 	placeHolderContent.push({"name": "CustomerLogin", 	"value": customerLogin});
 	placeHolderContent.push({"name": "Firstname",		"value": customerdetails.firstName });
 	placeHolderContent.push({"name": "Lastname",		"value": customerdetails.lastName });
 	placeHolderContent.push({"name": "CustomerPicture",	"value": customerdetails.pictureUrl });
 	placeHolderContent.push({"name": "CustomerSegment",	"value": customerdetails.lifeStageSegment });
-	renderHtmlPlacehoder(placeHolderContent);
+
 	refreshOffers(false);
+	renderHtmlPlacehoder(placeHolderContent);	
 }
 
 function refreshOffers(doNotTrack) {
@@ -227,7 +227,7 @@ function refreshOffers(doNotTrack) {
 			websiteConfig.currentOffers = offers;
 			displayOffers(offers);	
 		} else {
-			console.log("getOffersForCustomer as before is returning the same offers - i will do nothing");
+			console.log("getOffersForCustomer is returning the same offers - i will do nothing!");
 		}
 
 		// hide all More Info Areas
@@ -298,6 +298,8 @@ function displayOffers(offers) {
 			templateContent.push({"name": "TrackAsAccept", 	"value": renderTrackingElement(offerObj.offer, "accept")});
 			templateContent.push({"name": "TrackAsReject", 	"value": renderTrackingElement(offerObj.offer, "reject")});
 			templateContent.push({"name": "TrackAsInterest","value": renderTrackingElement(offerObj.offer, "show interest")});
+			templateContent.push({"name": "ShowMoreInfo","value": renderShowMoreInfoElement(offerObj.offer, true)});
+
 
 			// this content is to be displayed in equivaled classes:
 			var placeHolderContent = [];
@@ -341,6 +343,7 @@ function renderHtmlTemplate(htmlTemplate, templateContent, templatePlaceholder) 
 
 	// remove all click events from placeholder
 	jQuery(templatePlaceholder).off();
+	jQuery(templatePlaceholder).attr("onclick", "");
 	var tagType = jQuery(templatePlaceholder).prop("tagName");
 
 	if(tagType != "DIV") {
@@ -370,47 +373,45 @@ function renderHtmlPlacehoder(placeHolderContent) {
 	// for each value, search for class == .ocdToken and update innerHtml
 	return placeHolderContent.map(function(item) {
 		var selector = ".ocd" + item.name;
-		if(!jQuery(selector)) {
+		var selectedElement = jQuery(selector);
+		if(!selectedElement) {
 			return;
 		}
 
-		jQuery(selector).off();
+		selectedElement.off();
 
 		// add click event handler
 		if(item.trackResponse != undefined && item.trackResponse != "") {
-			jQuery(selector).attr("onClick", "trackResponse('" + item.offerCd + "', '" + item.trackResponse + "');");
+			selectedElement.attr("onClick", "trackResponse('" + item.offerCd + "', '" + item.trackResponse + "');");
 			return;
 		}
 
-		var tagType = jQuery(selector).prop("tagName");
+		var tagType = selectedElement.prop("tagName");
 
 		// set value
 		if(tagType == "IMG") {
-
 			if(item.value != "") {
-				jQuery(selector).attr("src", item.value);
+				selectedElement.attr("src", item.value);
 			} else {
-				jQuery(selector).remove();
+				selectedElement.remove();
 			}
 
 		} else if (tagType == "INPUT") { 
-			jQuery(selector).val(item.value);
+			selectedElement.val(item.value);
 		} else {
-			jQuery(selector).html(item.value);
+			selectedElement.html(item.value);
 		}
 
-		
-		
-		return jQuery(selector);
+		return selectedElement;
 	});
 }
 
 
 function trackResponse(offerCd, responseCd) {
 	var token = websiteConfig.token;
-	var customer = window.sessionStorage.ocdWebsiteLogin;
+	var customerLogin = window.sessionStorage.ocdWebsiteLogin;
 	
-	return respondToOffer(token, customer, offerCd, responseCd, "Website", "").done(function () {
+	return respondToOffer(token, customerLogin, offerCd, responseCd, "Website", "").done(function () {
 		refreshOffers(true).done(function() {
 			jQuery(".ocdMoreInfoArea." + offerCd).show();
 		});
@@ -418,7 +419,19 @@ function trackResponse(offerCd, responseCd) {
 }
 
 function renderTrackingElement(offerCd, responseCd) {
-	return " onClick=\"trackResponse('" + offerCd + "', '" + responseCd + "');\"";
+	return " onClick=\"trackResponse('" + offerCd + "', '" + responseCd + "');\" ";
+}
+
+function renderShowMoreInfoElement(offerCd, trackAsInterest) {
+	var token = websiteConfig.token;
+	var customerLogin = window.sessionStorage.ocdWebsiteLogin;
+	var resultString =" onclick=\"$('.ocdMoreInfoArea."+ offerCd +"').show(); ";
+	if(trackAsInterest) {
+		resultString = resultString + "respondToOffer('" + token + "', '" + customerLogin + "', '" + offerCd + "', 'show interest', 'Website')";
+	}
+
+	resultString = resultString + "\"";
+	return resultString;
 }
 
 function replaceAll(find, replace, str) {
