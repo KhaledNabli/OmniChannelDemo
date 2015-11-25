@@ -34,6 +34,11 @@ function updateMobileAppUI() {
 			+ configScenario.customers[i].firstName + ' ' + configScenario.customers[i].lastName + '</option>') ;
 	}
 
+	//for demo upgrade purpose - mobileTheme does not exist in config.json of older version
+	if(!configScenario.mobileApp.mobileTheme) {
+		configScenario.mobileApp.mobileTheme = "b";
+	}
+
 	$('#mobilePage').addClass('ui-page-theme-' + configScenario.mobileApp.mobileTheme);
 	if (configScenario.mobileApp.mobileTheme != "b") {
 		removeBtnActive();
