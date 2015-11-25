@@ -161,7 +161,9 @@ function savePageToDatabase($token, $page, $content, $insertJsBase) {
 		$content = outputDOMHtml($htmlDom, true);
 	}
 	
-	$updateSqlQuery ="INSERT INTO `omnichanneldemo`.`demo_website` (`token`, `site`, `content`, `create_dttm`, `modify_dttm`, `modify_by`) VALUES ('".$token."', '".$page."', '".$mysql_link->real_escape_string($content)."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."') ON DUPLICATE KEY UPDATE `content`='".$mysql_link->real_escape_string($content)."', `modify_by` = '".$userIP."' , modify_dttm = CURRENT_TIMESTAMP ";
+	
+	$encodedContent = $mysql_link->real_escape_string($content);
+	$updateSqlQuery ="INSERT INTO `omnichanneldemo`.`demo_website` (`token`, `site`, `content`, `create_dttm`, `modify_dttm`, `modify_by`) VALUES ('".$token."', '".$page."', '".$encodedContent."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."') ON DUPLICATE KEY UPDATE `content`='".$encodedContent."', `modify_by` = '".$userIP."' , modify_dttm = CURRENT_TIMESTAMP ";
 	$updateResult = $mysql_link->query($updateSqlQuery);
 	if(!$updateResult) {
 		echo $mysql_link->error;
