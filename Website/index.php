@@ -20,17 +20,19 @@ $mysql_link = new mysqli($logging_db['host'], $logging_db['user'], $logging_db['
 
 if ($mysql_link->connect_errno) {
     // Let's try this:
-    echo "Sorry, this website is experiencing problems.";
+	echo "Sorry, this website is experiencing problems.";
 
-    echo "Error: Failed to make a MySQL connection, here is why: \n";
-    echo "Errno: " . $mysql_link->connect_errno . "\n";
-    echo "Error: " . $mysql_link->connect_error . "\n";
-    
-    exit;
+	echo "Error: Failed to make a MySQL connection, here is why: \n";
+	echo "Errno: " . $mysql_link->connect_errno . "\n";
+	echo "Error: " . $mysql_link->connect_error . "\n";
+
+	exit;
 }
 
-$mysql_link->query("set names 'utf8';");
 
+$mysql_link->query("set names 'utf8';");
+$mysql_link->set_charset("utf8");
+$mysql_link->set_charset('utf-8');
 
 return processRequest();
 // Continue reading in processRequest();
@@ -82,7 +84,8 @@ function processRequest() {
 		// overwrite existing page
 		$options = getRequestParameter("options");
 		$content = getRequestParameter("content");
-		savePageToDatabase($token, $page, $content, $options);
+		@header('Content-type: application/json');
+		echo json_encode(savePageToDatabase($token, $page, $content, $options));
 	} else if ($action == "upload") {
 		$url = getRequestParameter("url");
 		$raw_options = getRequestParameter("uploadOptions");
@@ -137,6 +140,7 @@ function getPageFromDatabase($token,$page) {
 
 	if(!$pageQueryResult || $pageQueryResult->num_rows != 1) {
 		//die("invalid token " . $pageQueryResult->num_rows);
+
 	}
 	else {
 		$pageItem = $pageQueryResult->fetch_assoc();;
@@ -161,20 +165,22 @@ function savePageToDatabase($token, $page, $content, $insertJsBase) {
 		$content = outputDOMHtml($htmlDom, true);
 	}
 	
-	
+
 	$encodedContent = $mysql_link->real_escape_string($content);
-	$updateSqlQuery ="INSERT INTO `omnichanneldemo`.`demo_website` (`token`, `site`, `content`, `create_dttm`, `modify_dttm`, `modify_by`) VALUES ('".$token."', '".$page."', '".$encodedContent."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."') ON DUPLICATE KEY UPDATE `content`='".$encodedContent."', `modify_by` = '".$userIP."' , modify_dttm = CURRENT_TIMESTAMP ";
-	$updateResult = $mysql_link->query($updateSqlQuery);
+
+	$sqlQuery ="INSERT INTO `omnichanneldemo`.`demo_website` (`token`, `site`, `content`, `create_dttm`, `modify_dttm`, `modify_by`) VALUES ('".$token."', '".$page."', '".$encodedContent."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '".$userIP."') ON DUPLICATE KEY UPDATE `content`='".$encodedContent."', `modify_by` = '".$userIP."' , modify_dttm = CURRENT_TIMESTAMP ";
+	$updateResult = $mysql_link->query($sqlQuery);
+
 	if(!$updateResult) {
-		echo $mysql_link->error;
+		return array("status" => "error", "message" => $mysql_link->error, "query"=>$sqlQuery);
+	} else {
+		return array("status" => "success", "query" => $sqlQuery);
 	}
-	return $updateResult;
 } 
 
 
 
 function uploadWebsiteToDatabase($token, $page, $url, $options) {
-
 	// check token
 	// check url
 	// check page
@@ -182,8 +188,8 @@ function uploadWebsiteToDatabase($token, $page, $url, $options) {
 		die("Please provide an ID for page and a URL to grab");
 	}
 
-
 	$htmlContent = grabContentFromUrl($url);
+
 	$htmlDom = parseHtmlContent($htmlContent);
 
 	$insertBase = in_array("insert_base", $options);
@@ -196,8 +202,6 @@ function uploadWebsiteToDatabase($token, $page, $url, $options) {
 	$jsFolderUrl = "http://". $_SERVER['SERVER_NAME'] ."/OmniChannelDemo/";
 	$baseRefUrl = @$parsedUrl["scheme"] . "://" . @$parsedUrl["host"] . @$parsedUrl["path"];
 
-
-	
 	if($removeExtJs) {
 		$htmlDom = removeExternalJsFromDOM($htmlDom);
 	}
@@ -213,11 +217,10 @@ function uploadWebsiteToDatabase($token, $page, $url, $options) {
 	
 	$htmlOutput = outputDOMHtml($htmlDom, $tidyOutput);
 	$htmlOutputLength =  mb_strlen($htmlOutput);
-	
-	savePageToDatabase($token, $page, $htmlOutput, false);
 
-	echo json_encode(array("token" => $token, "page" => $page, "url" => $parsedUrl, "insertBase" => $insertBase, "fixLinks" => $fixLinks,
-		 "tidyOutput" => $tidyOutput, "insertJS" => $insertJS, "removeExtJs" => $removeExtJs , "htmlOutputLength" => $htmlOutputLength));
+	$savePageResult = savePageToDatabase($token, $page, $htmlOutput, false);
+
+	echo json_encode(array("token" => $token, "page" => $page, "url" => $parsedUrl, "insertBase" => $insertBase, "fixLinks" => $fixLinks, "tidyOutput" => $tidyOutput, "insertJS" => $insertJS, "removeExtJs" => $removeExtJs , "htmlOutputLength" => $htmlOutputLength));
 }
 
 
@@ -228,105 +231,109 @@ function displayEditor($token, $page) {
 	$content = getPageFromDatabase($token, $page);
 	$config = getConfigFromDatabase($token);
 
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title><?php echo "Editor: " . $page ." Page of ". $config->general->demoName; ?></title>
-  <link href="../css/bootstrap.min.css" rel="stylesheet">
-  <style type="text/css" media="screen">
-    body {
-        overflow: hidden;
-        background: #333;
-        color: #fff;
-    }
+	?>
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title><?php echo "Editor: " . $page ." Page of ". $config->general->demoName; ?></title>
+		<link href="../css/bootstrap.min.css" rel="stylesheet">
+		<style type="text/css" media="screen">
+		body {
+			overflow: hidden;
+			background: #333;
+			color: #fff;
+		}
 
-    #editor {
-        margin: 0;
-        position: absolute;
-        top: 0px;
-        bottom: 65px;
-        left: 0;
-        right: 0;
-        font-size: 16px;
-    }
-    
-    .ace_search_field {
-    	color: black;
-    }
+		#editor {
+			margin: 0;
+			position: absolute;
+			top: 0px;
+			bottom: 65px;
+			left: 0;
+			right: 0;
+			font-size: 16px;
+		}
 
-    #control_buttons {
-        margin: 0px;
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-    }
+		.ace_search_field {
+			color: black;
+		}
 
-    #control_buttons > lable {
-    	padding-right: 20px;
-	}
+		#control_buttons {
+			margin: 0px;
+			position: absolute;
+			bottom: 10px;
+			right: 10px;
+		}
 
-  </style>
-</head>
-<body>
+		#control_buttons > lable {
+			padding-right: 20px;
+		}
 
-<div id="control_buttons">
-	<lable>
-		<input id="optionsCheckbox" type="checkbox" value="insert_js_base"/> (re) insert required Javascripts and clean up HTML.
-	</lable>
-	
-	<input type="button" class="btn btn-lg btn-default" value="Save" onclick="saveContent();"/>
-	<input type="button" class="btn btn-lg btn-primary" value="Save and Close" onclick="saveContent(true);"/>
-</div>
+		</style>
+	</head>
+	<body>
 
-<div>
-<pre>
-	<code id="editor"><?php echo htmlentities($content, ENT_QUOTES, "UTF-8"); ?>
-	</code>
-</pre>
-</div>
+		<div id="control_buttons">
+			<lable>
+				<input id="optionsCheckbox" type="checkbox" value="insert_js_base"/> (re) insert required Javascripts and clean up HTML.
+			</lable>
 
+			<input type="button" class="btn btn-lg btn-default" value="Save" onclick="saveContent();"/>
+			<input type="button" class="btn btn-lg btn-primary" value="Save and Close" onclick="saveContent(true);"/>
+		</div>
+
+		<div>
+			<pre>
+<code id="editor"><?php echo htmlentities($content, ENT_QUOTES, "UTF-8"); ?></code>
+			</pre>
+		</div>
 
 
-<script src="../js/ext/ace/ace.js" type="text/javascript" charset="utf-8"></script>
-<script src="../js/ext/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
-<script>
-    var editor = ace.edit("editor");
-    var reloadPageAfterSaving = true;
-    editor.setTheme("ace/theme/monokai");
-    editor.session.setMode("ace/mode/html");
 
-    function saveContent(closeWindowAfterSaving) {
-    	var token = "<?php echo $token; ?>";
-    	var page = "<?php echo $page; ?>";
-    	var content = editor.getValue();
-    	var options = ($('input#optionsCheckbox').is(':checked'));
+		<script src="../js/ext/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/ext/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+		var editor = ace.edit("editor");
+		var reloadPageAfterSaving = true;
+		editor.setTheme("ace/theme/monokai");
+		editor.session.setMode("ace/mode/html");
 
-    	return $.ajax("./", {
-	        type: 'POST',
-	        data: {action: "save",token: token, page: page, content: content, options: options}
-	    } ).done(function(result) {
-	    	console.log(result);
-	    	alert("Website saved successfully.");
-	    	if(closeWindowAfterSaving) {
-	    		window.close();
-	    	}
-	    	else if(reloadPageAfterSaving) {
-	    		location.reload();
-	    	}
-	    });;
+		function saveContent(closeWindowAfterSaving) {
+			var token = "<?php echo $token; ?>";
+			var page = "<?php echo $page; ?>";
+			var content = editor.getValue();
+			var options = ($('input#optionsCheckbox').is(':checked'));
 
-    }
+			return $.ajax("./", {
+				type: 'POST',
+				data: {action: "save",token: token, page: page, content: content, options: options}
+			} ).done(function(result) {
+				if(result.status == "success") {
+					alert("Website saved successfully.");
+					if(closeWindowAfterSaving) {
+						window.close();
+					}
+					else if(reloadPageAfterSaving) {
+						location.reload();
+					}
+				} else {
+					alert("Error: Could not save website.");
+					console.log("Error Message: " + result.message);
+				}
 
-</script>
+			});;
+
+		}
+
+		</script>
 
 
-</body>
-</html>
+	</body>
+	</html>
 
-<?php
+	<?php
 
 }
 
@@ -339,7 +346,7 @@ function parseHtmlContent($source) {
 			$domDocument->removeChild($item);
 		}
 	}
-	    
+
 	return $domDocument;
 }
 
@@ -430,9 +437,9 @@ function tidyHtml($content) {
 
 	// Specify configuration
 	$config = array(
-	           'indent'         => true,
-	           'output-xhtml'   => false,
-	           'wrap'           => 400);
+		'indent'         => true,
+		'output-xhtml'   => false,
+		'wrap'           => 400);
 
 	// Tidy
 	$tidy = new tidy;
@@ -449,29 +456,36 @@ function grabContentFromUrl($url) {
 	error_reporting(E_ALL);
 	$ch = curl_init();
     $host = parse_url($url, PHP_URL_HOST); //Ex: www.google.com
-    curl_setopt($ch, CURLOPT_TIMEOUT, 500);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 1000);
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.4");
-    curl_setopt($ch, CURLOPT_REFERER, "http://google.com/");
+    curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.73 Safari/537.36");
+    curl_setopt($ch, CURLOPT_REFERER, $host);
 	//curl_setopt($ch, CURLOPT_HEADER, 1);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_ENCODING, "gzip");
+    curl_setopt($ch, CURLOPT_ENCODING, "");
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
     curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-	//curl_setopt($ch, CURLOPT_SSLVERSION, 3);
+    //curl_setopt($ch, CURLOPT_SSLVERSION, 3);    
 
     if(FALSE === ($retval = curl_exec($ch))) {
     	echo curl_error($ch);
     } else {
-    	return $retval;
+    	$encoding = mb_detect_encoding($retval, 'UTF-8, ISO-8859-1');
+
+    	if($encoding == 'ISO-8859-1') {
+    		$stringEncoded = mb_convert_encoding($retval, 'UTF-8', 'ISO-8859-1');	
+    	} else {
+    		$stringEncoded = $retval;
+    	}
+
+    	$stringEncoded = html_entity_decode($stringEncoded, ENT_QUOTES, 'UTF-8');
+
+    	return $stringEncoded;
     }
 }
-
-
-
 
 ?>
 

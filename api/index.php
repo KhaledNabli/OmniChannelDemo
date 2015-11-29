@@ -80,7 +80,7 @@ function processRequest() {
 	else if($action == 'saveConfig') {
 		$config = getRequestParameter("config");
 		$savedConfig = saveConfig(json_decode($config));
-		logUsage($action, "", $savedConfig->token, "");
+		logUsage($action, "", $savedConfig->token, $config);
 		echo json_encode($savedConfig);
 	}
 	else if($action == 'copyConfig') {
