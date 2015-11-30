@@ -98,8 +98,8 @@ function prepareWebsite() {
 	if(websiteConfig.web.loginBtnInputSelector != "") {
 		var tagType =  jQuery(websiteConfig.web.loginBtnInputSelector).prop("tagName");
 		if (tagType == "INPUT" || tagType == "BUTTON" || tagType == "A" ) {
-			console.log("Debug: Set " + tagType + " of " + websiteConfig.web.loginBtnInputSelector + " to submit Login Form.");	
-			jQuery(websiteConfig.web.loginBtnInputSelector).attr("href", "");
+			console.log("Debug: Set " + tagType + " of " + websiteConfig.web.loginBtnInputSelector + " to submit Login Form."); 
+			jQuery(websiteConfig.web.loginBtnInputSelector).removeAttr("href");
 			jQuery(websiteConfig.web.loginBtnInputSelector).attr("onclick", "processLoginBtnClick(this,event)");
 		} else {
 			console.log("Warning: Selector (" + websiteConfig.web.loginBtnInputSelector + ") is not pointing to a valid <a>, <input> or <button> element!");	
@@ -130,7 +130,7 @@ function pointElementToLink(selector, link) {
 	}
 
 
-	jQuery(selector).attr('onclick', "");
+	jQuery(selector).removeAttr('onclick');
 	jQuery(selector).on('click', function () {
 		window.location.href = link;
 	});
@@ -343,7 +343,7 @@ function renderHtmlTemplate(htmlTemplate, templateContent, templatePlaceholder) 
 
 	// remove all click events from placeholder
 	jQuery(templatePlaceholder).off();
-	jQuery(templatePlaceholder).attr("onclick", "");
+	jQuery(templatePlaceholder).removeAttr("href")
 	var tagType = jQuery(templatePlaceholder).prop("tagName");
 
 	if(tagType != "DIV") {
@@ -352,7 +352,7 @@ function renderHtmlTemplate(htmlTemplate, templateContent, templatePlaceholder) 
 
 	if(tagType == "A") {
 		console.log("Warning: Placeholder (" + templatePlaceholder + ") is pointing to an <a> element. I will remove the href element to prevent unpredicted.");
-		jQuery(templatePlaceholder).attr('href', '');
+		jQuery(templatePlaceholder).removeAttr('href');
 	}
 
 	if(tagType == "IMG") {
