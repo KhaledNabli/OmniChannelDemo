@@ -542,10 +542,6 @@ function sendSMS($token, $customerId, $offer) {
 
 	global $http_proxy;
 	
-	$api_key="594b5de6";
-	$api_secret="bd95b0d2";
-	$api_from="SAS";
-	$nexmo_endpoint="http://rest.nexmo.com/sms/json";
 
 	$customerListSize = sizeof($config->customers);
 	$customer = null;
@@ -582,23 +578,23 @@ TODO: Add Support:
 
 	$newText      = str_replace("%FIRSTNAME%",$mobileName,$mobileSmsText);   // REPLACE name placeholder in SMS text
 	$newText      = str_replace("%OFFERNAME%",$offerName,$newText); // REPLACE offername placeholder in SMS text
-	$newText      = str_replace(" ","+",$newText);  // REPLACE all spaces with a plus symbol
-		
-	$nexmo_url=$nexmo_endpoint."?api_key=".$api_key."&api_secret=".$api_secret."&from=".$api_from."&to=".$mobileNumber."&text=".$newText;		
-	$nexmo_url;
-	//echo 'nexmo_url: ' .$nexmo_url;
+	//$newText      = str_replace(" ","+",$newText);  // REPLACE all spaces with a plus symbol
+	
+	$serverUrl = "http://dachgpci01.emea.sas.com/MessagingService/rest/";
 
-	// contact NEXMO for SMS
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $nexmo_url);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_HEADER, 1);
-	if(!empty($http_proxy)) {
-		curl_setopt($ch, CURLOPT_PROXY, $http_proxy);  		  
-	}
-	$output = curl_exec($ch); // execute the request		
-	//echo($output) . PHP_EOL; // output the profile information - includes the header	
-	curl_close($ch); // close curl resource to free up system resources
+	$requestParameter = array("sender" => "SAS.Demo", "recipient" => $mobileNumber, "body" => $newText, "channel" => "SMS", "provider" => "NEXMO");
+
+	$options = array(
+		    'http' => array(
+		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+		        'method'  => "POST",
+		        'content' => http_build_query($requestParameter),
+		    ),
+		);
+
+	$context  = stream_context_create($options);
+	@file_get_contents($serverUrl, false, $context);
+
 		
 	return $response;		
 }
