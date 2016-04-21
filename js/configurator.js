@@ -1,6 +1,27 @@
 
 var configScenario = {};
 
+function addNewConfigJsonParameters() {
+    if (configScenario.mobileApp.colorThemeBar == undefined) { 
+        configScenario.mobileApp.colorThemeBar = "#1b4476";
+    }
+    if (configScenario.mobileApp.colorThemeBarText == undefined) { 
+        configScenario.mobileApp.colorThemeBarText = "#FFFFFF";
+    }
+    if (configScenario.mobileApp.colorThemeButton == undefined) { 
+        configScenario.mobileApp.colorThemeButton = "#1b4476";
+    }
+    if (configScenario.mobileApp.colorThemePage == undefined) { 
+        configScenario.mobileApp.colorThemePage = "#FFFFFF";
+    }
+    if (configScenario.mobileApp.colorThemeText == undefined) { 
+        configScenario.mobileApp.colorThemeText = "#1b4476";
+    }
+    if (configScenario.mobileApp.colorThemeBorder == undefined) { 
+        configScenario.mobileApp.colorThemeBorder = "#7C7C7C";
+    }
+}
+
 function startConfigurator() {
     var token = window.location.href.split("#")[1];
     loadConfiguration(token);
@@ -27,6 +48,8 @@ function onLoadConfigurationDone(config) {
         configScenario.general.userEmail = "";
         console.log("This Demo is marked as read-only.");
     }
+
+    addNewConfigJsonParameters();
 
     initConfigurator();
 }
@@ -65,6 +88,13 @@ function updateTokenDemoLinks() {
         $('a.link2mobileapp').html(baseUrl + 'MobileApp/#' + encodedToken);
         $('a.link2mobileapp').attr('href', baseUrl + 'MobileApp/#' + encodedToken);
 
+        $('a.link2mobileappnextgen').html(baseUrl + 'MobileAppNextGen/#' + encodedToken);
+        $('a.link2mobileappnextgen').attr('href', 
+            'javascript:window.open("' 
+            + baseUrl + 'MobileAppNextGen/#' + encodedToken
+            + '","MobileApp","width=367,height=627")'
+            );
+
         $('a.link2website').html(baseUrl + 'Website/?token=' + encodedToken);
         $('a.link2website').attr('href', baseUrl + 'Website/?token=' + encodedToken);
     }
@@ -76,6 +106,9 @@ function updateTokenDemoLinks() {
 
         $('a.link2mobileapp').html("Please save your configuration to get the link to Mobile App");
         $('a.link2mobileapp').attr('href', "#");
+
+        $('a.link2mobileappnextgen').html("Please save your configuration to get the link to Mobile App");
+        $('a.link2mobileappnextgen').attr('href', "#");
 
         $('a.link2website').html("Please save your configuration to get the link to Website");
         $('a.link2website').attr('href', "#");
@@ -170,6 +203,9 @@ function initConfigurator() {
     $("input.upload-image").attr("placeholder", "Double click here to upload an image.");
     $(".image-preview").off();
     $(".image-preview").on("click", onClickPreviewImage);
+    $(".colorPickerInput").colorpicker();
+    $('#mobileColorThemeBar').colorpicker('setValue', configScenario.mobileApp.colorThemeBar);
+    $('#mobileColorThemePage').colorpicker('setValue', configScenario.mobileApp.colorThemePage);
 
 } /* end initConfigurator() */
 
