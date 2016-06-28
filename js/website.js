@@ -407,6 +407,13 @@ function renderHtmlPlacehoder(placeHolderContent) {
 }
 
 
+function alterScore(scoreIndex, scoreValue) {
+	var token = websiteConfig.token;
+	var customerLogin = window.sessionStorage.ocdWebsiteLogin;
+
+	return changeAnalyticsScore(token, customerLogin, scoreIndex, scoreValue);
+}
+
 function trackResponse(offerCd, responseCd) {
 	var token = websiteConfig.token;
 	var customerLogin = window.sessionStorage.ocdWebsiteLogin;

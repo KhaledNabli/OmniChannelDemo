@@ -101,6 +101,12 @@ function processRequest() {
 		echo json_encode(getOffers($token, $customer, $channel, $list_size, $do_not_track));
 	
 	}
+	else if($action == 'changeAnalyticsScore') {
+		$customer = getRequestParameter("customer");
+		$scoreIndex = getRequestParameter("scoreIndex");
+		$scoreValue = getRequestParameter("scoreValue");
+		echo json_encode(changeAnalyticsScore($token, $customer, $scoreIndex, $scoreValue));
+	}
 	else if($action == 'respondToOffer') {
 		$customer = getRequestParameter("customer");
 		$offerCd = getRequestParameter("offer");
@@ -409,6 +415,18 @@ function respondToOffer($token, $customer, $offerCd, $responseCd, $channelCd, $d
 	return array('msg' => 'response successful with ' .$smsSendResponse);
 }
 
+
+function changeAnalyticsScore($token, $customer, $scoreIndex, $scoreValue) {
+	// get this profile
+
+	$currentConfig = getConfigFromDatabase($token);
+	$customerIndex = getCustomerIndexByLogin($currentConfig->customers, $customer);
+
+	//$currentScoreValue = $currentConfig->customers[$customerIndex][$scoreIndex];
+
+	$currentConfig->customers[$customerIndex]->$scoreIndex = $scoreValue;
+	return $currentConfig;
+}
 
 /**
 *

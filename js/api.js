@@ -5,12 +5,23 @@ function resetDemo(token) {
 				});
 }
 
+
+function changeAnalyticsScore(token, customer, scoreIndex, scoreValue) {
+	return callApi({action: 'changeAnalyticsScore', 
+					token: token, 
+					customer: customer,
+					scoreIndex: scoreIndex,
+					scoreValue: scoreValue
+				});
+}
+
+
 function respondToOffer(token, customer, offerCd, responseCd, channelCd, details) {
 	return callApi({action: 'respondToOffer', 
 					token: token, 
 					customer: customer, 
 					offer: offerCd, 
-					response: responseCd, 
+					response: responseCd,
 					channel: channelCd, 
 					details: details
 				});

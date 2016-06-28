@@ -57,8 +57,23 @@ function onSelectCustomerBtn(element) {
 	$('#email').val(configScenario.selectedCustomer.email);
 	$('#pictureUrl').attr('src', configScenario.selectedCustomer.pictureUrl);
 
+	updateAnalyticsBars();
 
+	$('#nav_overview').removeClass('active');
+	$('#nav_nba').removeClass('active');
+	$('#nav_history').removeClass('active');
 
+	$('#nav_custDetails').addClass('active');
+
+	$('#tab_overview').removeClass('active');
+	$('#tab_custDetails').addClass('active');
+	
+	$('#nav_custDetails').show();
+	$('#nav_nba').show();
+	$('#nav_history').show();
+}
+
+function updateAnalyticsBars() {
 	$('#bar_analyticsBar1').css("width",configScenario.selectedCustomer.analyticsBar1Value);
 	$('#txt_analyticsBar1').text(configScenario.selectedCustomer.analyticsBar1Value);
 	$('#analyticsBar1Label').text(configScenario.labels.analyticsBar1Label);
@@ -74,19 +89,16 @@ function onSelectCustomerBtn(element) {
 	$('#bar_analyticsBar4').css("width",configScenario.selectedCustomer.analyticsBar4Value);
 	$('#txt_analyticsBar4').text(configScenario.selectedCustomer.analyticsBar4Value);
 	$('#analyticsBar4Label').text(configScenario.labels.analyticsBar4Label);
+}
 
-	$('#nav_overview').removeClass('active');
-	$('#nav_nba').removeClass('active');
-	$('#nav_history').removeClass('active');
+function processOfferResponse(offerCode, response) {
+	// Update Analytical Scores here
 
-	$('#nav_custDetails').addClass('active');
-
-	$('#tab_overview').removeClass('active');
-	$('#tab_custDetails').addClass('active');
-	
-	$('#nav_custDetails').show();
-	$('#nav_nba').show();
-	$('#nav_history').show();
+	/*
+	oldValue = parseInt(configScenario.selectedCustomer.analyticsBar1Value.split("%")[0]);
+	configScenario.selectedCustomer.analyticsBar1Value = (oldValue + 5) + "%";
+	updateAnalyticsBars();
+	*/
 }
 
 function onClickNavItemNba(element) {
@@ -179,6 +191,8 @@ function onResponseBtnClick(element, response) {
 	var offerCode = $('#offerDetailsOfferCode').val();
 	var details = "";
 	$('#offerDetailsModal').modal('toggle');  // modal close
+
+	processOfferResponse(offerCode, response);
 
 	console.log("onResponseBtnClick exeucted");
 	respondToOffer(token, customer, offerCode, response, channel, details)
