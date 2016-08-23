@@ -1,0 +1,39 @@
+<div class="backgroundTransparent">
+    <!-- header bar -->
+    <header class="border-theme bar bar-nav">
+      <a class="bar-text-theme icon icon-bars pull-left" onclick="openPane('left');"></a>
+      <!--<a class="bar-text-theme icon icon-pages pull-right" onclick="openPane('right');"></a>-->
+      <a class="bar-text-theme icon icon-close pull-right" onclick="onLogoutButtonClick(this);"></a>
+      <h1 id="titleMobileApp" class="bar-text-theme title">Your Profile</h1>
+    </header>
+
+
+    <!-- page content -->
+    <!--div class="xcontent"-->
+
+
+        <div class="innerContent">
+          <label class="text-theme"><br>You are logged in as <span id="custName"></span></label>
+          <br>
+          <br>
+          <img class="imgCustomer" id="imgCustomer" src="" style="width:150px">
+          <br>
+          
+          <form class="input-group ">
+            <div class="border-theme input-row">
+              <label class="text-theme">Mobile</label>
+              <input id="custMobile" class="text-theme" type="text" >
+            </div>
+            <div class="border-theme input-row">
+              <label class="text-theme">Email</label>
+              <input id="custEmail" class="text-theme" type="email" >
+            </div>
+            <div class="border-theme input-row">
+              <label class="text-theme">Age</label>
+              <input id="custAge" class="text-theme" type="text" >
+            </div>
+          </form>
+        </div>
+
+
+</div>

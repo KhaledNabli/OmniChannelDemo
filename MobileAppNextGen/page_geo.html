@@ -1,0 +1,47 @@
+<div class="backgroundTransparent">
+	<!-- header bar -->
+    <header class="border-theme bar bar-nav">
+      <a class="bar-text-theme icon icon-left-nav pull-left" onclick="onBackButtonClick(this);"></a>
+      <a class="bar-text-theme headerRightIcon icon icon-close pull-right" onclick="onLogoutButtonClick(this);"></a>
+      <h1 class="bar-text-theme title">Geolocation</h1>
+    </header>
+
+
+    <!-- page content -->
+    <div "">
+    	<div class="innerContent no-padding">
+
+				<div id="mapPageInner"  style="height: 300px;" ></div>
+				<img id="yourPosition" src="./images/marker.png">
+
+
+			
+			<div class="padded-layer">
+				
+				<label class="text-theme small-font">Latitude: <span id="mapLatPosition"> </span></label>
+				
+				<label class="text-theme small-font">Longtitude: <span id="mapLngPosition"> </span></label>
+
+				<br><br>
+				<label class="text-theme"><span id="mapDistance"> </span></label>
+				<br><br>
+
+			</div>
+
+		</div><!-- /innerContent -->
+		
+		<div id="transparentOverlay" class="hide">
+				<div id="popupPushMessage" class="background-transparent popupWindow animatePopup hide">
+					<br>
+					<div class="padded-layer">
+						<img id="imgGeoOffer" src="" style="width:100%">
+						<br><br>
+						<button class="btn btn-positive btn-block" 
+							onclick="onAcceptPopupClick(this, 'accept');">Accept</button>
+						<button class="btn btn-primary btn-block" onclick="closeGeoPopup()">Close</button>
+					</div>
+				</div>
+		</div>
+
+	</div><!-- /content -->
+</div>

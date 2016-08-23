@@ -1,0 +1,34 @@
+<div class="backgroundTransparent">
+    <!-- header bar -->
+    <header class="border-theme bar bar-nav">
+      <a class="bar-text-theme icon icon-bars pull-left" onclick="openPane('left');"></a>
+      <h1 id="titleMobileApp" class="bar-text-theme title">Home</h1>
+    </header>
+
+      
+        <div class="innerContent">
+          <br>
+          <label class="text-theme">Username</label>
+          
+          <input id="inputCustomerLogin" type="text" placeholder="Enter Customer Login" value="1234">
+
+          <label class="text-theme">Password</label>
+          <input type="password" placeholder="Enter Password">
+
+          <br><br>
+          <button id="submitBtn" class="btn btn-positive btn-block" onclick="onSubmitButtonClick(this);">Submit</button>
+
+          <label class="text-theme">or login with </label><br><br><br>
+
+          <a title="facebook"  class="button-round facebook-auth" href="https://m.facebook.com/login.php">
+            <img class="social-icon" src="./images/icon-facebook.png" width="65px">&nbsp;&nbsp;&nbsp;
+          </a>
+          <a title="twitter" type="button" class="button-round twitter-auth" href="https://api.twitter.com/oauth/authorize">
+            <img class="social-icon" src="./images/icon-google.png" width="65px">&nbsp;&nbsp;&nbsp;
+          </a>
+          <a title="google" type="button" class="button-round google-auth" href="https://myaccount.google.com/">
+            <img class="social-icon" src="./images/icon-twitter.png" width="65px">
+          </a>
+        </div>
+      
+</div>

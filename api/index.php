@@ -600,7 +600,7 @@ TODO: Add Support:
 	
 	$serverUrl = "http://dachgpci01.emea.sas.com/MessagingService/rest/";
 
-	$requestParameter = array("sender" => "SAS.Demo", "recipient" => $mobileNumber, "body" => $newText, "channel" => "SMS", "provider" => "NEXMO");
+	$requestParameter = array("sender" => "SAS.Demo", "recipient" => $mobileNumber, "body" => $newText, "channel" => "SMS", "provider" => "AUTO");
 
 	$options = array(
 		    'http' => array(

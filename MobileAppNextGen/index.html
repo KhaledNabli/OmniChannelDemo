@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="utf-8">
+    <title>Mobile App</title>
+
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link id="appleTouchIcon"               rel="apple-touch-icon" href="" />
+    <link id="shortcutIcon"                 rel="shortcut icon" href="">
+
+    <link href="./css/ratchet.css"          rel="stylesheet">
+    <link href="./css/mobileapp.css"        rel="stylesheet">
+    <link href="./css/font-awesome.min.css" rel="stylesheet">
+
+       
+
+  </head>
+  <body >
+
+  <div id="mainAppDiv" class="pageBackgroundImage">
+
+    <!-- NOTIFICATION window -->
+    <div id="notification" class="animateNotification hide">
+      <a onclick="openGeoPopup()"> <span id="notificationMessage"></span> </a>
+    </div>
+
+    <!-- LEFT PANE -->
+    <div id="leftPane"            class="pageBackgroundImage leftPane page hidePage"></div>
+
+    <!-- RIGHT PANE -->
+    <div id="rightPane"           class="pageBackgroundImage rightPane page hidePage"></div>
+
+    <!-- MOBILE APP PAGES -->
+    <div id="pageLogin"           class="pageBackgroundImage page-layer page"></div>
+
+    <div id="pageHome"            class="pageBackgroundImage page-layer page hidePage"></div>
+
+    <div id="pageOffers"          class="pageBackgroundImage page-layer page hidePage"></div>
+
+    <div id="pageOfferDetails"    class="pageBackgroundImage page-layer page hidePage"></div>
+
+    <div id="pageTelco"           class="pageBackgroundImage page-layer page hidePage"></div>
+
+    <div id="pageEwallet"         class="pageBackgroundImage page-layer page hidePage"></div>
+
+    <div id="pageEwalletDetails"  class="pageBackgroundImage page-layer page hidePage"></div>
+
+    <div id="pageGeo"             class="pageBackgroundImage page-layer page hidePage"></div>
+
+    <div id="pagePayment"         class="pageBackgroundImage page-layer page hidePage"></div>
+
+  </div>
+
+
+    <!-- BOTTOM NAVIGATION BAR -->
+    <nav id="footerNavBarHome" class="border-theme bar bar-tab footerNavBar">
+      <a class="tab-item active">
+        <i class="fa fa-home fa-lg"></i><br>
+        <span class="tab-label">Home</span>
+      </a>
+    </nav>
+
+    <nav id="footerNavBar" class="border-theme hide bar bar-tab footerNavBar animateFooter">
+      <a id="navHome" class="nav-theme tab-item active" onclick="onNavItemClick('Home');">
+        <i class="fa fa-home fa-lg"></i><br>
+        <span class="tab-label">Home</span>
+      </a>
+      <a id="navOffers" class="nav-theme tab-item" onclick="onNavItemClick('Offers');">
+        <i class="fa fa-shopping-bag fa-lg"></i>
+        <span id="badgeNumberOfOffers" class="badge-theme badge badge-primary" style="display:none">0</span><br>
+        <span class="tab-label">Offers</span>
+      </a>
+      <a id="navEwallet" class="nav-theme tab-item" onclick="onNavItemClick('Ewallet');">
+        <i class="fa fa-cart-arrow-down fa-lg"></i><br>
+        <span class="tab-label">eWallet</span>
+      </a>
+      <a id="navGeo" class="nav-theme tab-item" onclick="onNavItemClick('Geo');">
+        <i class="fa fa-globe fa-lg"></i><br>
+        <span class="tab-label">Geo</span>
+      </a>
+      <a id="navPayment" class="nav-theme tab-item" onclick="onNavItemClick('Payment');">
+        <i class="fa fa-money fa-lg"></i><br>
+        <span class="tab-label">Payment</span>
+      </a>
+    </nav>
+
+    
+    <script src="./js/jquery-1.11.3.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="./js/app.js"></script>
+    <script src="./js/esp.js"></script>
+    <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+    
+    <script type="text/javascript">
+
+      $( document ).ready(function() {
+   
+       var contentToRender = [
+          {div:"#pageHome", contentUrl:"./page_home.html"},
+          {div:"#pageLogin", contentUrl:"./page_login.html"},
+          {div:"#pageOffers", contentUrl:"./page_offers.html"},
+          {div:"#pageOfferDetails", contentUrl:"./page_offerDetails.html"},
+          {div:"#pageEwallet", contentUrl:"./page_ewallet.html"},
+          {div:"#pageEwalletDetails", contentUrl:"./page_ewalletDetails.html"},
+          {div:"#pageGeo", contentUrl:"./page_geo.html"},
+          {div:"#pagePayment", contentUrl:"./page_payment.html"},
+          {div:"#rightPane", contentUrl:"./pane_right.html"},
+          {div:"#leftPane", contentUrl:"./pane_left.html"}
+        ];
+
+        contentToRender.map(function (contentObj) {
+          var tempDiv = $("<div></div>");
+          if(contentObj.contentUrl instanceof Array && contentObj.contentUrl.length > 0) {
+            for(var i = 0; i < contentObj.contentUrl.length; i++) {
+              tempDiv.load(contentObj.contentUrl[i], function (responseHtml){
+                $(contentObj.div).append(responseHtml);
+              });
+            }
+          }
+          else {
+            tempDiv.load(contentObj.contentUrl, function (responseHtml){
+              $(contentObj.div).append(responseHtml);
+            });
+          }
+        });
+
+        onMobileAppReady();
+       
+      });                    
+    </script>
+
+  </body>
+
+</html>

@@ -1,0 +1,31 @@
+<div class="backgroundTransparent">
+    <!-- header bar -->
+    <header class="border-theme bar bar-nav">
+      <a class="bar-text-theme icon icon-left-nav pull-left" onclick="onBackButtonClick(this);"></a>
+      <a class="bar-text-theme headerRightIcon icon icon-close pull-right" onclick="onNavItemClick('Offers','SwipeRight');"></a>
+      <h1 id="titleOfferPage" class="bar-text-theme title"><span id="numberOfOffers"></span> Offer Details</h1>
+    </header>
+
+    <!-- page content -->
+    <div class="innerContent no-padding" >
+
+      <!-- div to display offer details -->      
+      <div id="offerDetailsDiv">
+        <div class="innerContent">
+            <br>
+            <label class="text-theme" id="offerDetailsLabel"></label>
+            <br>
+            <img   id="offerDetailsImage" src="" style="max-height:200px;max-width:300px">
+            <input id="offerDetailsOfferCode" type="hidden">          
+            <br>
+            <p     class="text-theme" id="offerDetailsDescription"></p>
+            <br><br>
+
+            <button class="btn btn-positive btn-block" onclick="onResponseBtnClick(this, 'accept');">Accept <span class="icon icon-check pull-right"></span></button>
+            <button class="btn btn-negative btn-block" onclick="onResponseBtnClick(this, 'reject');">Reject <span class="icon icon-close pull-right"></span></button>
+                
+        </div>
+      </div> <!-- /offerDetailsDiv -->
+      
+    </div> <!-- /innerContent -->
+</div>

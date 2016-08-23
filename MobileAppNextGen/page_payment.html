@@ -1,0 +1,36 @@
+<div class="backgroundTransparent">
+  <!-- header bar -->
+    <header class="border-theme bar bar-nav">
+      <a class="bar-text-theme icon icon-left-nav pull-left" onclick="onBackButtonClick(this);"></a>
+      <a class="bar-text-theme headerRightIcon icon icon-close pull-right" onclick="onLogoutButtonClick(this);"></a>
+      <h1 class="bar-text-theme title">Mobile Payment</h1>
+    </header>
+
+
+    <div class="innerContent">
+          
+          <br>
+          <label class="text-theme">Channel</label>
+          <input id="espChannel" type="text" placeholder="Channel" value="Mobile">
+          
+          <br><br><br>
+          <label class="text-theme">Product Type</label>
+          <input list="products" id="espType" type="text" placeholder="select product" value="SmartTV" >
+
+          <datalist id="products">
+            <option value="SmartTV">
+            <option value="SmartWatch">
+            <option value="Lunch">
+            <option value="Car">
+            <option value="Printer">
+          </datalist>
+          
+          <label class="text-theme">Price / Amount</label>
+          <input id="espAmount" type="number" placeholder="enter price" value="123">
+
+          <br><br><br>
+          <button class="btn btn-positive btn-block" onclick="processEvent(this);">Pay</button>
+
+          <br><br>
+        </div> 
+</div>
