@@ -2,6 +2,18 @@
 var configScenario = {};
 
 function addNewConfigJsonParameters() {
+    if (configScenario.customers[0].prefChannel == undefined) { 
+        configScenario.customers[0].prefChannel = "SMS";
+    }
+    if (configScenario.customers[0].telegramId == undefined) { 
+        configScenario.customers[0].telegramId = "0";
+    }
+    if (configScenario.customers[1].prefChannel == undefined) { 
+        configScenario.customers[1].prefChannel = "SMS";
+    }
+    if (configScenario.customers[1].telegramId == undefined) { 
+        configScenario.customers[1].telegramId = "0";
+    }
     if (configScenario.mobileApp.colorThemeBar == undefined) { 
         configScenario.mobileApp.colorThemeBar = "#1b4476";
     }
@@ -631,8 +643,29 @@ function onUploadImageIconClick(iconElem) {
 function onPreviewImageIconClick(iconElem) {
     var elem = $(iconElem).parent().parent().find("input");
     $('#imgPreviewImage').attr('src', elem.val());
+    $('#imgPreviewImage').show();
+    $('#infoText').html("");
     $('#modalTitlePreviewImage').text("Image Preview");
     $('#popupPreviewImage').modal('show');
+}
+
+function onInfoClick(element) {
+    if(element == "Channel") {
+        $('#infoText').html("You can switch between SMS and Telegram. "
+                    + "If you use Telegram, you need to enter your TelegramID. "
+                    + "Don't forget to enable the checkbox on General Settings tab! <br>"
+                    + "<a href='http://dachgpci01.emea.sas.com/docs/MessagingService/MessagingAPI_Telegram.pptx' target='_blank'>Find some documentation here</a>");
+        $('#imgPreviewImage').hide();
+        $('#modalTitlePreviewImage').text("Preferred Channel Info");   
+    } else if(element == "TelegramId") {
+        $('#infoText').html("Enter your TelegramId here. <br>"
+                    + "<a href='http://dachgpci01.emea.sas.com/docs/MessagingService/MessagingAPI_Telegram.pptx' target='_blank'>Find documentation here to get your id</a>");
+        $('#imgPreviewImage').hide();
+        $('#modalTitlePreviewImage').text("Telegram Info");   
+    }
+
+    $('#popupPreviewImage').modal('show');
+    
 }
 
 

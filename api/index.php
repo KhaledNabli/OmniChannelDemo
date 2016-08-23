@@ -407,9 +407,14 @@ function respondToOffer($token, $customer, $offerCd, $responseCd, $channelCd, $d
 	insertHistoryEntry($token, $customer, $offerCd, "", $channelCd, "Response", $responseCd, $details, ""); // TODO: need to be fixed
 
 	// send SMS if response is accept
+	$customerObject = getCustomerObject($customer, $config);
 	$smsSendResponse = "noSMS";
 	if($responseCd == "accept") {
-		$smsSendResponse = sendSMS($token, $customer, $offer);
+		if(isset($customerObject->prefChannel) && $customerObject->prefChannel == "TELEGRAM") {
+			$smsSendResponse = sendTelegram($token, $customer, $offer);
+		} else {
+			$smsSendResponse = sendSMS($token, $customer, $offer);			
+		}
 	}
 
 	return array('msg' => 'response successful with ' .$smsSendResponse);
@@ -561,14 +566,7 @@ function sendSMS($token, $customerId, $offer) {
 	global $http_proxy;
 	
 
-	$customerListSize = sizeof($config->customers);
-	$customer = null;
-	for($customerIndex = 0; $customerIndex < $customerListSize; $customerIndex++) {
-		$customer = $config->customers[$customerIndex];
-		if($config->customers[$customerIndex]->customerLogin == $customerId) {
-			break;
-		}
-	}
+	$customer = getCustomerObject($customerId, $config);
 
 	$mobileNumber = $customer->mobileNumber;
 	$mobileName   = $customer->firstName;
@@ -588,15 +586,9 @@ TODO: Add Support:
 %Lastname%
 %CustomerPicture%
 %CustomerSegment%
-
-
 */
 
-
-
-	$newText      = str_replace("%FIRSTNAME%",$mobileName,$mobileSmsText);   // REPLACE name placeholder in SMS text
-	$newText      = str_replace("%OFFERNAME%",$offerName,$newText); // REPLACE offername placeholder in SMS text
-	//$newText      = str_replace(" ","+",$newText);  // REPLACE all spaces with a plus symbol
+	$newText      = parseTextMessage($mobileSmsText, $offer, $customer);
 	
 	$serverUrl = "http://dachgpci01.emea.sas.com/MessagingService/rest/";
 
@@ -618,6 +610,80 @@ TODO: Add Support:
 }
 
 
+function sendTelegram($token, $customerId, $offer) {
+	global $mysql_link;
+	//check if token is valid
+	$config = getConfigFromDatabase($token);
+	if($config == null) return;
+
+	$response = "Telegram activated";
+	if($config->general->sendSms==0 || $config->general->sendSms==""){
+		$response = "Telegram deactivated";
+		return $response;
+	} 
+
+	global $http_proxy;
+	
+	$customer = getCustomerObject($customerId, $config);
+
+	$mobileNumber = $customer->mobileNumber;
+	$mobileName   = $customer->firstName;
+	$telegramId	  = $customer->telegramId;
+	$mobileSmsText= $offer->offerSms;
+	$offerName    = $offer->offerName;
+
+	$newText      = parseTextMessage($mobileSmsText, $offer, $customer);
+
+	$serverUrl = "http://dachgpci01.emea.sas.com/MessagingService/rest/";
+
+	$requestParameter = array(
+		"sender" => "SAS.Demo", 
+		"recipient" => $telegramId, 
+		"subject" => $offer->offerImg,
+		"body" => $newText, 
+		"channel" => "TELEGRAM", 
+		"provider" => "AUTO"
+	);
+
+	$response = $response ." - ". $offer->offerImg;
+
+	$options = array(
+		    'http' => array(
+		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+		        'method'  => "POST",
+		        'content' => http_build_query($requestParameter),
+		    ),
+		);
+
+	$context  = stream_context_create($options);
+	@file_get_contents($serverUrl, false, $context);
+
+		
+	return $response;		
+}
+
+function parseTextMessage($textMessage, $offer, $customer) {
+	// REPLACE name placeholder in text
+	$newText = str_replace("%FIRSTNAME%",$customer->firstName,$textMessage);   
+	// REPLACE offername placeholder in text
+	$newText = str_replace("%OFFERNAME%",$offer->offerName,$newText); 
+	// REPLACE offer description placeholder in text
+	$newText = str_replace("%OFFERDESC%",$offer->offerDesc,$newText); 
+	
+	return $newText;
+}
+
+function getCustomerObject($customerId, $config) {
+	$customerListSize = sizeof($config->customers);
+	$customer = null;
+	for($customerIndex = 0; $customerIndex < $customerListSize; $customerIndex++) {
+		$customer = $config->customers[$customerIndex];
+		if($config->customers[$customerIndex]->customerLogin == $customerId) {
+			break;
+		}
+	}
+	return $customer;
+}
 
 function logUsage($eventType, $userPayload, $detail1, $detail2) {
 	global $enable_logging;

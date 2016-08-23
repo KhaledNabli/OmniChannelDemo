@@ -71,6 +71,8 @@
 			"lastName": "Bouten",
 			"mobileNumber": "",
 			"lifeStageSegment": "Small-Family",
+			"prefChannel": "SMS",
+			"telegramId": "0",
 			"age": "35",
 			"email": "mathias.bouten@sas.com",
 			"analyticsBar1Value": "33%",

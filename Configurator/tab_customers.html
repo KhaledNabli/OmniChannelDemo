@@ -68,6 +68,22 @@
                                 </div>
                             </div>
 
+                            <!-- Telegram integration -->
+                            <div class="form-group">
+                                <label for="c1prefChannel" class="col-sm-2 control-label">Preferred Channel <a onclick="onInfoClick('Channel');"><span class="glyphicon glyphicon-eye-open"></span></a></label>
+                                <div class="col-sm-4">
+                                    <!--<input type="text" class="form-control" id="c1prefChannel" placeholder="">-->
+                                    <select id="c1prefChannel" class="form-control input-md">
+                                      <option value="SMS">SMS</option>
+                                      <option value="TELEGRAM">TELEGRAM</option>
+                                    </select>
+                                </div>
+                                <label for="c1telegramId" class="col-sm-2 control-label">Telegram ID <a onclick="onInfoClick('TelegramId');"><span class="glyphicon glyphicon-eye-open"></span></a></label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" id="c1telegramId" placeholder="">
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label for="c1age" class="col-sm-2 control-label">Age</label>
                                 <div class="col-sm-1">
@@ -175,6 +191,22 @@
                                 <input type="text" class="form-control" id="c2mobileNumber" placeholder="+<country-code><mobile-nr>">
                             </div>
                         </div>
+
+                        <!-- Telegram integration -->
+                            <div class="form-group">
+                                <label for="c2prefChannel" class="col-sm-2 control-label">Preferred Channel</label>
+                                <div class="col-sm-4">
+                                    <!--<input type="text" class="form-control" id="c2prefChannel" placeholder="">-->
+                                    <select id="c2prefChannel" class="form-control input-md">
+                                      <option value="SMS">SMS</option>
+                                      <option value="TELEGRAM">TELEGRAM</option>
+                                    </select>
+                                </div>
+                                <label for="c2telegramId" class="col-sm-2 control-label">Telegram ID</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" id="c2telegramId" placeholder="">
+                                </div>
+                            </div>
 
                         <div class="form-group">
                             <label for="c2age" class="col-sm-2 control-label">Age</label>
